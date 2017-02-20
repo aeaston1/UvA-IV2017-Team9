@@ -1,0 +1,47 @@
+\documentclass{beamer}
+\usepackage{mathtools}
+\usepackage{amsmath}
+%\usepackage{biblatex}
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage[ampersand]{easylist}
+
+\newcommand{\red}[1]{\textit{\color{red}#1}}
+
+\usetikzlibrary{arrows}
+\usetheme{amsterdam}
+\usefonttheme{professionalfonts}
+%\usefonttheme{serif}
+\usenavigationsymbolstemplate{}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\begin{document}
+
+
+\title{IV 2017 \\ \red{Fancy project name}}
+\author{Alexander Easton \and Helena Russello \and Iva Gornishka \\  \and Julius Roeder \and Nick Raemaekers}
+\date{}
+
+  %Titleframe
+  \begin{frame}
+    \maketitle     
+  \end{frame}
+  
+
+\begin{comment}
+  %Outline slide
+  \begin{frame}
+    \frametitle{Outline}
+    \tableofcontents
+  \end{frame}
+\end{comment}
+
+
+\input{sections/data}
+\input{sections/features}
+\input{sections/visualization}
+\input{sections/bibliography}
+
+
+\end{document}
