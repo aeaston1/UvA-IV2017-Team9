@@ -9,6 +9,7 @@
 *.toc
 *.pyc
 *~
+*.csv
 *env
 *dontpush*
 *output*
