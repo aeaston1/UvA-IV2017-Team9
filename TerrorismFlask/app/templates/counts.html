@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> Counts per country: </h1>
+    {% for entry in country_counts %}
+    <div><p>{{ entry.country }}: <b>{{ entry.count }}</b></p></div>
+    {% endfor %}
+{% endblock %}
+
