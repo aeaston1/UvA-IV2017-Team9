@@ -1,8 +1,5 @@
-# from http://flask.pocoo.org/ tutorial
 from flask import Flask
-app = Flask(__name__)
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return "Hello, World!"
+app = Flask(__name__)
+from app import views
+
