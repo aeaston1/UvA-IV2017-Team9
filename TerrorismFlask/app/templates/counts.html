@@ -2,8 +2,18 @@
 
 {% block content %}
     <h1> Counts per country: </h1>
+    <div><p> Country: 
+        <b> Attacks </b>
+        <b> Victims </b>
+        <b> Wounded </b>
+    </p></div>
+
     {% for entry in country_counts %}
-    <div><p>{{ entry.country }}: <b>{{ entry.count }}</b></p></div>
+    <div><p>{{ entry.country }}: 
+        <b>{{ entry.attacks_count }}</b>
+        <b>{{ entry.victims_count }}</b>
+        <b>{{ entry.wounded_count }}</b>
+    </p></div>
     {% endfor %}
 {% endblock %}
 

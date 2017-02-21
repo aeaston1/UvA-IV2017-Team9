@@ -29,3 +29,12 @@ $(document).ready(function() {
         .attr("height", function(temp, ind) {return temp;})
 
 })
+
+
+
+function tooltipHtml(countryEntry){	/* function to create html content string in tooltip div. */
+  return "<h4>"+countryEntry.country+"</h4><table>"+
+  "<tr><td>Victims:</td><td>"+(countryEntry.victims_count)+"</td></tr>"+
+  "<tr><td>Wounded:</td><td>"+(countryEntry.wounded_count)+"</td></tr>"+
+  "</table>";
+}

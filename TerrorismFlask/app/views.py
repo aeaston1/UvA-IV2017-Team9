@@ -44,3 +44,17 @@ def counts():
     app.logger.warning("Gonna print counts now")
     return render_template("counts.html",
                            country_counts=country_counts)
+
+
+
+@app.route('/map')
+def map():
+    country_counts = data.get_country_counts('app/static/data/globalterrorismdb_0616dist.csv')
+
+    app.logger.warning("Gonna map counts now")
+    return render_template("map.html",
+                           country_counts=country_counts)
+
+
+
+
