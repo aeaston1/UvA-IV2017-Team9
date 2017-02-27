@@ -1,8 +1,11 @@
 from flask import Flask
 
-
+#app = Flask('TerrorismFlask')
 app = Flask(__name__)
+app.config.from_object('app.settings.Config')
 from app import views
+
+print app.config.keys()
 
 
 import logging

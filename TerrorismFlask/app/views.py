@@ -1,7 +1,7 @@
 from flask import render_template
 from app import app
 
-import data
+#import data
 
 
 @app.route('/')
@@ -39,7 +39,8 @@ def index():
 
 @app.route('/counts')
 def counts():
-    country_counts = data.get_country_counts('app/static/data/globalterrorismdb_0616dist.csv')
+ #   country_counts = data.get_country_counts('app/static/data/globalterrorismdb_0616dist.csv')
+    country_counts = app.config['GTD_DATA'].get_country_counts()
  
     app.logger.warning("Gonna print counts now")
     return render_template("counts.html",
@@ -49,7 +50,8 @@ def counts():
 
 @app.route('/map')
 def map():
-    country_counts = data.get_country_counts('app/static/data/globalterrorismdb_0616dist.csv')
+#    country_counts = data.get_country_counts('app/static/data/globalterrorismdb_0616dist.csv')
+    country_counts = app.config['GTD_DATA'].get_country_counts()
 
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",
