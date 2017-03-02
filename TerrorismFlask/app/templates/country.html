@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <script src="/static/js/d3.js"></script>
+    <script src="/static/js/counts.js"></script>
+    <script type=text/javascript>
+       var data = {{country_data|tojson}};
+       plot_counts(data)
+    </script>
+
+
     <h1> Known stuffs for country: {{country_data.country}} </h1>
 
     {% for entry in country_data %}
