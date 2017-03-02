@@ -11,7 +11,8 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 1. `__init__.py` - basically creates the app and starts the logging
 1. `views.py` - all the decorators and functions that are triggered for specific urls
 1. `data.py` - all the data things and manipulations 
-1. `commons.py` - all general constants - e.g. data object, paths, etc.
+1. `commons.py` - all general constants - e.g. data object, paths, etc. (maybe it should be constans not commons? :/)
+1. `utils.py` - all utility functions - e.g. read a json, create dir if it doesn't exist, etc
 1. `settings.py` - the app configurations; data object was wrongly there, now there's nothing smart there.. :/ 
 1. `templates/` - all the html templates
 1. `static/` - the js and css folders + data folders (e.g. images, logos, etc, maybe we can keep dumped data / models there as well (because I don't know where else) 
@@ -25,3 +26,8 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://www.digitalocean.com/community/tutorials/how-to-structure-large-flask-applications
 - https://www.airpair.com/python/posts/django-flask-pyramid (for the curious, on Django vs Flask vs Pyramid)
 
+### Random terrorism-related stuffs:
+
+(Maybe also for inspiration for visualizations, analysis, report, etc)
+
+- https://ourworldindata.org/terrorism/ 
