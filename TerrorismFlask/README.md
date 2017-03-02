@@ -1,12 +1,26 @@
 YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 
+## How to run:
 
-===========================
-Tutorials and Useful Links:
-===========================
+1. Install the python requirements (e.g. `pip install -r requirements.txt`)
+1. Fix DATA_PATH in app/settings.py (or *BETTER*, to avoid merge drama and etc, make a data folder in static and `ln -s path_to_csv` there)
+1. Run `python run.py`
+1. It would run on [http://localhost:5000/](http://localhost:5000/) by default
 
-Flask Tutorials:
-----------------
+## What's in there:
+1. `__init__.py` - basically creates the app and starts the logging
+1. `views.py` - all the decorators and functions that are triggered for specific urls
+1. `data.py` - all the data things and manipulations 
+1. `commons.py` - all general constants - e.g. data object, paths, etc.
+1. `settings.py` - the app configurations; data object was wrongly there, now there's nothing smart there.. :/ 
+1. `templates/` - all the html templates
+1. `static/` - the js and css folders + data folders (e.g. images, logos, etc, maybe we can keep dumped data / models there as well (because I don't know where else) 
 
-    - https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
-    - http://flask.pocoo.org/docs/0.12/quickstart/
+## Tutorials and Useful Links
+
+### Flask Tutorials:
+
+- https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world (Nice tutorial, but a bit long)
+- http://flask.pocoo.org/docs/0.12/quickstart/ (Flask Quick Start, nice explanations about the decorators)
+- https://www.airpair.com/python/posts/django-flask-pyramid (for the curious, on Django vs Flask vs Pyramid)
+
