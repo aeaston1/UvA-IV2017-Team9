@@ -26,3 +26,8 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://www.digitalocean.com/community/tutorials/how-to-structure-large-flask-applications
 - https://www.airpair.com/python/posts/django-flask-pyramid (for the curious, on Django vs Flask vs Pyramid)
 
+### Random terrorism-related stuffs:
+
+(Maybe also for inspiration for visualizations, analysis, report, etc)
+
+- https://ourworldindata.org/terrorism/ 
