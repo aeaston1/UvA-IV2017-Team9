@@ -22,7 +22,12 @@ class GTDData(object):
 
     def load_data(self, data_path):
         self.data = [fix_entry(row) for row in utils.read_csv(data_path)]
+        self.n_attacks = len(self.data)
+        print self.n_attacks
 
+    
+    def get_attack_data(self, attack_id):
+        return self.data[attack_id]
 
     def get_data_per_country(self):
         try: 

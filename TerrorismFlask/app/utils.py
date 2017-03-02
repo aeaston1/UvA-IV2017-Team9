@@ -1,5 +1,6 @@
 import os
 import csv
+from random import randint
 
 
 def create_dir(dir_name):
@@ -16,3 +17,5 @@ def read_csv(file_name):
             yield row
 
 
+def generate_random_attack_id(max_id):
+    return randint(0, max_id)

@@ -2,6 +2,7 @@ from flask import render_template
 from app import app
 
 import commons
+import utils 
 
 
 @app.route('/')
@@ -48,6 +49,17 @@ def display_country(country):
                            country_data=country_data)
 
 
+#TODO: it should be @app.route('/attack/<int:attack_id>')
+@app.route('/attack')
+def display_random_attack():
+    attack_id = utils.generate_random_attack_id(commons.GTD_DATA.n_attacks)
+    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    attack_data.update({'attack_id': attack_id})
+
+    app.logger.warning("Gonna display a random attack now")
+    return render_template("attack.html",
+                           attack_data=attack_data)
+
 
 @app.route('/map')
 def map():
@@ -56,7 +68,4 @@ def map():
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",
                            country_counts=country_counts)
-
-
-
 
