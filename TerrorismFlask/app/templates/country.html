@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> Known stuffs for country: {{country_data.country}} </h1>
+
+    {% for entry in country_data %}
+    <div><p> {{entry}}: {{ country_data[entry] }}: 
+    </p></div>
+    {% endfor %}
+{% endblock %}
+
