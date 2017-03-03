@@ -1,23 +1,35 @@
 {% extends "base.html" %}
 
 {% block head %}
- <meta charset=utf-8 />
-  <title></title>
-  <script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
-  <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
-  <style>
-    body { margin:0; padding:0; }
-    .map { position:absolute; top:0; bottom:0; width:100%; }
-  </style>
+    <meta charset=utf-8 />
+    <title></title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <style>
+        body { margin:0; padding:0; }
+        .map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
 {% endblock %}
 
 {% block content %}
+<div id='mapid' class='map'> </div>
+
+<script type=text/javascript>
+    var mymap = L.map('mapid').setView([20, 0], 3);
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        maxZoom: 5,id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1IjoianVsaXVzcHIiLCJhIjoiY2l6dHh5YTBmMDAxZzMyczNzaHI4YjNhZyJ9.-jUqs6BQQV9_nBUJufLTOg'}).addTo(mymap);
 
 
-<div id='map-one' class='map'> </div>
-<script>
-L.mapbox.accessToken = 'pk.eyJ1IjoianVsaXVzcHIiLCJhIjoiY2l6dHh5YTBmMDAxZzMyczNzaHI4YjNhZyJ9.-jUqs6BQQV9_nBUJufLTOg';
-  L.mapbox.map('map-one', 'mapbox.streets').setView([38.8929, -77.0252], 14); //change mapbox.streets to mapbox.dark
+    var data = {{attack_locations |tojson}};
+{#    console.log(data)#}
+{#    for (var location in data) {#}
+{#        console.log(data[location]);#}
+{#        L.marker([location.longitude,location.latitude]).addTo(mymap);#}
+{#    }#}
+
 </script>
 
 {% endblock %}

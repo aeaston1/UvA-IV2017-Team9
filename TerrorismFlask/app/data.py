@@ -74,3 +74,16 @@ class GTDData(object):
             return self.country_counts
 
 
+    def get_location(self):
+        try:
+            return self.locations
+        except:
+            self.locations=defaultdict(lambda :{'longitude':0, 'latitude':0})
+
+            for i,row in enumerate(self.data):
+                #print (type(row.get("longitude")))
+                self.locations[i]['longitude']=float(row.get("longitude",0))
+                self.locations[i]['latitude'] = float(row.get("latitude",0))
+                #print(self.locations[i])
+
+            return self.locations

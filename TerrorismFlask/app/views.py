@@ -63,9 +63,8 @@ def display_random_attack():
 
 @app.route('/map')
 def map():
-    country_counts = commons.GTD_DATA.get_country_counts()
+    attack_locations = commons.GTD_DATA.get_location()
 
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",
-                           country_counts=country_counts)
-
+                           attack_locations=attack_locations)
