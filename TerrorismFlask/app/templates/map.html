@@ -12,7 +12,7 @@
 
 
 {% block content %}
-  <div id='mapid' class='map'> </div>
+  <div id='mapid' class='map' style="width:900px; height: 900px; position: relative  "> </div>
   <script type=text/javascript>
   var mymap = L.map('mapid').setView([20, 0], 3);
 
@@ -22,11 +22,11 @@
 
 
   var data = {{attack_locations |tojson}};
-{#    console.log(data)#}
-{#    for (var location in data) {#}
-{#        console.log(data[location]);#}
-{#        L.marker([location.longitude,location.latitude]).addTo(mymap);#}
-{#    }#}
+    console.log(data[0].longitude);
+    for (var i=0; i<10000;i++) {
+{#        console.log(data[i].longitude);#}
+        L.marker([data[i].latitude,data[i].longitude]).addTo(mymap);
+    }
 
   </script>
 
