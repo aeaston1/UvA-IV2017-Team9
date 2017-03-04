@@ -19,6 +19,9 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 
 ## Tutorials and Useful Links
 
+### As a beginning: How to format stuffs here:
+- https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+
 ### Flask Tutorials:
 
 - https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world (Nice tutorial, but a bit long)
