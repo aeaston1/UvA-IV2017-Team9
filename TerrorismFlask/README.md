@@ -30,7 +30,9 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://www.airpair.com/python/posts/django-flask-pyramid (for the curious, on Django vs Flask vs Pyramid)
 - http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/ (view decorators)
 
-### Mapbox Tutorials and examples:
+### Map Tutorials and examples:
+- http://leafletjs.com/ (what we actually use)
+- And I want black dying leaves as markers for the attacks!!! http://leafletjs.com/examples/custom-icons/
 - https://www.mapbox.com/mapbox.js/example/v1.0.0/
 
 ### Random terrorism-related stuffs:
