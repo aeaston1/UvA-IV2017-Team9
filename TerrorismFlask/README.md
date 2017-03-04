@@ -34,6 +34,8 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - http://leafletjs.com/ (what we actually use)
 - And I want black dying leaves as markers for the attacks!!! http://leafletjs.com/examples/custom-icons/
 - https://www.mapbox.com/mapbox.js/example/v1.0.0/
+- the code that i have been using mostly for the current map http://leafletjs.com/examples/quick-start/ 
+- tutorial and explanation of leafjs and mapbox http://www.sarasafavi.com/making-a-web-map-with-leaflet.html
 
 ### Random terrorism-related stuffs:
 
