@@ -27,8 +27,12 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://www.airpair.com/python/posts/django-flask-pyramid (for the curious, on Django vs Flask vs Pyramid)
 - http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/ (view decorators)
 
+### Mapbox Tutorials and examples:
+- https://www.mapbox.com/mapbox.js/example/v1.0.0/
+
 ### Random terrorism-related stuffs:
 
 (Maybe also for inspiration for visualizations, analysis, report, etc)
 
 - https://ourworldindata.org/terrorism/ 
+
