@@ -1,9 +1,9 @@
 <html>
   <head>
     {% if title %}
-    <title>{{ title }} - microblog</title>
+      <title>{{ title }} - microblog</title>
     {% else %}
-    <title>Welcome to microblog</title>
+      <title>Welcome to microblog</title>
     {% endif %}
 
     <link rel="shortcut icon" href="/static/imgs/gun.png"> 
@@ -22,6 +22,7 @@
       <a href="/attack">Random Attack </a>
     </div>
     <hr>
+
     {% block content %}{% endblock %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

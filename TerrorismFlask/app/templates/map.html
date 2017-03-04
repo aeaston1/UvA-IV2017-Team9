@@ -1,36 +1,34 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <meta charset=utf-8 />
-    <title></title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <meta charset=utf-8 />
+  <title></title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/map.css">
 
-    <style>
-        body { margin:0; padding:0; }
-        .map { position:absolute; top:0; bottom:0; width:100%; }
-    </style>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
 {% endblock %}
 
+
 {% block content %}
-<div id='mapid' class='map'> </div>
+  <div id='mapid' class='map'> </div>
+  <script type=text/javascript>
+  var mymap = L.map('mapid').setView([20, 0], 3);
 
-<script type=text/javascript>
-    var mymap = L.map('mapid').setView([20, 0], 3);
-
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        maxZoom: 5,id: 'mapbox.dark',
-        accessToken: 'pk.eyJ1IjoianVsaXVzcHIiLCJhIjoiY2l6dHh5YTBmMDAxZzMyczNzaHI4YjNhZyJ9.-jUqs6BQQV9_nBUJufLTOg'}).addTo(mymap);
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      maxZoom: 5,id: 'mapbox.dark',
+      accessToken: 'pk.eyJ1IjoianVsaXVzcHIiLCJhIjoiY2l6dHh5YTBmMDAxZzMyczNzaHI4YjNhZyJ9.-jUqs6BQQV9_nBUJufLTOg'}).addTo(mymap);
 
 
-    var data = {{attack_locations |tojson}};
+  var data = {{attack_locations |tojson}};
 {#    console.log(data)#}
 {#    for (var location in data) {#}
 {#        console.log(data[location]);#}
 {#        L.marker([location.longitude,location.latitude]).addTo(mymap);#}
 {#    }#}
 
-</script>
+  </script>
 
 {% endblock %}
 
