@@ -13,7 +13,9 @@
 *env
 *dontpush*
 *output*
-
+*.idea
+*.iml
+*.ipynb_checkpoints
 
 
 
