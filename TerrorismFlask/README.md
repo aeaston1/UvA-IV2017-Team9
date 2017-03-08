@@ -33,9 +33,11 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - And I've been looking a lot at how these guys have structured their stuffs: https://bitbucket.org/thomaswaldmann/moin-2.0/src/10a026928fb82a498eef25c8f3c0c88f82db2b96/MoinMoin/?at=default
 
 ### Faceted Search:
+- I'd do something like: https://github.com/svola/fantasticsearch/blob/master/fantasticsearch/views.py
 - https://www.mongodb.com/blog/post/faceted-search-with-mongodb?mkt_tok=3RkMMJWWfF9wsRonua%2FKcu%2FhmjTEU5z17ukoUKC3iokz2EFye%2BLIHETpodcMTcNjPbzYDBceEJhqyQJxPr3FLdcN0tJuRhTrCw%3D%3D
 - Random ideas: https://www.quora.com/What-are-the-best-tools-for-implementing-faceted-search
 - https://blog.madewithlove.be/post/faceted-search-using-elasticsearch/
+- http://srchulo.com/jquery_plugins/jquery_facets.html
 
 ### Map Tutorials and examples:
 - http://leafletjs.com/ (what we actually use)
