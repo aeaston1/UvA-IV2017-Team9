@@ -2,7 +2,8 @@ from flask import render_template
 from app import app
 
 import commons
-import utils 
+import utils
+import json
 
 
 @app.route('/')
@@ -64,6 +65,11 @@ def display_random_attack():
 @app.route('/map')
 def map():
     attack_locations = commons.GTD_DATA.get_location()
+
+    # newData=attack_locations.items()
+    app.logger.info(attack_locations)
+    # dataJson=json.dumps(newData)
+    # app.logger.info((dataJson))
 
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",

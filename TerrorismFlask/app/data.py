@@ -78,12 +78,12 @@ class GTDData(object):
         try:
             return self.locations
         except:
-            self.locations=defaultdict(lambda :{'longitude':0, 'latitude':0})
+            self.locations=defaultdict(lambda :{'lng':0, 'lat':0})
 
             for i,row in enumerate(self.data):
                 #print (type(row.get("longitude")))
-                self.locations[i]['longitude']=float(row.get("longitude",0))
-                self.locations[i]['latitude'] = float(row.get("latitude",0))
+                self.locations[i]['lng']=float(row.get("longitude",0))
+                self.locations[i]['lat'] = float(row.get("latitude",0))
                 #print(self.locations[i])
 
             return self.locations

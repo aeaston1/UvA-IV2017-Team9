@@ -31,8 +31,16 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/ (view decorators)
 
 ### Map Tutorials and examples:
-- http://leafletjs.com/ (what we actually use)
 - And I want black dying leaves as markers for the attacks!!! http://leafletjs.com/examples/custom-icons/
+- switched to the google maps API
+- https://developers.google.com/maps/documentation/javascript
+- https://developers.google.com/maps/documentation/javascript/marker-clustering 
+- https://developers.google.com/maps/documentation/javascript/styling --> styling the map
+- https://googlemaps.github.io/js-marker-clusterer/docs/examples.html --> used for clustering
+- the images for the clusters are in '/imgs/mapClusterImages' and i think they can just be changed
+
+(old)
+- http://leafletjs.com/ (what we actually use)
 - https://www.mapbox.com/mapbox.js/example/v1.0.0/
 - the code that i have been using mostly for the current map http://leafletjs.com/examples/quick-start/ 
 - tutorial and explanation of leafjs and mapbox http://www.sarasafavi.com/making-a-web-map-with-leaflet.html
