@@ -67,7 +67,7 @@ def map():
     attack_locations = commons.GTD_DATA.get_location()
 
     # newData=attack_locations.items()
-    app.logger.info(attack_locations)
+    # app.logger.info(attack_locations)
     # dataJson=json.dumps(newData)
     # app.logger.info((dataJson))
 

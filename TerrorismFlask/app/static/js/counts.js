@@ -18,7 +18,6 @@ var plot_counts = function(data) {
         names.push(key.split('_')[0]);
         dataset.push(filtered_data[key]);
     }
-    console.log(dataset);
 
     var maxElem = d3.max(dataset);
 
