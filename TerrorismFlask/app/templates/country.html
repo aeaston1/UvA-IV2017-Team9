@@ -3,11 +3,22 @@
 {% block content %}
     <script src="/static/js/d3.js"></script>
     <script src="/static/js/counts.js"></script>
+    <script src="/static/js/country.js"></script>
+    <script src="/static/sankey/ext/raphael.js" type="text/javascript"></script>
+    <script src="/static/sankey/ext/jquery.js" type="text/javascript"></script>
+    <script src="/static/sankey/js/sankey.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="/static/sankey/examples/css/style.css" />
+
 
     <script type=text/javascript>
        var data = {{country_data|tojson}};
-       plot_counts(data)
+       // plot_counts(data)
+       plot_sankey(data)
     </script>
+    <div id='sankey' style="width:1000px;height:1000px">
+      &nbsp;
+    </div>
+
 
 
     <h1> Known stuffs for country: {{country_data.country}} </h1>

@@ -42,7 +42,7 @@ def counts():
 
 @app.route('/country/<country>')
 def display_country(country):
-    country_data = commons.GTD_DATA.get_country_data(country)
+    country_data = commons.GTD_DATA.get_country_data(country.lower())
     country_data.update({'country': country})
 
     app.logger.warning("Gonna display country stuffs")
