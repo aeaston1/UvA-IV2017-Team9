@@ -23,6 +23,7 @@
 
     <script type=text/javascript>
         var data = {{attack_locations|tojson}};
+        var eventids = Object.keys(data);
         var locations = Object.values(data);
      function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -115,7 +116,7 @@
             position: location
           });
           marker.addListener('click', function() {
-             console.log(location)
+             console.log(eventids[i])
           });
           return marker;
         });

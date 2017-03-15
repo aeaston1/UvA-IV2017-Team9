@@ -89,7 +89,7 @@ class GTDData(object):
 
             for i,row in enumerate(self.data):
                 #print (type(row.get("longitude")))
-                eventid = row.get("eventid",i);
+                eventid = row.get("eventid",0)
                 self.locations[eventid]['lng']=float(row.get("longitude",0))
                 self.locations[eventid]['lat'] = float(row.get("latitude",0))
                 #print(self.locations[i])
