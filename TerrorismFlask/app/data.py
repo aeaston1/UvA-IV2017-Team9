@@ -23,7 +23,7 @@ class GTDData(object):
 
     
     def load_data(self, data_path):
-        self.data = [fix_entry(row) for row in utils.read_csv(data_path)]
+        self.data = list([fix_entry(row) for row in utils.read_csv(data_path)])
         self.n_attacks = len(self.data)
         print self.n_attacks
 
@@ -43,7 +43,7 @@ class GTDData(object):
                                                          'wounded_count': 0,
                                                          'attacktype': Counter(),
                                                          'targettype': Counter(),
-                                                         'attack_target_corr': defaultdict(lambda: defaultdict(int))
+                                                         'target_attack_corr': defaultdict(lambda: defaultdict(int))
                                                         })
             for row in self.data:
                 country = row['country_txt']
@@ -52,16 +52,14 @@ class GTDData(object):
                 self.data_per_country[country]['wounded_count'] += row['nwound'] #get_cnts(row, 'nwound')
                 self.data_per_country[country]['attacktype'][row['attacktype1_txt']] += 1
                 self.data_per_country[country]['targettype'][row['targtype1_txt']] += 1
-                self.data_per_country[country]['attack_target_corr'][row['attacktype1_txt']][row['targtype1_txt']] += 1
+                self.data_per_country[country]['target_attack_corr'][row['targtype1_txt']][row['attacktype1_txt']] += 1
 
             print len(self.data_per_country)
-
 
             return self.data_per_country
 
 
     def get_country_data(self, country):
-        self.data_per_country[country]['attack_target_corr']
         try:
             return self.get_data_per_country()[country]
         except:
