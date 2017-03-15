@@ -11,15 +11,15 @@
 
 
     <script type=text/javascript>
-       var data = {{country_data|tojson}};
-       // plot_counts(data)
-       plot_sankey(data)
+       $(document).ready(function() {
+         var data = {{country_data|tojson}};
+         // plot_counts(data)
+         plot_sankey(data)
+       });
     </script>
-    <div id='sankey' style="width:1000px;height:1000px">
+    <div id='sankey' style="width:800px;height:500px">
       &nbsp;
     </div>
-
-
 
     <h1> Known stuffs for country: {{country_data.country}} </h1>
 
