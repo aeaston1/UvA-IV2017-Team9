@@ -112,12 +112,16 @@
         });
 
         var markers = locations.map(function(location, i) {
-          var marker = new google.maps.Marker({
-            position: location
-          });
-          marker.addListener('click', function() {
-             console.log(eventids[i])
-          });
+            var markerImg = "static/imgs/map_markers/"+i%5+".png";
+            var marker = new google.maps.Marker({
+                position: location,
+                icon: markerImg
+            });
+            marker.addListener('click', function() {
+                console.log(eventids[i])
+            });
+
+
           return marker;
         });
         // gridSize determins the number of clusters. larger grid size --> less clusters

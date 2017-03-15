@@ -88,6 +88,7 @@ class GTDData(object):
             self.locations=defaultdict(lambda :{'lng':0, 'lat':0})
 
             for i,row in enumerate(self.data):
+
                 #print (type(row.get("longitude")))
                 eventid = row.get("eventid",0)
                 self.locations[eventid]['lng']=float(row.get("longitude",0))
