@@ -3,6 +3,7 @@ from collections import defaultdict, Counter
 
 import utils
 
+from pprint import pprint
 
 def get_cnts(obj, cnt_type):
     return int(float(obj[cnt_type])) if obj[cnt_type] else 0
@@ -18,14 +19,17 @@ def fix_entry(attack_entry):
 class GTDData(object):
     def __init__(self, data_path):
         self.load_data(data_path)
+        self.init_attr()
 
-
+    
     def load_data(self, data_path):
         self.data = [fix_entry(row) for row in utils.read_csv(data_path)]
         self.n_attacks = len(self.data)
         print self.n_attacks
 
-    
+    def init_attr(self):
+        self.attack_target_correlations = {}
+
     def get_attack_data(self, attack_id):
         return self.data[attack_id]
 
@@ -38,7 +42,9 @@ class GTDData(object):
                                                          'victims_count': 0,
                                                          'wounded_count': 0,
                                                          'attacktype': Counter(),
-                                                         'targettype': Counter()})
+                                                         'targettype': Counter(),
+                                                         'attack_target_corr': defaultdict(lambda: defaultdict(int))
+                                                        })
             for row in self.data:
                 country = row['country_txt']
                 self.data_per_country[country]['attacks_count'] += 1
@@ -46,13 +52,16 @@ class GTDData(object):
                 self.data_per_country[country]['wounded_count'] += row['nwound'] #get_cnts(row, 'nwound')
                 self.data_per_country[country]['attacktype'][row['attacktype1_txt']] += 1
                 self.data_per_country[country]['targettype'][row['targtype1_txt']] += 1
+                self.data_per_country[country]['attack_target_corr'][row['attacktype1_txt']][row['targtype1_txt']] += 1
 
-            print len(self.data_per_country) 
+            print len(self.data_per_country)
+
 
             return self.data_per_country
 
 
     def get_country_data(self, country):
+        self.data_per_country[country]['attack_target_corr']
         try:
             return self.get_data_per_country()[country]
         except:
