@@ -54,7 +54,8 @@ def display_country(country):
 @app.route('/attack')
 def display_random_attack():
     attack_id = utils.generate_random_attack_id(commons.GTD_DATA.n_attacks)
-    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    # attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    attack_data = commons.GTD_DATA.get_random_attack_data(attack_id)
     attack_data.update({'attack_id': attack_id})
 
     app.logger.warning("Gonna display a random attack now")
@@ -65,6 +66,7 @@ def display_random_attack():
 @app.route('/map')
 def map():
     attack_locations = commons.GTD_DATA.get_location()
+    attack_data = commons.GTD_DATA.get_data_per_attack()
 
     # newData=attack_locations.items()
     # app.logger.info(attack_locations)
@@ -73,4 +75,5 @@ def map():
 
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",
-                           attack_locations=attack_locations)
+                           attack_locations=attack_locations,
+                           attack_data=attack_data)
