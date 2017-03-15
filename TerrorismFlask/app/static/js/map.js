@@ -89,9 +89,13 @@ var makemap=function (data) {
         });
 
         var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
+          var marker = new google.maps.Marker({
             position: location
           });
+          marker.addListener('click', function() {
+             console.log(location)
+          });
+          return marker;
         });
         // gridSize determins the number of clusters. larger grid size --> less clusters
         var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
