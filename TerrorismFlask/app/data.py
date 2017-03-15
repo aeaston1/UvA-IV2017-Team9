@@ -13,13 +13,25 @@ def fix_entry(attack_entry):
     #TODO: clean up; substitute empty strings with 0s where needed, etc
     for key in ['nkill', 'nwound']:
         attack_entry[key] = int(float(attack_entry[key])) if attack_entry[key] else 0
-    return {key: attack_entry[key] for key in attack_entry if not attack_entry[key] == '' and not attack_entry[key] == '.'}
+    #TODO: fix the getting function instead of defdict
+    entry = defaultdict(int)
+    entry.update({key: attack_entry[key] for key in attack_entry if not attack_entry[key] == '' and not attack_entry[key] == '.'})
+    return entry
 
 
 class GTDData(object):
     def __init__(self, data_path):
+        """
+        So far the class has:
+            self.data ([attackrow1, attackrow2...])
+            self.n_attacks (int)
+            self.data_per_country (dict with basic stuffs per attack)
+            self.data_per_attack (dict with basic stuffs per attack)
+            self.country_counts (useless stuffs)
+            self.locations ({eventid: {long: .., lat: ..}... })
+            
+        """
         self.load_data(data_path)
-        self.init_attr()
 
     
     def load_data(self, data_path):
@@ -27,11 +39,6 @@ class GTDData(object):
         self.n_attacks = len(self.data)
         print self.n_attacks
 
-    def init_attr(self):
-        self.attack_target_correlations = {}
-
-    def get_attack_data(self, attack_id):
-        return self.data[attack_id]
 
     def get_data_per_country(self):
         try: 
@@ -79,6 +86,47 @@ class GTDData(object):
                                    } for country, country_data in data_per_country]
 
             return self.country_counts
+
+    def get_data_per_attack(self):
+        try:
+            return self.data_per_attack
+        except:
+            self.data_per_attack = {}
+
+            for row in self.data:
+                attackid = row['eventid']
+                self.data_per_attack[attackid] = {'victims_count': row['nkill'],
+                                                  'wounded_count': row['nwound'],
+                                                  'country': row['country_txt'],
+                                                  'region': row['region_txt'],
+                                                  'group': row['gname'],
+                                                  'nationality': row['natlty1_txt'],
+                                                  'attacktype': row['attacktype1_txt'],
+                                                  'targettype': row['targtype1_txt'],
+                                                  'target': row['target1'],
+                                                  'weapontype': row['weaptype1_txt'],
+                                                  'weapon': row['weapdetail']
+                                                 }
+
+            return self.data_per_attack
+
+
+    def get_attack_data(self, attackid):
+        try:
+            return self.get_data_per_attack()[attackid]
+        except:
+            return {}
+
+    def get_attack_ids(self):
+        try: 
+            return self.attackids
+        except:
+            self.attackids = self.get_data_per_attack().keys()
+            return self.attackids
+
+    def get_random_attack_data(self, random_n):
+        attackid = self.get_attack_ids()[random_n]
+        return self.get_attack_data(attackid) 
 
 
     def get_location(self):
