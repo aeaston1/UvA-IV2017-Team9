@@ -39,7 +39,7 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://blog.madewithlove.be/post/faceted-search-using-elasticsearch/
 - http://srchulo.com/jquery_plugins/jquery_facets.html
 
-### Map Tutorials and examples:
+### Map/Graph/etc Tutorials and examples:
 - And I want black dying leaves as markers for the attacks!!! http://leafletjs.com/examples/custom-icons/
 - switched to the google maps API
 - https://developers.google.com/maps/documentation/javascript
@@ -47,6 +47,8 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://developers.google.com/maps/documentation/javascript/styling --> styling the map
 - https://googlemaps.github.io/js-marker-clusterer/docs/examples.html --> used for clustering
 - the images for the clusters are in '/imgs/mapClusterImages' and i think they can just be changed
+
+- http://tamc.github.io/Sankey/
 
 (old)
 - http://leafletjs.com/ (what we actually use)
