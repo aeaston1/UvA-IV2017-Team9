@@ -23,37 +23,29 @@
     <div id="map" class="col-sm-10"></div>
     <div class="col-sm-2">
         <div class="panel panel-default">
-            <div class="panel-heading">Attack Type</div>
-            <div class="panel-body">
-                <div class="checkbox">
-                <label>
-                <input type="checkbox" value="">
-                type 1
-                </label>
-                </div>
-                <div class="checkbox">
-                <label>
-                <input type="checkbox" value="">
-                type 2
-                </label>
-                </div>
+            <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="true" aria-controls="targetFacets" >Target Type</div>
+            <div class="panel-body" id="targetFacets">
+                {% for attack_type in facets.targettype %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="{{ attack_type }}">
+                            {{ attack_type }}
+                        </label>
+                    </div>
+                {% endfor %}
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading">Target Type</div>
-            <div class="panel-body">
-                <div class="checkbox">
-                <label>
-                <input type="checkbox" value="">
-                type 1
-                </label>
-                </div>
-                <div class="checkbox">
-                <label>
-                <input type="checkbox" value="">
-                type 2
-                </label>
-                </div>
+            <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="true" aria-controls="attackFacets">Attack Type</div>
+            <div class="panel-body" id="attackFacets">
+                {% for attack_type in facets.attacktype %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="{{ attack_type }}">
+                            {{ attack_type }}
+                        </label>
+                    </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -63,7 +55,8 @@
         var attackLocations = {{attack_locations|tojson}};
         var eventids = Object.keys(attackLocations);
         var locations = Object.values(attackLocations);
-{#        var facets = {{facets|tojson}};#}
+        var facets = {{facets|tojson}};
+        console.log(facets);
         
         console.log(Object.keys(facets.attacktype));
 {#        var attackData = {{attack_data}};#}
