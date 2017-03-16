@@ -1,12 +1,30 @@
 import csv
 from collections import defaultdict, Counter
-from nltk.corpus import stopwords
 import utils
+
+from nltk.corpus import stopwords
+from string import punctuation
+import re
 
 from pprint import pprint
 import time 
 
 from random import random
+
+en_stopwords = stopwords.words("english")
+
+
+
+def get_words(doc):
+    # Remove punctuation and spaces #justincase
+    doc = ''.join(map(lambda ch: ch if ch not in punctuation else ' ', doc))
+    doc = re.sub(r'[ \t\n\r\f\v]+', ' ', doc).strip()
+
+    words = doc.lower().split()
+    words = [word for word in words if word and not word in en_stopwords]
+
+    return words
+
 
 def get_cnts(obj, cnt_type):
     return int(float(obj[cnt_type])) if obj[cnt_type] else 0
@@ -112,7 +130,8 @@ class GTDData(object):
                 for field in ['attacktype', 'targettype']:
                     country_data[field][attack_data[field]] += 1
                 country_data['target_attack_corr'][attack_data['targettype']][attack_data['attacktype']] += 1
-                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), attack_data['summary'].split()))
+#                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), attack_data['summary'].split()))
+                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['summary'])))
 
             country_data['words'] = dict(country_data['words'].most_common(100))
 
