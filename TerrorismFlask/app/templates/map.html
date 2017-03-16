@@ -59,10 +59,12 @@
         var facets = {{facets|tojson}};
 
          function initParamMap(a, b) {
+             var map ;
+             var markers = [];
            return function() {
                 console.log(a, b);
 
-                var map = new google.maps.Map(document.getElementById('map'), {
+                map = new google.maps.Map(document.getElementById('map'), {
                   zoom: 2,
                   center: {lat: 30, lng: 0},
                    styles: [
@@ -147,17 +149,51 @@
               ]
                 });
 
-        var markers = initMarkers(locations);
+        markers = initMarkers(locations);
         // gridSize determins the number of clusters. larger grid size --> less clusters
         var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
         var markerCluster = new MarkerClusterer(map, markers,mcOptions);
+
     }}
 
 {#        makemap(data);#}
     </script>
     <script>
+    // Adds a marker to the map and push to the array.
+      function addMarker(location) {
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+        markers.push(marker);
+      }
+
+      // Sets the map on all markers in the array.
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      // Shows any markers currently in the array.
+      function showMarkers() {
+        setMapOnAll(map);
+      }
+
+      // Deletes all markers in the array by removing references to them.
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
+    </script>
+
+    <script>
     var initMarkers = function(locations){
-        console.log("init markers !!!!");
         var markers = locations.map(function(location, i) {
                 var markerImg = "static/imgs/map_markers/"+i%5+".png";
                 var marker = new google.maps.Marker({
