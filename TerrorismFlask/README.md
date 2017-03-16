@@ -4,6 +4,7 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 
 1. Install the python requirements (e.g. `pip install -r requirements.txt`)
 1. Fix DATA_PATH in app/settings.py (or *BETTER*, to avoid merge drama and etc, make a data folder in static and `ln -s path_to_csv` there)
+1. open python terminal; import nltk; nltk.download(); download the stopwords in corpus
 1. Run `python run.py`
 1. It would run on [http://localhost:5000/](http://localhost:5000/) by default
 
