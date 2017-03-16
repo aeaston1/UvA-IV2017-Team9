@@ -25,6 +25,9 @@
         var attackLocations = {{attack_locations|tojson}};
         var eventids = Object.keys(attackLocations);
         var locations = Object.values(attackLocations);
+        var facets = {{facets|tojson}};
+        
+        console.log(Object.keys(facets.attacktype));
 {#        var attackData = {{attack_data}};#}
 
          function initMap() {

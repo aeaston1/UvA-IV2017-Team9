@@ -39,6 +39,8 @@ class GTDData(object):
         self.country_basics = defaultdict(lambda: defaultdict(int))
         self.data_per_attack = {}
 
+        self.facets = defaultdict(lambda: defaultdict(list))
+
         self.locations = {}
 
         for row in self.data:
@@ -71,10 +73,12 @@ class GTDData(object):
                 self.country_basics[country][field] += attack_data[field]
 
 
+            #TODO: Random sampling for now, fix all sampled stuffs (locations and facets) later
             if random() < 0.1:
                 self.locations[attackid] = {'lng': attack_data['lng'],
                                         'lat': attack_data['lat']}
-
+                self.facets['attacktype'][attack_data['attacktype']].append(attackid)
+                self.facets['targettype'][attack_data['targettype']].append(attackid)
 
 
         self.countries = sorted(self.attackids_per_country.keys())
@@ -150,6 +154,8 @@ class GTDData(object):
     def get_location(self):
         return self.locations
 
+    def get_facets(self):
+        return self.facets
 
     def get_data_for_motive(self):
         try:
