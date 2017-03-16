@@ -57,10 +57,6 @@
         var eventids = Object.keys(attackLocations);
         var locations = Object.values(attackLocations);
         var facets = {{facets|tojson}};
-        console.log(facets);
-        
-        console.log(Object.keys(facets.attacktype));
-{#        var attackData = {{attack_data}};#}
 
          function initParamMap(a, b) {
            return function() {
@@ -168,22 +164,32 @@
                     position: location,
                     icon: markerImg
                 });
-                var y = eventids[i].substring(0, 4);
-                    var m = eventids[i].substring(4, 6);
-                    var d = eventids[i].substring(6, 8);
-                    var date = y + "-" + m + "-" + d;
 
-                    var contentString = '<div id="content">' +
+                var eventid = eventids[i];
+
+                marker.addListener('click', function() {
+//                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
+                      $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+
+                      var y = eventid.substring(0, 4);
+                      var m = eventid.substring(4, 6);
+                      var d = eventid.substring(6, 8);
+                      var date = y + "-" + m + "-" + d;
+
+                      var contentString = '<div id="content">' +
                         '<p>'+date +'</p>'+
+                        '<p>' + current_attack_data.country + '</p>' + 
                         '<a href="/attack/'+eventids[i]+'">View attack</a>'
                         '</div>';
-                var infowindow = new google.maps.InfoWindow({
-                     content: contentString
-                });
-                marker.addListener('click', function() {
-                    infowindow.open(map, marker);
 
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                      });
+
+                      infowindow.open(map, marker);
+                    });
                 });
+
           return marker;
         });
         return markers;
