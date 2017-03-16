@@ -6,6 +6,8 @@ import utils
 from pprint import pprint
 import time 
 
+from random import random
+
 def get_cnts(obj, cnt_type):
     return int(float(obj[cnt_type])) if obj[cnt_type] else 0
 
@@ -48,7 +50,7 @@ class GTDData(object):
                            'wounded_count': row['nwound'],
                            'country': row['country_txt'],
                            'region': row['region_txt'],
-                           'lan': float(row.get("longitude", 0)),
+                           'lng': float(row.get("longitude", 0)),
                            'lat': float(row.get("latitude", 0)),
                            'group': row['gname'],
                            'nationality': row['natlty1_txt'],
@@ -68,7 +70,9 @@ class GTDData(object):
             for field in ['victims_count', 'wounded_count']:
                 self.country_basics[country][field] += attack_data[field]
 
-            self.locations[attackid] = {'lan': attack_data['lan'],
+
+            if random() < 0.1:
+                self.locations[attackid] = {'lng': attack_data['lng'],
                                         'lat': attack_data['lat']}
 
 
