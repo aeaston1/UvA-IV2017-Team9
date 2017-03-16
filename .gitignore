@@ -33,3 +33,5 @@ log.*
 
 
 *.csv#
+
+TerrorismFlask/app/settings\.py
