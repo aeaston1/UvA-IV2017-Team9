@@ -9,7 +9,7 @@
     </p></div>
 
     {% for entry in country_counts %}
-    <div><p> <a href='/viewcountry/{{entry.country}}'>{{ entry.country }} </a>: 
+    <div><p> <a href='/country/{{entry.country}}'>{{ entry.country }} </a>: 
         <b>{{ entry.attacks_count }}</b>
         <b>{{ entry.victims_count }}</b>
         <b>{{ entry.wounded_count }}</b>

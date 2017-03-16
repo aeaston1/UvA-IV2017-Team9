@@ -41,24 +41,22 @@ def counts():
                            country_counts=country_counts)
 
 
-@app.route('/viewcountry/<country>')
-def countryview(country):
+@app.route('/country/<country>')
+def display_country(country):
     country_data = commons.GTD_DATA.get_country_data(country)
     country_data.update({'country': country})
-
 
     app.logger.warning("Gonna display country stuffs")
     return render_template("country.html",
                            country_data=country_data)
 
 
-@app.route('/country/<country>')
+@app.route('/get_country/<country>')
 def get_country(country):
     country_data = commons.GTD_DATA.get_country_data(country)
     country_data.update({'country': country})
 
-
-    app.logger.warning("Gonna display country stuffs")
+    app.logger.warning("Gonna return country stuffs")
     return jsonify(country_data)
 
 
@@ -67,7 +65,6 @@ def get_country(country):
 @app.route('/attack')
 def display_random_attack():
     attack_id = utils.generate_random_attack_id(commons.GTD_DATA.n_attacks)
-    # attack_data = commons.GTD_DATA.get_attack_data(attack_id)
     attack_data = commons.GTD_DATA.get_random_attack_data(attack_id)
     attack_data.update({'attack_id': attack_id})
 
@@ -75,24 +72,32 @@ def display_random_attack():
     return render_template("attack.html",
                            attack_data=attack_data)
 
+
 @app.route('/attack/<attack_id>')
 def display_attack(attack_id):
     attack_data = commons.GTD_DATA.get_attack_data(attack_id)
     attack_data.update({'attack_id': attack_id})
+
     app.logger.warning("Gonna display a SELECTED attack now")
     return render_template("attack.html",
                            attack_data=attack_data)
+
+
+@app.route('/get_attack/<attack_id>')
+def get_attack(attack_id):
+    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    attack_data.update({'attack_id': attack_id})
+
+    app.logger.warning("Gonna return a SELECTED attack now")
+    return jsonify(attack_data)
+
+
 
 @app.route('/map')
 def map():
     attack_locations = commons.GTD_DATA.get_location()
     attack_data = commons.GTD_DATA.get_data_per_attack()
     facets = commons.GTD_DATA.get_facets()
-
-    # newData=attack_locations.items()
-    # app.logger.info(attack_locations)
-    # dataJson=json.dumps(newData)
-    # app.logger.info((dataJson))
 
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",
