@@ -85,7 +85,8 @@ def display_attack(attack_id):
 
 @app.route('/get_attack/<attack_id>')
 def get_attack(attack_id):
-    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+#    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    attack_data = commons.GTD_DATA.get_marker_data(attack_id)
     attack_data.update({'attack_id': attack_id})
 
     app.logger.warning("Gonna return a SELECTED attack now")
