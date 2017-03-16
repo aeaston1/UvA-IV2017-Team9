@@ -1,22 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <script src="/static/js/d3.js"></script>
+<!--    <script src="/static/js/d3.js"></script>  -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="/static/js/counts.js"></script>
-    <script src="/static/js/country.js"></script>
+    <script src="/static/js/sankey.js"></script>
     <script src="/static/sankey/ext/raphael.js" type="text/javascript"></script>
     <script src="/static/sankey/ext/jquery.js" type="text/javascript"></script>
     <script src="/static/sankey/js/sankey.js" type="text/javascript"></script>
         <link rel="stylesheet" href="/static/sankey/examples/css/style.css" />
 
+<!--    <script src="/static/js/require.js" type="text/javascript"></script> -->
+    <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
+    <script src="/static/js/wordle.js" type="text/javascript"></script>
+
 
     <script type=text/javascript>
        $(document).ready(function() {
          var data = {{country_data|tojson}};
-         // plot_counts(data)
-         plot_sankey(data)
+         plot_counts(data)
+         plot_sankey(data);
+         draw_wordle(data);
        });
     </script>
+
     <div id='sankey' style="width:800px;height:500px">
       &nbsp;
     </div>
@@ -26,8 +33,11 @@
     <h1> Known stuffs for country: {{country_data.country}} </h1>
 
     {% for entry in country_data %}
-    <div><p> {{entry}}: {{ country_data[entry] }}: 
-    </p></div>
+      {% if not entry == 'words'%}
+        <div><p> {{entry}}: {{ country_data[entry] }} 
+        </p></div>
+      {% endif %}
     {% endfor %}
+
 {% endblock %}
 
