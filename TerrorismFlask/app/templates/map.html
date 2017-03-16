@@ -28,7 +28,7 @@
                 {% for attack_type in facets.targettype %}
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="{{ attack_type }}">
+                            <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
                             {{ attack_type }}
                         </label>
                     </div>
@@ -41,7 +41,7 @@
                 {% for attack_type in facets.attacktype %}
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="{{ attack_type }}">
+                            <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
                             {{ attack_type }}
                         </label>
                     </div>
@@ -52,6 +52,7 @@
     </div>
     </div>
     <script type=text/javascript>
+
         var attackLocations = {{attack_locations|tojson}};
         var eventids = Object.keys(attackLocations);
         var locations = Object.values(attackLocations);
@@ -61,7 +62,10 @@
         console.log(Object.keys(facets.attacktype));
 {#        var attackData = {{attack_data}};#}
 
-         function initMap() {
+         function initParamMap(a, b) {
+           return function() {
+                console.log(a, b);
+
                 var map = new google.maps.Map(document.getElementById('map'), {
                   zoom: 2,
                   center: {lat: 30, lng: 0},
@@ -185,6 +189,9 @@
         return markers;
     }
     </script>
+
+
+    <script> var initMap = initParamMap(2, 3);  </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
 

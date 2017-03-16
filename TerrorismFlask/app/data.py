@@ -1,12 +1,30 @@
 import csv
 from collections import defaultdict, Counter
-from nltk.corpus import stopwords
 import utils
+
+from nltk.corpus import stopwords
+from string import punctuation
+import re
 
 from pprint import pprint
 import time 
 
 from random import random
+
+en_stopwords = stopwords.words("english")
+
+
+
+def get_words(doc):
+    # Remove punctuation and spaces #justincase
+    doc = ''.join(map(lambda ch: ch if ch not in punctuation else ' ', doc))
+    doc = re.sub(r'[ \t\n\r\f\v]+', ' ', doc).strip()
+
+    words = doc.lower().split()
+    words = [word for word in words if word and not word in en_stopwords]
+
+    return words
+
 
 def get_cnts(obj, cnt_type):
     return int(float(obj[cnt_type])) if obj[cnt_type] else 0
@@ -103,7 +121,7 @@ class GTDData(object):
                             'targettype': Counter(),
                             'target_attack_corr': defaultdict(lambda: defaultdict(int)),
                             'words': Counter()
-                           }
+                            }
 
             for attackid in attackids:
                 attack_data = self.data_per_attack[attackid]
@@ -112,10 +130,17 @@ class GTDData(object):
                 for field in ['attacktype', 'targettype']:
                     country_data[field][attack_data[field]] += 1
                 country_data['target_attack_corr'][attack_data['targettype']][attack_data['attacktype']] += 1
-                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), attack_data['summary'].split()))
+                #                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), attack_data['summary'].split()))
+                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['summary'])))
+
+
+            for key in country_data['words'].keys():
+                for stopword in en_stopwords:
+                    if (stopword in key or (any(char.isdigit() for char in (key.encode('utf-8')))) or len(
+                            key.encode('utf-8')) < 4):
+                        del country_data['words'][key]
 
             country_data['words'] = dict(country_data['words'].most_common(100))
-
             self.data_per_country[country] = country_data
             return country_data
 
@@ -156,42 +181,3 @@ class GTDData(object):
 
     def get_facets(self):
         return self.facets
-
-    def get_data_for_motive(self):
-        try:
-            return self.data_for_motives
-        except:
-            self.data_for_motives={}
-            unordered_motives={}
-
-            for row in self.data:
-                country = row['country_txt']
-                unordered_motives[country] += row['motive']
-                unordered_motives[country] += " "
-
-        # need lsit of stop words
-            common = set([stopwords.words("english")])
-            for row in unordered_motives:
-                row=row.lower()
-                for stopword in common:
-                    row=row.replace(stopword,"")
-
-    def get_motive_list(self,words):
-        try:
-            word_count={}
-            words=words.split()
-            for word in words:
-                if (word!="" and len(word)>1):
-                    if(word_count[word]):
-                        word_count[word]+=1
-                    else:
-                        word_count[word]=1
-            return word_count
-        except:
-            return {}
-
-    def get_motives_data(self,country):
-        try:
-            return self.get_motive_list(get_data_for_motive()[country])
-        except:
-            return {}
