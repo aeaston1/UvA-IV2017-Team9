@@ -66,6 +66,13 @@ def display_random_attack():
     return render_template("attack.html",
                            attack_data=attack_data)
 
+@app.route('/attack/<attack_id>')
+def display_attack(attack_id):
+    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    attack_data.update({'attack_id': attack_id})
+    app.logger.warning("Gonna display a SELECTED attack now")
+    return render_template("attack.html",
+                           attack_data=attack_data)
 
 @app.route('/map')
 def map():
