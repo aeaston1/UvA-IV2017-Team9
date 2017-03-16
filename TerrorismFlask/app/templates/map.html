@@ -126,6 +126,7 @@
 
                     var contentString = '<div id="content">' +
                         '<p>'+date +'</p>'+
+                        '<a href="/attack/'+eventids[i]+'">View attack</a>'
                         '</div>';
                 var infowindow = new google.maps.InfoWindow({
                      content: contentString
@@ -134,8 +135,6 @@
                     infowindow.open(map, marker);
 
                 });
-
-
           return marker;
         });
         // gridSize determins the number of clusters. larger grid size --> less clusters
