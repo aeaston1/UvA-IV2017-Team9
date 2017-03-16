@@ -1,6 +1,6 @@
 import csv
 from collections import defaultdict, Counter
-
+from nltk.corpus import stopwords
 import utils
 
 from pprint import pprint
@@ -144,3 +144,42 @@ class GTDData(object):
                 #print(self.locations[i])
 
             return self.locations
+
+    def get_data_for_motive(self):
+        try:
+            return self.data_for_motives
+        except:
+            self.data_for_motives={}
+            unordered_motives={}
+
+            for row in self.data:
+                country = row['country_txt']
+                unordered_motives[country] += row['motive']
+                unordered_motives[country] += " "
+
+        # need lsit of stop words
+            common = set([stopwords.words("english")])
+            for row in unordered_motives:
+                row=row.lower()
+                for stopword in common:
+                    row=row.replace(stopword,"")
+
+    def get_motive_list(self,words):
+        try:
+            word_count={}
+            words=words.split()
+            for word in words:
+                if (word!="" and len(word)>1):
+                    if(word_count[word]):
+                        word_count[word]+=1
+                    else:
+                        word_count[word]=1
+            return word_count
+        except:
+            return {}
+
+    def get_motives_data(self,country):
+        try:
+            return self.get_motive_list(get_data_for_motive()[country])
+        except:
+            return {}
