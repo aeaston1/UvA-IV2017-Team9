@@ -1,4 +1,5 @@
-from flask import render_template
+from flask import render_template, jsonify
+
 from app import app
 
 import commons
@@ -40,8 +41,8 @@ def counts():
                            country_counts=country_counts)
 
 
-@app.route('/country/<country>')
-def display_country(country):
+@app.route('/viewcountry/<country>')
+def countryview(country):
     country_data = commons.GTD_DATA.get_country_data(country)
     country_data.update({'country': country})
 
@@ -49,6 +50,17 @@ def display_country(country):
     app.logger.warning("Gonna display country stuffs")
     return render_template("country.html",
                            country_data=country_data)
+
+
+@app.route('/country/<country>')
+def get_country(country):
+    country_data = commons.GTD_DATA.get_country_data(country)
+    country_data.update({'country': country})
+
+
+    app.logger.warning("Gonna display country stuffs")
+    return jsonify(country_data)
+
 
 
 #TODO: it should be @app.route('/attack/<int:attack_id>')

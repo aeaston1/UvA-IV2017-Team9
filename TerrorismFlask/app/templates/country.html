@@ -16,19 +16,32 @@
 
 
     <script type=text/javascript>
-       $(document).ready(function() {
-         var data = {{country_data|tojson}};
-         plot_counts(data)
-         plot_sankey(data);
-         draw_wordle(data);
-       });
+      $(document).ready(function() {
+        var data = {{country_data|tojson}};
+        plot_counts(data)
+        plot_sankey(data);
+        draw_wordle(data);
+
+      $(function() {
+        $('a#calculate').bind('click', function() {
+          $.getJSON('{{ url_for('get_country', country=country) }}', function(data) {
+            console.log(data)
+            $("#result").text(data);
+          });
+          return false;
+        });
+      });
+
+    });
     </script>
+
+    
+    <div id=result>?</div> 
+    <a href=# id=calculate>calculate server side</a>
 
     <div id='sankey' style="width:800px;height:500px">
       &nbsp;
     </div>
-
-
 
     <h1> Known stuffs for country: {{country_data.country}} </h1>
 
@@ -38,6 +51,7 @@
         </p></div>
       {% endif %}
     {% endfor %}
+
 
 {% endblock %}
 
