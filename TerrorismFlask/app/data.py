@@ -14,7 +14,7 @@ def fix_entry(attack_entry):
     for key in ['nkill', 'nwound']:
         attack_entry[key] = int(float(attack_entry[key])) if attack_entry[key] else 0
     #TODO: fix the getting function instead of defdict
-    entry = defaultdict(int)
+    entry = defaultdict(str)
     entry.update({key: attack_entry[key] for key in attack_entry if not attack_entry[key] == '' and not attack_entry[key] == '.'})
     return entry
 
@@ -50,9 +50,10 @@ class GTDData(object):
                                                          'wounded_count': 0,
                                                          'attacktype': Counter(),
                                                          'targettype': Counter(),
-                                                         'target_attack_corr': defaultdict(lambda: defaultdict(int))
+                                                         'target_attack_corr': defaultdict(lambda: defaultdict(int)),
+                                                         'words': Counter()
                                                         })
-            for row in self.data:
+            for row in self.data: 
                 country = row['country_txt']
                 self.data_per_country[country]['attacks_count'] += 1
                 self.data_per_country[country]['victims_count'] += row['nkill'] #get_cnts(row, 'nkill')
@@ -60,16 +61,27 @@ class GTDData(object):
                 self.data_per_country[country]['attacktype'][row['attacktype1_txt']] += 1
                 self.data_per_country[country]['targettype'][row['targtype1_txt']] += 1
                 self.data_per_country[country]['target_attack_corr'][row['targtype1_txt']][row['attacktype1_txt']] += 1
+ 
+#                self.data_per_country[country]['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), row['motive'].split()))
+                self.data_per_country[country]['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), row['summary'].split()))
 
-            print len(self.data_per_country)
+            
+            for country, country_data in self.data_per_country.iteritems():
+                self.data_per_country[country]['words'] = dict(country_data['words'].most_common(100))
+
+
+            print 'Countries found: ', len(self.data_per_country)
 
             return self.data_per_country
 
 
     def get_country_data(self, country):
         try:
+            print country
+            print self.get_data_per_country()[country]
             return self.get_data_per_country()[country]
-        except:
+        except Exception as e:
+            print e
             return {}
  
 
