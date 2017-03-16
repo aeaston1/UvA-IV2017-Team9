@@ -78,7 +78,7 @@ class GTDData(object):
     def get_country_data(self, country):
         try:
             print country
-            print self.get_data_per_country()[country]
+            # print self.get_data_per_country()[country]
             return self.get_data_per_country()[country]
         except Exception as e:
             print e
