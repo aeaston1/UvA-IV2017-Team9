@@ -109,7 +109,7 @@ class GTDData(object):
 
     def get_country_data(self, country):
         try:
-            self.data_per_country[country]
+            return self.data_per_country[country]
 
         except Exception as e:
             attackids = self.attackids_per_country[country]
@@ -133,12 +133,6 @@ class GTDData(object):
                 #                country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), attack_data['summary'].split()))
                 country_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['summary'])))
 
-
-            for key in country_data['words'].keys():
-                for stopword in en_stopwords:
-                    if (stopword in key or (any(char.isdigit() for char in (key.encode('utf-8')))) or len(
-                            key.encode('utf-8')) < 4):
-                        del country_data['words'][key]
 
             country_data['words'] = dict(country_data['words'].most_common(100))
             self.data_per_country[country] = country_data
