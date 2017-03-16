@@ -23,9 +23,9 @@
     <div id="map" class="col-sm-10"></div>
     <div class="col-sm-2">
         <div class="panel panel-default">
-            <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
-            <div class="panel-body" id="targetFacets">
-                {% for attack_type in facets.targettype %}
+            <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
+            <div class="panel-body collapse" id="attackFacets">
+                {% for attack_type in facets.attacktype %}
                     <div class="checkbox">
                         <label>
                             <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
@@ -36,9 +36,9 @@
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
-            <div class="panel-body" id="attackFacets">
-                {% for attack_type in facets.attacktype %}
+            <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
+            <div class="panel-body collapse" id="targetFacets">
+                {% for attack_type in facets.targettype %}
                     <div class="checkbox">
                         <label>
                             <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
