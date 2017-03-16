@@ -6,7 +6,7 @@
 {#    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />#}
 {#    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>#}
 {#    <script src="https://unpkg.com/supercluster@2.3.0/dist/supercluster.min.js"></script>#}
-    <link rel="stylesheet" type="text/css" href="/static/css/map.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/map.css">
     <style>
     #map {
         height: 90%;
@@ -23,7 +23,7 @@
     <div id="map" class="col-sm-10"></div>
     <div class="col-sm-2">
         <div class="panel panel-default">
-            <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="true" aria-controls="targetFacets" >Target Type</div>
+            <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
             <div class="panel-body" id="targetFacets">
                 {% for attack_type in facets.targettype %}
                     <div class="checkbox">
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="true" aria-controls="attackFacets">Attack Type</div>
+            <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
             <div class="panel-body" id="attackFacets">
                 {% for attack_type in facets.attacktype %}
                     <div class="checkbox">
@@ -151,6 +151,17 @@
               ]
                 });
 
+        var markers = initMarkers(locations);
+        // gridSize determins the number of clusters. larger grid size --> less clusters
+        var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
+        var markerCluster = new MarkerClusterer(map, markers,mcOptions);
+    }}
+
+{#        makemap(data);#}
+    </script>
+    <script>
+    var initMarkers = function(locations){
+        console.log("init markers !!!!");
         var markers = locations.map(function(location, i) {
                 var markerImg = "static/imgs/map_markers/"+i%5+".png";
                 var marker = new google.maps.Marker({
@@ -175,13 +186,8 @@
                 });
           return marker;
         });
-        // gridSize determins the number of clusters. larger grid size --> less clusters
-        var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
-        var markerCluster = new MarkerClusterer(map, markers,mcOptions);
-      }
+        return markers;
     }
-
-{#        makemap(data);#}
     </script>
 
 
