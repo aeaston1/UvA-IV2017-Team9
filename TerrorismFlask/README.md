@@ -48,7 +48,8 @@ YES, TERRORISM FLASKS DO EXISTS: http://www.cafepress.com/+terrorism+flasks
 - https://googlemaps.github.io/js-marker-clusterer/docs/examples.html --> used for clustering
 - the images for the clusters are in '/imgs/mapClusterImages' and i think they can just be changed
 
-- http://tamc.github.io/Sankey/
+- Sankey: http://tamc.github.io/Sankey/
+- Word Cloud: https://github.com/jasondavies/d3-cloud/blob/master/README.md
 
 (old)
 - http://leafletjs.com/ (what we actually use)
