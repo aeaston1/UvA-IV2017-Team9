@@ -66,6 +66,7 @@
 
                 map = new google.maps.Map(document.getElementById('map'), {
                   zoom: 2,
+                  minZoom: 2,
                   center: {lat: 30, lng: 0},
                    styles: [
                 {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
@@ -153,10 +154,8 @@
         // gridSize determins the number of clusters. larger grid size --> less clusters
         var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
         var markerCluster = new MarkerClusterer(map, markers,mcOptions);
-
     }}
 
-{#        makemap(data);#}
     </script>
     <script>
     // Adds a marker to the map and push to the array.
@@ -215,7 +214,7 @@
                       var contentString = '<div id="content">' +
                         '<p>'+date +'</p>'+
                         '<p>' + current_attack_data.country + '</p>' + 
-                        '<a href="/attack/'+eventids[i]+'">View attack</a>'
+                        '<a href="/attack/'+eventids[i]+'">View attack</a>'+
                         '</div>';
 
                       var infowindow = new google.maps.InfoWindow({
