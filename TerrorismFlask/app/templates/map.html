@@ -211,10 +211,16 @@
                       var d = eventid.substring(6, 8);
                       var date = y + "-" + m + "-" + d;
 
+                      var titleString;
+                      if ( current_attack_data.hasOwnProperty('coutry') )
+                          titleString = current_attack_data.country;
+                      else 
+                          titleString = 'This is a cluster'
+                      
                       var contentString = '<div id="content">' +
                         '<p>'+date +'</p>'+
-                        '<p>' + current_attack_data.country + '</p>' + 
-                        '<a href="/attack/'+eventids[i]+'">View attack</a>'+
+                        '<p>' + titleString + '</p>' + 
+                        '<a href="/attack/'+eventids[i]+'">View attack</a>'
                         '</div>';
 
                       var infowindow = new google.maps.InfoWindow({
