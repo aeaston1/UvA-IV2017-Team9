@@ -53,6 +53,9 @@ class GTDData(object):
 
         self.location_clusters = defaultdict(list)
 
+        self.propvalues = {}
+        self.sorted_propvalues = {}
+
         for row in self.data:
             attackid = row['eventid']
             country = row['country_txt']                     
@@ -72,7 +75,7 @@ class GTDData(object):
                            'weapon': row['weapdetail'],
                            'summary': row['summary'],
                            'motive': row['motive'],
-                           'propvalue': int(float(row['propvalue'])) if row['propvalue'] else 0
+                           'propvalue': float(row['propvalue']) if row['propvalue'] else 0
                           }
              
 
@@ -84,6 +87,8 @@ class GTDData(object):
                 self.country_basics[country][field] += attack_data[field]
 
             self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
+
+            self.propvalues[attackid] = attack_data["propvalue"]
 
             #TODO: Random sampling for now, fix all sampled stuffs (locations and facets) later
             #TODO: Also approximate and add the locations of the missing points
@@ -97,6 +102,10 @@ class GTDData(object):
         self.attackids = sorted(self.data_per_attack.keys())
         self.data_per_country = {}
         self.n_attacks = len(self.attackids)
+
+        for k,v in self.propvalues.items():
+            if v > 0:
+                self.sorted_propvalues[int(k[0:4])] = v
 
         for attackid, attack_data in self.data_per_attack.iteritems():
             lng = attack_data['lng']
@@ -200,3 +209,6 @@ class GTDData(object):
 
     def get_facets(self):
         return self.facets
+
+    def get_sorted_propvalue(self):
+        return self.sorted_propvalues
