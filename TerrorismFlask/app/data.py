@@ -71,7 +71,8 @@ class GTDData(object):
                            'weapontype': row['weaptype1_txt'],
                            'weapon': row['weapdetail'],
                            'summary': row['summary'],
-                           'motive': row['motive']
+                           'motive': row['motive'],
+                           'propvalue': int(float(row['propvalue'])) if row['propvalue'] else 0
                           }
              
 
