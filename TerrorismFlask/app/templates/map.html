@@ -154,7 +154,48 @@
         // gridSize determins the number of clusters. larger grid size --> less clusters
         var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
         var markerCluster = new MarkerClusterer(map, markers,mcOptions);
-    }}
+
+
+//makes the country polygons. not really sure how to move it into a seperate function.
+        map.data.loadGeoJson('https://raw.githubusercontent.com/matej-pavla/Google-Maps-Examples/master/BoundariesExample/geojsons/world.countries.geo.json');
+
+        map.data.setStyle({
+            strokeWeight:0.5,
+            strokeColor:'#000000',
+            strokeOpacity:0.01,
+            fillColor:'0x00000000',
+            fillOpacity:0.01
+        })
+
+        map.data.addListener('mouseover', function(e) {
+            map.data.overrideStyle(e.feature, {
+                strokeWeight: 1,
+                strokeColor: '#ff0000',
+                strokeOpacity:1,
+                fillColor:'#ff0000',
+                fillOpacity:0.1
+            });
+        });
+
+        map.data.addListener('mouseout', function(e) {
+            map.data.overrideStyle(e.feature, {
+                strokeWeight: 1,
+                strokeColor: '#000000',
+                strokeOpacity:0.01,
+                fillColor:'0x00000000',
+                fillOpacity:0.001
+            });
+        });
+
+        map.data.addListener('click', function(e) {
+            map.data.overrideStyle(e.feature, {
+                strokeWeight: 1,
+                strokeColor: '#ff0000',
+                fillColor:'#ff0000',
+                fillOpacity:'0.5'
+            });
+        });
+           }}
 
     </script>
     <script>
