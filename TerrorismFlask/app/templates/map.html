@@ -289,8 +289,8 @@
         try {
             var attackCounts = countryBasics[countryName]['attacks_count']
 {#            console.log(attackCounts);#}
-            var countryOpacity = ((0.99 - 0.01) * (attackCounts - minAttack)) / (maxAttack - minAttack) + 0.01;
-            {#        console.log("here i am")#}
+            var countryOpacity = (0.99 - 0.01) * Math.cbrt((attackCounts - minAttack) / (maxAttack - minAttack))+ 0.01;
+{#                    console.log(countryOpacity);#}
             return countryOpacity;
         }
         catch (err){
