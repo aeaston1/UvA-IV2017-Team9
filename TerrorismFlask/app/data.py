@@ -83,6 +83,7 @@ class GTDData(object):
             self.data_per_attack[attackid] = attack_data
             
             self.country_basics[country]['attacks_count'] += 1
+
             for field in ['victims_count', 'wounded_count']:
                 self.country_basics[country][field] += attack_data[field]
 
@@ -212,3 +213,6 @@ class GTDData(object):
 
     def get_sorted_propvalue(self):
         return self.sorted_propvalues
+
+    def get_country_basics(self):
+        return self.country_basics

@@ -98,8 +98,9 @@ def get_attack(attack_id):
 def map():
     attack_locations = commons.GTD_DATA.get_location()
     facets = commons.GTD_DATA.get_facets()
-
+    country_basics=commons.GTD_DATA.get_country_basics()
     app.logger.warning("Gonna map counts now")
     return render_template("map.html",
                            attack_locations=attack_locations,
-                           facets=facets)
+                           facets=facets,
+                           country_basics=country_basics)
