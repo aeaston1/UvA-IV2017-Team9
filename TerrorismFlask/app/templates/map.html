@@ -276,9 +276,10 @@
 
 
     function showCountryPolygons() {
-        console.log("here i am")
+{#        console.log("here i am")#}
+        map.data.revertStyle();
         map.data.setStyle({
-            strokeWeight:2,
+            strokeWeight:0.5,
             strokeColor:'#000000',
             strokeOpacity:0.1,
             fillColor:'#1618ff',
@@ -288,6 +289,7 @@
 
     function unshowCountryPolygons() {
         console.log("here i am")
+        map.data.revertStyle();
         map.data.setStyle({
             strokeWeight:0.5,
             strokeColor:'#000000',
