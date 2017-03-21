@@ -290,11 +290,10 @@
             };
 
             function getOpacity(countryName) {
-                console.log(countryName)
-
-                var attackCounts = countryBasics[countryName]['attacks_count']
-                {#console.log(attackCounts);#}
+{#                console.log(countryName)#}
                 try {
+                    var attackCounts = countryBasics[countryName]['attacks_count']
+                {#console.log(attackCounts);#}
                     var countryOpacity = (0.99 - 0.01) * Math.cbrt((attackCounts - minAttack) / (maxAttack - minAttack))+ 0.01;
                     {#                    console.log(countryOpacity);#}
                     return countryOpacity;
