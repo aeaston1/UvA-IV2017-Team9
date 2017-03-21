@@ -7,6 +7,7 @@
 {#    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>#}
 {#    <script src="https://unpkg.com/supercluster@2.3.0/dist/supercluster.min.js"></script>#}
     <link rel="stylesheet" type="text/css" href="../static/css/map.css">
+    Access-Control-Allow-Origin: *
 
 
     <style>
@@ -60,6 +61,11 @@
 {#                <input type="checkbox" id="flowChart"> Show Flow Chart#}
             </div>
         </div>
+
+        <p>
+            "test"
+        </p>
+
         </div>
         </div>
 
@@ -104,227 +110,229 @@
     {#        console.log(maxAttack)#}
 
     function initParamMap(a, b) {
+        return function() {
+            console.log(a, b);
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 2,
+                minZoom: 2,
+                center: {lat: 30, lng: 0},
+                styles: [
+                    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+                    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+                    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+                    {
+                        featureType: 'administrative.locality',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#d59563'}]
+                    },
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#d59563'}]
+                    },
+                    {
+                        featureType: 'poi.park',
+                        elementType: 'geometry',
+                        stylers: [{color: '#263c3f'}]
+                    },
+                    {
+                        featureType: 'poi.park',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#6b9a76'}]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry',
+                        stylers: [{color: '#38414e'}]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry.stroke',
+                        stylers: [{color: '#212a37'}]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#9ca5b3'}]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'geometry',
+                        stylers: [{color: '#746855'}]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'geometry.stroke',
+                        stylers: [{color: '#1f2835'}]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#f3d19c'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'geometry',
+                        stylers: [{color: '#2f3948'}]
+                    },
+                    {
+                        featureType: 'transit.station',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#d59563'}]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'geometry',
+                        stylers: [{color: '#17263c'}]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#515c6d'}]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'labels.text.stroke',
+                        stylers: [{color: '#17263c'}]
+                    }
+                ]
+            });
+
+            markers = initMarkers(locations);
+            // gridSize determins the number of clusters. larger grid size --> less clusters
+            var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
+            var markerCluster = new MarkerClusterer(map, markers,mcOptions);
+
+
+            //the whole stuff below does the polygon shit.
+            //makes the country polygons. not really sure how to move it into a seperate function.
+            var geojson = map.data.loadGeoJson('./static/data/geodata.json');
+
+
+            map.data.setStyle({
+                strokeWeight:0.5,
+                strokeColor:'#000000',
+                strokeOpacity:0.01,
+                fillColor:'0x00000000',
+                fillOpacity:0.01
+            })
+
+            map.data.addListener('mouseover', function(e) {
+                var country= e.feature.j;
+                if (!(listClickedCountries.indexOf(country)>=0)) {
+                    map.data.overrideStyle(e.feature, {
+                        strokeWeight: 1,
+                        strokeColor: '#ff0000',
+                        strokeOpacity: 1,
+                        fillColor: '#ff0000',
+                        fillOpacity: 0.2
+                    });
+                };
+            });
+
+            map.data.addListener('mouseout', function(e) {
+                var country= e.feature.j;
+                if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===0 ){
+                    map.data.overrideStyle(e.feature, {
+                        strokeWeight: 1,
+                        strokeColor: '#000000',
+                        strokeOpacity: 0.01,
+                        fillColor: '0x00000000',
+                        fillOpacity: 0.001
+                    });
+                }else if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===1){
+                    map.data.overrideStyle(e.feature, {
+                        strokeWeight:2,
+                        strokeColor:'#000000',
+                        strokeOpacity:0.1,
+                        fillColor:'#23ff09',
+                        fillOpacity:getOpacity(e.feature.f.name)
+                    });
+                };
+            });
+
+            map.data.addListener('click', function(e) {
+                var country= e.feature.j;
+                if (listClickedCountries.indexOf(country)>=0){
+                    map.data.overrideStyle(e.feature, {
+                        strokeWeight: 1,
+                        strokeColor: '#ff0000',
+                        fillColor:'#ff0000',
+                        fillOpacity:'0.1',
+                    });
+                    delete listClickedCountries[listClickedCountries.indexOf(country)];
+                    //remove country to comparison
+                }else{
+                    map.data.overrideStyle(e.feature, {
+                        strokeWeight: 1,
+                        strokeColor: '#ff0000',
+                        fillColor:'#ff0000',
+                        fillOpacity:'0.5'
+                    });
+                    listClickedCountries.push(country);
+                    //add country to comparison
+                }
+            });
+
+
+            function showCountryPolygons() {
+                map.data.revertStyle();
+                map.data.setStyle(function(e){
+                    return {
+                        strokeWeight: 0.5,
+                        strokeColor: '#000000',
+                        strokeOpacity: 0.1,
+                        fillColor: '#23ff09',
+                        fillOpacity: getOpacity(e.f.name)
+                    }
+                });
+            };
+
+            function getOpacity(countryName) {
+                console.log(countryName)
+
+                var attackCounts = countryBasics[countryName]['attacks_count']
+                {#console.log(attackCounts);#}
+                try {
+                    var countryOpacity = (0.99 - 0.01) * Math.cbrt((attackCounts - minAttack) / (maxAttack - minAttack))+ 0.01;
+                    {#                    console.log(countryOpacity);#}
+                    return countryOpacity;
+                }
+                catch (err){
+                    return 0.01;
+                }
+            }
+
+            function unshowCountryPolygons() {
+                {#        console.log("here i am")#}
+                map.data.revertStyle();
+                map.data.setStyle({
+                    strokeWeight:0.5,
+                    strokeColor:'#000000',
+                    strokeOpacity:0.01,
+                    fillColor:'#0x00000000',
+                    fillOpacity:0.01
+                });
+            };
+
+            //listens to toggling that one button or not.
+            window.onload = function() {
+                $("#polygonsAllAttack").change(function(){
+                    if (this.checked) {
+                        {#                console.log("toggle 1");#}
+                        showCountryPolygons();
+                        showCountryPolygonsClicked=1;
+                    }else {
+                        {#                console.log("toggle 2");#}
+                        unshowCountryPolygons();
+                        showCountryPolygonsClicked=0;
+                    }
+                });
+            };
+        }}
     var map ;
     var markers = [];
-    return function() {
-    console.log(a, b);
-
-    map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 2,
-    minZoom: 2,
-    center: {lat: 30, lng: 0},
-    styles: [
-    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-    {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#d59563'}]
-    },
-    {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#d59563'}]
-    },
-    {
-    featureType: 'poi.park',
-    elementType: 'geometry',
-    stylers: [{color: '#263c3f'}]
-    },
-    {
-    featureType: 'poi.park',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#6b9a76'}]
-    },
-    {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{color: '#38414e'}]
-    },
-    {
-    featureType: 'road',
-    elementType: 'geometry.stroke',
-    stylers: [{color: '#212a37'}]
-    },
-    {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#9ca5b3'}]
-    },
-    {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [{color: '#746855'}]
-    },
-    {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [{color: '#1f2835'}]
-    },
-    {
-    featureType: 'road.highway',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#f3d19c'}]
-    },
-    {
-    featureType: 'transit',
-    elementType: 'geometry',
-    stylers: [{color: '#2f3948'}]
-    },
-    {
-    featureType: 'transit.station',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#d59563'}]
-    },
-    {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{color: '#17263c'}]
-    },
-    {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [{color: '#515c6d'}]
-    },
-    {
-    featureType: 'water',
-    elementType: 'labels.text.stroke',
-    stylers: [{color: '#17263c'}]
-    }
-    ]
-    });
-
-    markers = initMarkers(locations);
-    // gridSize determins the number of clusters. larger grid size --> less clusters
-    var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
-    var markerCluster = new MarkerClusterer(map, markers,mcOptions);
-
-
-    //the whole stuff below does the polygon shit.
-    //makes the country polygons. not really sure how to move it into a seperate function.
-    var geojson = map.data.loadGeoJson('https://raw.githubusercontent.com/matej-pavla/Google-Maps-Examples/master/BoundariesExample/geojsons/world.countries.geo.json');
-
-    map.data.setStyle({
-        strokeWeight:0.5,
-        strokeColor:'#000000',
-        strokeOpacity:0.01,
-        fillColor:'0x00000000',
-        fillOpacity:0.01
-    })
-
-    map.data.addListener('mouseover', function(e) {
-         var country= e.feature.j;
-    if (!(listClickedCountries.indexOf(country)>=0)) {
-    map.data.overrideStyle(e.feature, {
-            strokeWeight: 1,
-            strokeColor: '#ff0000',
-            strokeOpacity: 1,
-            fillColor: '#ff0000',
-            fillOpacity: 0.2
-            });
-        };
-    });
-
-    map.data.addListener('mouseout', function(e) {
-    var country= e.feature.j;
-    if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===0 ){
-        map.data.overrideStyle(e.feature, {
-            strokeWeight: 1,
-            strokeColor: '#000000',
-            strokeOpacity: 0.01,
-            fillColor: '0x00000000',
-            fillOpacity: 0.001
-            });
-        }else if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===1){
-            map.data.overrideStyle(e.feature, {
-                strokeWeight:2,
-                strokeColor:'#000000',
-                strokeOpacity:0.1,
-                fillColor:'#23ff09',
-                fillOpacity:getOpacity(e.feature.f.name)
-            });
-        };
-    });
-
-    map.data.addListener('click', function(e) {
-    var country= e.feature.j;
-    if (listClickedCountries.indexOf(country)>=0){
-        map.data.overrideStyle(e.feature, {
-            strokeWeight: 1,
-            strokeColor: '#ff0000',
-            fillColor:'#ff0000',
-            fillOpacity:'0.1',
-            });
-        delete listClickedCountries[listClickedCountries.indexOf(country)];
-    //remove country to comparison
-    }else{
-        map.data.overrideStyle(e.feature, {
-            strokeWeight: 1,
-            strokeColor: '#ff0000',
-            fillColor:'#ff0000',
-            fillOpacity:'0.5'
-            });
-    listClickedCountries.push(country);
-    //add country to comparison
-    }
-    });
-
-
-    function showCountryPolygons() {
-        map.data.revertStyle();
-        map.data.setStyle(function(e){
-            return {
-                strokeWeight: 0.5,
-                strokeColor: '#000000',
-                strokeOpacity: 0.1,
-                fillColor: '#23ff09',
-                fillOpacity: getOpacity(e.f.name)
-            }
-        });
-    };
-    
-    function getOpacity(countryName) {
-{#        console.log(countryName)#}
-        try {
-            var attackCounts = countryBasics[countryName]['attacks_count']
-{#            console.log(attackCounts);#}
-            var countryOpacity = (0.99 - 0.01) * Math.cbrt((attackCounts - minAttack) / (maxAttack - minAttack))+ 0.01;
-{#                    console.log(countryOpacity);#}
-            return countryOpacity;
-        }
-        catch (err){
-            return 0.01;
-        }
-    }
-
-    function unshowCountryPolygons() {
-{#        console.log("here i am")#}
-        map.data.revertStyle();
-        map.data.setStyle({
-            strokeWeight:0.5,
-            strokeColor:'#000000',
-            strokeOpacity:0.01,
-            fillColor:'#0x00000000',
-            fillOpacity:0.01
-        });
-    };
-
-    //listens to toggling that one button or not.
-    window.onload = function() {
-        $("#polygonsAllAttack").change(function(){
-            if (this.checked) {
-{#                console.log("toggle 1");#}
-                showCountryPolygons();
-                showCountryPolygonsClicked=1;
-            }else {
-{#                console.log("toggle 2");#}
-                unshowCountryPolygons();
-                showCountryPolygonsClicked=0;
-            }
-            });
-        };
-    }}
 
     </script>
 
