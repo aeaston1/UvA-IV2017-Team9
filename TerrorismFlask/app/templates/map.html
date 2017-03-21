@@ -214,11 +214,7 @@
     })
 
     map.data.addListener('mouseover', function(e) {
-    var country= e.feature.j;
-    var countryName=e.feature.f.name;
-    var attackCounts=countryBasics[countryName]['attacks_count']
-    {#            console.log(attackCounts);#}
-    var countryOpacity=((0.9-0.1)*(attackCounts-minAttack))/(maxAttack-minAttack)+0.1;
+         var country= e.feature.j;
     if (!(listClickedCountries.indexOf(country)>=0)) {
     map.data.overrideStyle(e.feature, {
             strokeWeight: 1,
@@ -245,8 +241,8 @@
                 strokeWeight:2,
                 strokeColor:'#000000',
                 strokeOpacity:0.1,
-                fillColor:'#1618ff',
-                fillOpacity:0.3
+                fillColor:'#23ff09',
+                fillOpacity:getOpacity(e.feature.f.name)
             });
         };
     });
@@ -267,7 +263,7 @@
             strokeWeight: 1,
             strokeColor: '#ff0000',
             fillColor:'#ff0000',
-            fillOpacity:'0.5',
+            fillOpacity:'0.5'
             });
     listClickedCountries.push(country);
     //add country to comparison
@@ -276,19 +272,34 @@
 
 
     function showCountryPolygons() {
-{#        console.log("here i am")#}
         map.data.revertStyle();
-        map.data.setStyle({
-            strokeWeight:0.5,
-            strokeColor:'#000000',
-            strokeOpacity:0.1,
-            fillColor:'#1618ff',
-            fillOpacity:0.3
+        map.data.setStyle(function(e){
+            return {
+                strokeWeight: 0.5,
+                strokeColor: '#000000',
+                strokeOpacity: 0.1,
+                fillColor: '#23ff09',
+                fillOpacity: getOpacity(e.f.name)
+            }
         });
     };
+    
+    function getOpacity(countryName) {
+{#        console.log(countryName)#}
+        try {
+            var attackCounts = countryBasics[countryName]['attacks_count']
+{#            console.log(attackCounts);#}
+            var countryOpacity = ((0.99 - 0.01) * (attackCounts - minAttack)) / (maxAttack - minAttack) + 0.01;
+            {#        console.log("here i am")#}
+            return countryOpacity;
+        }
+        catch (err){
+            return 0.01;
+        }
+    }
 
     function unshowCountryPolygons() {
-        console.log("here i am")
+{#        console.log("here i am")#}
         map.data.revertStyle();
         map.data.setStyle({
             strokeWeight:0.5,
@@ -303,11 +314,11 @@
     window.onload = function() {
         $("#polygonsAllAttack").change(function(){
             if (this.checked) {
-                console.log("toggle 1");
+{#                console.log("toggle 1");#}
                 showCountryPolygons();
                 showCountryPolygonsClicked=1;
             }else {
-                console.log("toggle 2");
+{#                console.log("toggle 2");#}
                 unshowCountryPolygons();
                 showCountryPolygonsClicked=0;
             }
