@@ -57,6 +57,7 @@
         var eventids = Object.keys(attackLocations);
         var locations = Object.values(attackLocations);
         var facets = {{facets|tojson}};
+        var listClickedCountries=[];
 
          function initParamMap(a, b) {
              var map ;
@@ -157,7 +158,7 @@
 
 
 //makes the country polygons. not really sure how to move it into a seperate function.
-        map.data.loadGeoJson('https://raw.githubusercontent.com/matej-pavla/Google-Maps-Examples/master/BoundariesExample/geojsons/world.countries.geo.json');
+        var geojson = map.data.loadGeoJson('https://raw.githubusercontent.com/matej-pavla/Google-Maps-Examples/master/BoundariesExample/geojsons/world.countries.geo.json');
 
         map.data.setStyle({
             strokeWeight:0.5,
@@ -168,34 +169,54 @@
         })
 
         map.data.addListener('mouseover', function(e) {
-            map.data.overrideStyle(e.feature, {
-                strokeWeight: 1,
-                strokeColor: '#ff0000',
-                strokeOpacity:1,
-                fillColor:'#ff0000',
-                fillOpacity:0.1
-            });
+            var country= e.feature.j;
+            if (!(listClickedCountries.indexOf(country)>=0)) {
+                map.data.overrideStyle(e.feature, {
+                    strokeWeight: 1,
+                    strokeColor: '#ff0000',
+                    strokeOpacity: 1,
+                    fillColor: '#ff0000',
+                    fillOpacity: 0.1
+                });
+            };
         });
 
         map.data.addListener('mouseout', function(e) {
-            map.data.overrideStyle(e.feature, {
-                strokeWeight: 1,
-                strokeColor: '#000000',
-                strokeOpacity:0.01,
-                fillColor:'0x00000000',
-                fillOpacity:0.001
-            });
+            var country= e.feature.j;
+            if (!(listClickedCountries.indexOf(country)>=0))
+            {
+                map.data.overrideStyle(e.feature, {
+                    strokeWeight: 1,
+                    strokeColor: '#000000',
+                    strokeOpacity: 0.01,
+                    fillColor: '0x00000000',
+                    fillOpacity: 0.001
+                });
+            };
         });
 
         map.data.addListener('click', function(e) {
-            map.data.overrideStyle(e.feature, {
-                strokeWeight: 1,
-                strokeColor: '#ff0000',
-                fillColor:'#ff0000',
-                fillOpacity:'0.5'
-            });
+            var country= e.feature.j;
+            if (listClickedCountries.indexOf(country)>=0){
+                map.data.overrideStyle(e.feature, {
+                    strokeWeight: 1,
+                    strokeColor: '#ff0000',
+                    fillColor:'#ff0000',
+                    fillOpacity:'0.1',
+                });
+                delete listClickedCountries[listClickedCountries.indexOf(country)];
+            }else{
+                map.data.overrideStyle(e.feature, {
+                    strokeWeight: 1,
+                    strokeColor: '#ff0000',
+                    fillColor:'#ff0000',
+                    fillOpacity:'0.5',
+                });
+                listClickedCountries.push(country);
+{#                console.log(country);#}
+            }
         });
-           }}
+    }}
 
     </script>
     <script>
