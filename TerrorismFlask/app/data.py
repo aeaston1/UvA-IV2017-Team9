@@ -47,7 +47,8 @@ class GTDData(object):
         self.country_basics = defaultdict(lambda: defaultdict(int))
         self.data_per_attack = {}
 
-        self.facets = defaultdict(lambda: defaultdict(list))
+#        self.facets = defaultdict(lambda: defaultdict(list))
+        self.facets = defaultdict(lambda: defaultdict(dict))
 
         self.locations = {}
 
@@ -97,8 +98,11 @@ class GTDData(object):
                 self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
                 self.locations[attackid] = {'lng': attack_data['lng'],
                                         'lat': attack_data['lat']}
-                self.facets['attacktype'][attack_data['attacktype']].append(attackid)
-                self.facets['targettype'][attack_data['targettype']].append(attackid)
+#                self.facets['attacktype'][attack_data['attacktype']].append(attackid)
+#                self.facets['targettype'][attack_data['targettype']].append(attackid)
+                for facet_name in ['attacktype', 'targettype']:
+                    self.facets[facet_name][attack_data[facet_name]][attackid] = {'lng': attack_data['lng'],
+                                                                                  'lat': attack_data['lat']}
 
         self.countries = sorted(self.attackids_per_country.keys())
         self.attackids = sorted(self.data_per_attack.keys())
@@ -198,7 +202,6 @@ class GTDData(object):
         else:
             # If not individual, grab rest and aggregate
             cluster_elems = self.location_clusters[(attack_data['lng'], attack_data['lat'])]
-            print cluster_elems
             return self.aggregate_data(cluster_elems)
 
 
