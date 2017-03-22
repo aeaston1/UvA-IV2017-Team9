@@ -23,7 +23,7 @@
                         {% for attack_type in facets.attacktype %}
                             <div class="checkbox">
                                 <label>
-                                    <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
+                                    <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}";>
                                     {{ attack_type }}
                                 </label>
                             </div>
@@ -36,7 +36,7 @@
                         {% for attack_type in facets.targettype %}
                             <div class="checkbox">
                                 <label>
-                                    <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
+                                    <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}">
                                     {{ attack_type }}
                                 </label>
                             </div>
@@ -359,6 +359,23 @@ Doner turkey chuck andouille tail. Short loin meatball beef ribs sirloin, picanh
                         showCountryPolygonsClicked=0;
                     }
                 });
+
+                Object.keys(facets).forEach(function(facet_type) {
+                  Object.keys(facets[facet_type]).forEach(function(facet_name) {
+                    console.log("adding click stuffs to:", facet_type, facet_name);
+                    var id_ = '#facet-' + facet_name.replace(/[&-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    $(id_).change(function(){
+                      console.log(facet_name);
+                      if (this.checked) {
+                        alert('You clicked me!' + facet_type + ' ' + facet_name );
+                      }else {
+                        alert('You unclicked me!' + facet_type + ' ' + facet_name);
+                      }
+                    });
+                  });
+                });
+
+
             };
         }}
     var map ;
