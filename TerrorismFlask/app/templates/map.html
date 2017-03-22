@@ -7,9 +7,6 @@
 {#    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>#}
 {#    <script src="https://unpkg.com/supercluster@2.3.0/dist/supercluster.min.js"></script>#}
     <link rel="stylesheet" type="text/css" href="../static/css/map.css">
-    Access-Control-Allow-Origin: *
-
-
     <style>
     #map {
         height: 90%;
@@ -25,7 +22,7 @@
     <div class="row">
     <div id="map" class="col-sm-10"></div>
     <div class="col-sm-2">
-        <div class="panel panel-default">
+        <div class="panel panel-default facets">
             <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
             <div class="panel-body collapse" id="attackFacets">
                 {% for attack_type in facets.attacktype %}
@@ -38,7 +35,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-default facets">
             <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
             <div class="panel-body collapse" id="targetFacets">
                 {% for attack_type in facets.targettype %}
@@ -52,7 +49,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default facets">
             <div class="panel-heading" data-toggle="collapse" data-target="#mapFacets" aria-expanded="false" aria-controls="mapFacets" >
                 Map Options
             </div>
@@ -61,10 +58,6 @@
 {#                <input type="checkbox" id="flowChart"> Show Flow Chart#}
             </div>
         </div>
-
-        <p>
-            "test"
-        </p>
 
         </div>
         </div>

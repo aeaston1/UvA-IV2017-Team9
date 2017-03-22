@@ -1,7 +1,4 @@
-
-
-/* Example on how css stuffs work */
-body {
-    background: white;
+.navbar-inverse {
+    background-color: transparent;
 }
 
