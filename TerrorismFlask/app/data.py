@@ -87,13 +87,14 @@ class GTDData(object):
             for field in ['victims_count', 'wounded_count']:
                 self.country_basics[country][field] += attack_data[field]
 
-            self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
+#            self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
 
             self.propvalues[attackid] = attack_data["propvalue"]
 
             #TODO: Random sampling for now, fix all sampled stuffs (locations and facets) later
             #TODO: Also approximate and add the locations of the missing points
             if attack_data['lng'] and attack_data['lat'] and random() < 0.1:
+                self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
                 self.locations[attackid] = {'lng': attack_data['lng'],
                                         'lat': attack_data['lat']}
                 self.facets['attacktype'][attack_data['attacktype']].append(attackid)
@@ -113,9 +114,9 @@ class GTDData(object):
             lat = attack_data['lat']
 
             if len(self.location_clusters[(lng, lat)]) > 1: 
-                self.data_per_attack[attackid]['markerType'] = 'individual'
-            else:
                 self.data_per_attack[attackid]['markerType'] = 'cluster'
+            else:
+                self.data_per_attack[attackid]['markerType'] = 'individual'
        
 
         print 'Original locations:', len(self.data_per_attack)
@@ -197,6 +198,7 @@ class GTDData(object):
         else:
             # If not individual, grab rest and aggregate
             cluster_elems = self.location_clusters[(attack_data['lng'], attack_data['lat'])]
+            print cluster_elems
             return self.aggregate_data(cluster_elems)
 
 
