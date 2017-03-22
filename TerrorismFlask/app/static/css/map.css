@@ -1,19 +1,17 @@
-body { 
-    margin:0; 
-    padding:0;
+body {
     /*background-color: #242F3E; */ /*gray of the map*/
     background-color: #17263C; /*blue of the map*/
+    margin: 0px;
+
 }
-    
-.map {
-    position:absolute;
-    top:20;
-    bottom:0;
-    width:100%;
+
+#map {
+    height: 95%;
+    /*width: 90%;*/
 }
 
 .container-big{
-    width:99%;
-
+    width:97%;
 }
+
 

@@ -7,11 +7,6 @@
 {#    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>#}
 {#    <script src="https://unpkg.com/supercluster@2.3.0/dist/supercluster.min.js"></script>#}
     <link rel="stylesheet" type="text/css" href="../static/css/map.css">
-    <style>
-    #map {
-        height: 90%;
-      }
-    </style>
 
 {% endblock %}
 
@@ -19,48 +14,91 @@
 {% block content %}
 {#    <div id='mapid' class='map' style="width:900px; height: 900px; position: relative  "> </div>#}
 {#    <script src="../static/js/map.js"></script>#}
-    <div class="row">
-    <div id="map" class="col-sm-10"></div>
-    <div class="col-sm-2">
-        <div class="panel panel-default facets">
-            <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
-            <div class="panel-body collapse" id="attackFacets">
-                {% for attack_type in facets.attacktype %}
-                    <div class="checkbox">
-                        <label>
-                            <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
-                            {{ attack_type }}
-                        </label>
+        <div id="one" class="row">
+            <div id="map" class="col-sm-10"></div>
+            <div class="col-sm-2">
+                <div class="panel panel-default facets">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
+                    <div class="panel-body collapse" id="attackFacets">
+                        {% for attack_type in facets.attacktype %}
+                            <div class="checkbox">
+                                <label>
+                                    <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
+                                    {{ attack_type }}
+                                </label>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="panel panel-default facets">
-            <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
-            <div class="panel-body collapse" id="targetFacets">
-                {% for attack_type in facets.targettype %}
-                    <div class="checkbox">
-                        <label>
-                            <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
-                            {{ attack_type }}
-                        </label>
+                </div>
+                <div class="panel panel-default facets">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
+                    <div class="panel-body collapse" id="targetFacets">
+                        {% for attack_type in facets.targettype %}
+                            <div class="checkbox">
+                                <label>
+                                    <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
+                                    {{ attack_type }}
+                                </label>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
-        </div>
+                </div>
 
-        <div class="panel panel-default facets">
-            <div class="panel-heading" data-toggle="collapse" data-target="#mapFacets" aria-expanded="false" aria-controls="mapFacets" >
-                Map Options
+                <div class="panel panel-default facets">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#mapFacets" aria-expanded="false" aria-controls="mapFacets" >
+                        Map Options
+                    </div>
+                    <div class="panel-body collapse" id="mapFacets">
+                        <input type="checkbox" id="polygonsAllAttack"> Attacks number
+        {#                <input type="checkbox" id="flowChart"> Show Flow Chart#}
+                        <button id="sectionToggle" type="button" class="btn btn-default">BUTTON</button>
+                    </div>
+                </div>
+
             </div>
-            <div class="panel-body collapse" id="mapFacets">
-                <input type="checkbox" id="polygonsAllAttack"> Attacks number
-{#                <input type="checkbox" id="flowChart"> Show Flow Chart#}
-            </div>
-        </div>
+
 
         </div>
+        <div id="two" class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                Bacon ipsum dolor amet shankle tri-tip ham hock picanha leberkas bacon. Pork loin fatback venison chuck kevin doner. Burgdoggen drumstick capicola, pork belly jerky shoulder short ribs ham hock. Tail boudin hamburger landjaeger chuck. Ribeye jowl capicola, shankle andouille doner shoulder sausage boudin pork loin fatback. Shankle short loin jerky drumstick pork pork chop tongue, sausage hamburger filet mignon meatloaf ball tip strip steak.
+
+Alcatra porchetta bresaola picanha kielbasa short ribs, short loin cupim kevin pork loin leberkas flank bacon. Jerky kevin brisket andouille, jowl tenderloin chicken t-bone swine corned beef meatball pastrami pig flank. Sirloin pork chop filet mignon, pastrami meatloaf shank burgdoggen strip steak boudin pancetta drumstick spare ribs bresaola doner. Beef ribeye jerky bresaola jowl cow tenderloin chuck tri-tip. Biltong strip steak shank chicken. Kielbasa beef ball tip, ham hock pork loin leberkas chicken ham doner ribeye frankfurter pastrami picanha biltong turducken. Ground round doner shankle beef ribs sirloin tail.
+
+Sirloin kielbasa flank tri-tip, turducken porchetta bresaola pork chop ball tip t-bone short loin spare ribs. Strip steak frankfurter bacon, pastrami andouille ribeye beef chicken porchetta pork loin. Kevin filet mignon porchetta tail beef ribs. Boudin brisket shankle, pork chop picanha meatloaf shank.
+
+Biltong turkey pork chop shoulder cow chuck prosciutto tail cupim landjaeger pork belly short loin. Boudin strip steak pig corned beef swine ball tip ground round t-bone. Drumstick ground round shank sirloin strip steak, kielbasa prosciutto landjaeger. Short loin pork andouille ball tip.
+
+Doner turkey chuck andouille tail. Short loin meatball beef ribs sirloin, picanha beef rump pancetta drumstick. Jerky meatloaf pork loin pancetta filet mignon, hamburger tri-tip short ribs pastrami strip steak capicola. Ball tip sausage tail alcatra. Hamburger pig kevin shankle turkey venison shoulder cupim pastrami. Picanha shankle landjaeger burgdoggen pork chop fatback boudin spare ribs prosciutto pork. Fatback drumstick boudin kevin chicken rump flank venison, pig chuck strip steak alcatra tri-tip turkey.
+            </div>
+
         </div>
+    <script>
+    var btn = document.getElementById('sectionToggle');
+    var one = document.getElementById('one');
+    var two = document.getElementById('two');
+    btn.addEventListener('click', function (e){
+        console.log("click");
+        one.style.display = 'none';
+        two.style.display = 'block';
+
+    })
+    two.addEventListener('click', function (e){
+        console.log("click");
+        one.style.display = 'block';
+        two.style.display = 'none';
+    });
+
+    window.onload = function() {
+        if ($("#one").is(":visible")){
+            console.log("visible");
+        }else{
+            console.log("invisible");
+        }
+        console.log("loaded");
+    };
+
+    </script>
 
 
     <script type="text/javascript">
