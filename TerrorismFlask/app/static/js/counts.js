@@ -52,9 +52,9 @@ var plot_counts = function(data) {
     }
     var canvasXTop = svgW - 50;
 
-
-    var svgSelection = d3.select("body")
-        .append("svg")
+    d3.select("#bar1").select("svg").remove();
+    var svgSelection = d3.select("#bar1");
+    svgSelection = svgSelection.append("svg")
         .attr("width", svgW)
         .attr("height", svgH)
         .attr("id", "SVG");
