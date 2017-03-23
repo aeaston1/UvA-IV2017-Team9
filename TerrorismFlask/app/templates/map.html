@@ -73,60 +73,47 @@
 
                 </div>
         </div>
+    </div>
+    
+    <div class="item">
+         <div id="two" class="row">
+             <div class="row">
+                 <div class="col-sm-offset-1 col-sm-10">
+                 <h3 id="countryName"></h3>
+                 </div>
+             </div>
 
+             <div class="row">
+                 <div id="bar1" class="col-sm-5"></div>
+             </div>
+             <div class="row">
+                 <div id='sankey' class="col-sm-5" style="margin-top:50px; height: 500px;">&nbsp;</div>
+                 <div id="wordle" class="col-sm-5 col-sm-offset-1"></div>
+             </div>      
 
-            </div>
-         <div class="item">
-                <div id="two" class="row">
-                    <div class="row">
-                        <div class="col-sm-offset-1 col-sm-10">
-                        <h3 id="countryName"></h3>
-                        </div>
-                    </div>
+             <div class="row">
+                  <div id="canvas-holder-groups" class="col-sm-4" style="height: 500px;">
+                      <canvas id="radar-attacktype"></canvas>
+                  </div>
 
-{#                         <div class="col-sm-5 col-sm-offset-1">#}
-{#                        Bacon ipsum dolor amet shankle tri-tip ham hock picanha leberkas bacon. Pork loin fatback venison chuck kevin doner. Burgdoggen drumstick capicola, pork belly jerky shoulder short ribs ham hock. Tail boudin hamburger landjaeger chuck. Ribeye jowl capicola, shankle andouille doner shoulder sausage boudin pork loin fatback. Shankle short loin jerky drumstick pork pork chop tongue, sausage hamburger filet mignon meatloaf ball tip strip steak.#}
-{##}
-{#        Alcatra porchetta bresaola picanha kielbasa short ribs, short loin cupim kevin pork loin leberkas flank bacon. Jerky kevin brisket andouille, jowl tenderloin chicken t-bone swine corned beef meatball pastrami pig flank. Sirloin pork chop filet mignon, pastrami meatloaf shank burgdoggen strip steak boudin pancetta drumstick spare ribs bresaola doner. Beef ribeye jerky bresaola jowl cow tenderloin chuck tri-tip. Biltong strip steak shank chicken. Kielbasa beef ball tip, ham hock pork loin leberkas chicken ham doner ribeye frankfurter pastrami picanha biltong turducken. Ground round doner shankle beef ribs sirloin tail.#}
-{##}
-{#        Sirloin kielbasa flank tri-tip, turducken porchetta bresaola pork chop ball tip t-bone short loin spare ribs. Strip steak frankfurter bacon, pastrami andouille ribeye beef chicken porchetta pork loin. Kevin filet mignon porchetta tail beef ribs. Boudin brisket shankle, pork chop picanha meatloaf shank.#}
-{##}
-{#        Biltong turkey pork chop shoulder cow chuck prosciutto tail cupim landjaeger pork belly short loin. Boudin strip steak pig corned beef swine ball tip ground round t-bone. Drumstick ground round shank sirloin strip steak, kielbasa prosciutto landjaeger. Short loin pork andouille ball tip.#}
-{##}
-{#        Doner turkey chuck andouille tail. Short loin meatball beef ribs sirloin, picanha beef rump pancetta drumstick. Jerky meatloaf pork loin pancetta filet mignon, hamburger tri-tip short ribs pastrami strip steak capicola. Ball tip sausage tail alcatra. Hamburger pig kevin shankle turkey venison shoulder cupim pastrami. Picanha shankle landjaeger burgdoggen pork chop fatback boudin spare ribs prosciutto pork. Fatback drumstick boudin kevin chicken rump flank venison, pig chuck strip steak alcatra tri-tip turkey.#}
-{#                    </div>#}
+                  <div id="canvas-holder-groups" class="col-sm-4" style="height: 500px;">
+                      <canvas id="radar-targettype"></canvas>
+                  </div>
 
-                    </div>
-                    <div class="row">
-                        <div id="bar1" class="col-sm-5"></div>
-                    </div>
-                    <div class="row">
-                        <div id='sankey' class="col-sm-5" style="margin-top:50px; height: 500px;">&nbsp;</div>
-                        <div id="wordle" class="col-sm-5 col-sm-offset-1"></div>
-                    <div class="row">
-                        <div id="canvas-holder-groups" style="width:50%">
-                           <canvas id="radar-attacktype"></canvas>
-                        </div>
+                  <div id="canvas-holder-groups" class="col-sm-4" style="height: 500px;">
+                      <canvas id="radar-groups"></canvas>
+                  </div>
+              </div>
 
-                        <div id="canvas-holder-groups" style="width:50%">
-                            <canvas id="radar-targettype"></canvas>
-                        </div>
+              <div class="row">
+                  <div id="canvas" class="col-sm-4" style="height: 500px;">
+                      <canvas id="scatter-attacks" style="height: 500px;"></canvas>
+                  </div>
 
-                        <div id="canvas-holder-groups" style="width:50%">
-                            <canvas id="radar-groups"></canvas>
-                        </div>
-
-                    <div class="row">
-                        <div id="canvas" style="width:50%">
-                            <canvas id="scatter-attacks"></canvas>
-                        </div>
-
-                    </div>
-
-
+              </div>
          </div>
     </div>
- </div>
+</div>
 
     <script>
     function loadCountryData(selectedCountry, previousCountry){
@@ -155,19 +142,18 @@
             groups_radar_config = plot_radar(plotData, 'groups', false);
             scatter_config = plot_scatter(plotData, 'attacks_per_period');
 
-            window.onload = function() {
-                var scatter_ctx = document.getElementById("scatter-attacks").getContext("2d");
-                window.myChart = new Chart(scatter_ctx, scatter_config)
+            var scatter_ctx = document.getElementById("scatter-attacks").getContext("2d");
+            window.myChart = new Chart(scatter_ctx, scatter_config)
 
-                var attack_radar_ctx = document.getElementById("radar-attacktype");
-                window.myPolarArea = Chart.PolarArea(attack_radar_ctx, attack_radar_config);
+            var attack_radar_ctx = document.getElementById("radar-attacktype");
+            window.myPolarArea = Chart.PolarArea(attack_radar_ctx, attack_radar_config);
 
-                var groups_radar_ctx = document.getElementById("radar-groups");
-                window.myPolarArea = Chart.PolarArea(groups_radar_ctx, groups_radar_config);
+            var groups_radar_ctx = document.getElementById("radar-groups");
+            window.myPolarArea = Chart.PolarArea(groups_radar_ctx, groups_radar_config);
 
-                var target_radar_ctx = document.getElementById("radar-targettype");
-                window.myPolarArea = Chart.PolarArea(target_radar_ctx, target_radar_config);
-            }
+            var target_radar_ctx = document.getElementById("radar-targettype");
+            window.myPolarArea = Chart.PolarArea(target_radar_ctx, target_radar_config);
+          }
 
             return previousCountry;
         })
