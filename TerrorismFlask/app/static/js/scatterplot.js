@@ -60,23 +60,29 @@ var plot_scatter = function(data) {
         datasets: datasets
     };
 
+
+    var config = {            
+        type: 'bubble',
+        data: bubbleChartData,
+        options: {
+            responsive: true,
+            title:{
+                display:true,
+                text:'Chart.js Bubble Chart'
+            },
+            tooltips: {
+                mode: 'point'
+            }
+        }
+    }
+
+/*
     window.onload = function() {
         var ctx = document.getElementById("scatter-attacks").getContext("2d");
-        window.myChart = new Chart(ctx, {
-            type: 'bubble',
-            data: bubbleChartData,
-            options: {
-                responsive: true,
-                title:{
-                    display:true,
-                    text:'Chart.js Bubble Chart'
-                },
-                tooltips: {
-                    mode: 'point'
-                }
-            }
+        window.myChart = new Chart(ctx, config)
         });
+
     };
-
-
+*/
+    return config
 }

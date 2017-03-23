@@ -37,10 +37,31 @@
         plot_sankey(data);
         draw_wordle(data);
 
-        var radarData = new Object;
-        radarData[data.country] = data;
-        plot_radar(radarData, 'groups', false);
-        plot_scatter(radarData, 'attacks_per_period');
+        var plotData = new Object;
+        plotData[data.country] = data;
+
+        attack_radar_config = plot_radar(plotData, 'attacktype');
+        target_radar_config = plot_radar(plotData, 'targettype');
+        groups_radar_config = plot_radar(plotData, 'groups', false);
+        scatter_config = plot_scatter(plotData, 'attacks_per_period');
+
+        window.onload = function() {
+            var scatter_ctx = document.getElementById("scatter-attacks").getContext("2d");
+            window.myChart = new Chart(scatter_ctx, scatter_config)
+
+            var attack_radar_ctx = document.getElementById("radar-attacktype");
+            window.myPolarArea = Chart.PolarArea(attack_radar_ctx, attack_radar_config);
+
+            var groups_radar_ctx = document.getElementById("radar-groups");
+            window.myPolarArea = Chart.PolarArea(groups_radar_ctx, groups_radar_config);
+
+            var target_radar_ctx = document.getElementById("radar-targettype");
+            window.myPolarArea = Chart.PolarArea(target_radar_ctx, target_radar_config);
+        };
+
+
+
+
 
 
         var country = data.country;
@@ -63,6 +84,14 @@
     <div id=result>?</div> 
     <a href=# id=calculate>calculate server side</a>
 -->
+
+    <div id="canvas-holder-groups" style="width:50%">
+        <canvas id="radar-attacktype"></canvas>
+    </div>
+
+    <div id="canvas-holder-groups" style="width:50%">
+        <canvas id="radar-targettype"></canvas>
+    </div>
 
     <div id="canvas-holder-groups" style="width:50%">
         <canvas id="radar-groups"></canvas>

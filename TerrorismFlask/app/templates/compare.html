@@ -39,9 +39,24 @@
  
 //      plot_radar(data, 'attacktype');
 
-      plot_radar(data, 'targettype');
-      plot_scatter(data, 'attacks_per_period');
+        attack_radar_config = plot_radar(data, 'attacktype');
+        target_radar_config = plot_radar(data, 'targettype');
+        groups_radar_config = plot_radar(data, 'groups');
+        scatter_config = plot_scatter(data, 'attacks_per_period');
 
+        window.onload = function() {
+            var scatter_ctx = document.getElementById("scatter-attacks").getContext("2d");
+            window.myChart = new Chart(scatter_ctx, scatter_config)
+
+            var attack_radar_ctx = document.getElementById("radar-attacktype");
+            window.myPolarArea = Chart.PolarArea(attack_radar_ctx, attack_radar_config);
+
+            var groups_radar_ctx = document.getElementById("radar-groups");
+            window.myPolarArea = Chart.PolarArea(groups_radar_ctx, groups_radar_config);
+
+            var target_radar_ctx = document.getElementById("radar-targettype");
+            window.myPolarArea = Chart.PolarArea(target_radar_ctx, target_radar_config);
+        };
 
 /*
       $(function() {
@@ -67,6 +82,10 @@
 
     <div id="canvas-holder-attack" style="width:50%">
         <canvas id="radar-attacktype"></canvas>
+    </div>
+
+    <div id="canvas-holder-attack" style="width:50%">
+        <canvas id="radar-groups"></canvas>
     </div>
 
     <div id="canvas" style="width:50%">
