@@ -374,7 +374,7 @@
             })
 
             map.data.addListener('mouseover', function(e) {
-                var country= e.feature.j;
+                var country= e.feature.f.name;
                 if (!(listClickedCountries.indexOf(country)>=0)) {
                     map.data.overrideStyle(e.feature, {
                         strokeWeight: 1,
@@ -387,7 +387,7 @@
             });
 
             map.data.addListener('mouseout', function(e) {
-                var country= e.feature.j;
+                var country= e.feature.f.name;
                 if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===0 ){
                     map.data.overrideStyle(e.feature, {
                         strokeWeight: 1,
@@ -408,7 +408,8 @@
             });
 
             map.data.addListener('click', function(e) {
-                var country= e.feature.j;
+                var country= e.feature.f.name;
+                console.log(e.feature.f.name);
                 if (listClickedCountries.indexOf(country)>=0){
                     map.data.overrideStyle(e.feature, {
                         strokeWeight: 1,
