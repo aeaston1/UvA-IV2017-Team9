@@ -132,7 +132,7 @@
     function loadCountryData(selectedCountry, previousCountry){
 //        var countryData = {{ country_data|tojson }};
         var countryData;
-        selectedCountry = "Belgium";
+{#        selectedCountry = "Belgium";#}
         $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + selectedCountry, function(current_attack_data) {
          
             countryData = current_attack_data;
