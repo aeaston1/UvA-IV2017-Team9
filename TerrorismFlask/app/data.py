@@ -11,8 +11,10 @@ import time
 
 from random import random
 
-en_stopwords = stopwords.words("english")
+import datetime
 
+en_stopwords = stopwords.words("english")
+own_stop = ['unknown']
 
 
 def get_words(doc):
@@ -21,7 +23,7 @@ def get_words(doc):
     doc = re.sub(r'[ \t\n\r\f\v]+', ' ', doc).strip()
 
     words = doc.lower().split()
-    words = [word for word in words if word and not word in en_stopwords]
+    words = [word for word in words if word and not word in en_stopwords + own_stop]
 
     return words
 
@@ -29,6 +31,18 @@ def get_words(doc):
 def get_cnts(obj, cnt_type):
     return int(float(obj[cnt_type])) if obj[cnt_type] else 0
 
+
+def form_date(obj):
+#    year, month, day = map(int, (obj['iyear'], obj['imonth'], obj['iday']))
+#    print year, month, day
+#    return datetime.date(year, month, day).isoformat()
+    year, month, day = map(lambda x: x.zfill(2), (obj['iyear'], obj['imonth'], obj['iday']))
+    return '-'.join((year, month, day))
+ 
+def get_year_interval(obj):
+    year = int(obj['iyear'])
+    return year + (5 - year % 5)
+    
 
 class GTDData(object):
     def __init__(self, data_path):
@@ -67,7 +81,9 @@ class GTDData(object):
                            'region': row['region_txt'],
                            'lng': float(row['longitude']) if row['longitude'] else None,
                            'lat': float(row['latitude']) if row['latitude'] else None,
-                           'group': row['gname'],
+                           'date': form_date(row),
+                           'period': get_year_interval(row),
+                           'group': row['gname'].decode('utf-8', 'ignore'),
                            'nationality': row['natlty1_txt'],
                            'attacktype': row['attacktype1_txt'],
                            'targettype': row['targtype1_txt'],
@@ -138,8 +154,12 @@ class GTDData(object):
         aggregated_data = {'attacks_count': len(attackids),
                            'victims_count': 0,
                            'wounded_count': 0,
+                           'attacks_per_period': defaultdict(int),
+                           'victims_per_period': defaultdict(int),
+                           'wounded_per_period': defaultdict(int),
                            'attacktype': Counter(),
                            'targettype': Counter(),
+                           'groups': Counter(),
                            'target_attack_corr': defaultdict(lambda: defaultdict(int)),
                            'words': Counter()
                            }
@@ -148,10 +168,15 @@ class GTDData(object):
             attack_data = self.data_per_attack[attackid]
             for field in ['victims_count', 'wounded_count']:
                 aggregated_data[field] += attack_data[field]
+            aggregated_data['attacks_per_period'][attack_data['period']] += 1
+            aggregated_data['victims_per_period'][attack_data['period']] += attack_data['victims_count']
+            aggregated_data['wounded_per_period'][attack_data['period']] += attack_data['wounded_count']
             for field in ['attacktype', 'targettype']:
                 aggregated_data[field][attack_data[field]] += 1
             aggregated_data['target_attack_corr'][attack_data['targettype']][attack_data['attacktype']] += 1
+            aggregated_data['groups'][attack_data['group']] += 1
             aggregated_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['summary'])))
+#            aggregated_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['motive'])))
 
         aggregated_data['words'] = dict(aggregated_data['words'].most_common(100))
 

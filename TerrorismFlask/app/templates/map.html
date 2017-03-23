@@ -480,24 +480,32 @@
 
                 marker.addListener('click', function() {
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
-                      $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-
-                      var y = eventid.substring(0, 4);
-                      var m = eventid.substring(4, 6);
-                      var d = eventid.substring(6, 8);
-                      var date = y + "-" + m + "-" + d;
+                    $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+//                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
 
                       var titleString;
-                      if ( current_attack_data.hasOwnProperty('coutry') )
+                      var ref;
+ 
+                      // If cluster, display aggregated view, otherwise - single attack
+                      if ( current_attack_data.markerType === 'individual' ) {
+                          console.log('Found an individual');
                           titleString = current_attack_data.country;
-                      else 
+                          ref = "/attack/"+eventids[i];
+                      } else {
+                          console.log('Found a cluster');
                           titleString = 'This is a cluster'
-                      
+                          ref = "/marker/"+eventids[i]
+                      }
+
+                      console.log(titleString, ref); 
+
                       var contentString = '<div id="content">' +
-                        '<p>'+date +'</p>'+
+                        '<p>' + current_attack_data.date +'</p>'+
                         '<p>' + titleString + '</p>' + 
-                        '<a href="/attack/'+eventids[i]+'">View attack</a>'
+                        '<a href="'+ref+'">View attack</a>' +
                         '</div>';
+
+                      console.log(contentString);
 
                       var infowindow = new google.maps.InfoWindow({
                         content: contentString

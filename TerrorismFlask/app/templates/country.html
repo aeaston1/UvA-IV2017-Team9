@@ -2,6 +2,7 @@
 
 {% block content %}
 <!--    <script src="/static/js/d3.js"></script>  -->
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="/static/js/counts.js"></script>
     <script src="/static/js/sankey.js"></script>
@@ -9,6 +10,12 @@
     <script src="/static/sankey/ext/jquery.js" type="text/javascript"></script>
     <script src="/static/sankey/js/sankey.js" type="text/javascript"></script>
         <link rel="stylesheet" href="/static/sankey/examples/css/style.css" />
+
+    <script src="/static/radar/Chart.bundle.js"></script>
+    <script src="/static/radar/samples/utils.js"></script>
+    <script src="/static/js/radar.js"></script>
+    <script src="/static/js/scatterplot.js"></script>
+
 
 <!--    <script src="/static/js/require.js" type="text/javascript"></script> -->
     <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
@@ -29,6 +36,13 @@
         plot_counts(data)
         plot_sankey(data);
         draw_wordle(data);
+
+        var radarData = new Object;
+        radarData[data.country] = data;
+        plot_radar(radarData, 'groups', false);
+        plot_scatter(radarData, 'attacks_per_period');
+
+
         var country = data.country;
         console.log(country);
       $(function() {
@@ -44,9 +58,20 @@
     });
     </script>
 
-    
-    <div id="result">?</div>
-    <a href=# id="calculate">calculate server side</a>
+
+<!--    
+    <div id=result>?</div> 
+    <a href=# id=calculate>calculate server side</a>
+-->
+
+    <div id="canvas-holder-groups" style="width:50%">
+        <canvas id="radar-groups"></canvas>
+    </div>
+
+    <div id="canvas" style="width:50%">
+        <canvas id="scatter-attacks"></canvas>
+    </div>
+
 
     <div id='sankey' style="width:800px;height:500px">
       &nbsp;
