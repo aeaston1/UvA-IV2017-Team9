@@ -72,9 +72,6 @@
                         <h3 id="countryName"></h3>
                         </div>
                     </div>
-                    <div class="row">
-                        <div id='sankey' class="col-sm-5" style="margin-top:50px; height: 500px;">&nbsp;</div>
-                        <div id="wordle" class="col-sm-5 col-sm-offset-1"></div>
 
 {#                         <div class="col-sm-5 col-sm-offset-1">#}
 {#                        Bacon ipsum dolor amet shankle tri-tip ham hock picanha leberkas bacon. Pork loin fatback venison chuck kevin doner. Burgdoggen drumstick capicola, pork belly jerky shoulder short ribs ham hock. Tail boudin hamburger landjaeger chuck. Ribeye jowl capicola, shankle andouille doner shoulder sausage boudin pork loin fatback. Shankle short loin jerky drumstick pork pork chop tongue, sausage hamburger filet mignon meatloaf ball tip strip steak.#}
@@ -92,6 +89,27 @@
                     <div class="row">
                         <div id="bar1" class="col-sm-5"></div>
                     </div>
+                    <div class="row">
+                        <div id='sankey' class="col-sm-5" style="margin-top:50px; height: 500px;">&nbsp;</div>
+                        <div id="wordle" class="col-sm-5 col-sm-offset-1"></div>
+                    <div class="row">
+                        <div id="canvas-holder-groups" style="width:50%">
+                           <canvas id="radar-attacktype"></canvas>
+                        </div>
+
+                        <div id="canvas-holder-groups" style="width:50%">
+                            <canvas id="radar-targettype"></canvas>
+                        </div>
+
+                        <div id="canvas-holder-groups" style="width:50%">
+                            <canvas id="radar-groups"></canvas>
+                        </div>
+
+                    <div class="row">
+                        <div id="canvas" style="width:50%">
+                            <canvas id="scatter-attacks"></canvas>
+                        </div>
+
                     </div>
 
 
@@ -116,6 +134,29 @@
             plot_sankey(countryData);
             plot_counts(countryData);
             draw_wordle(countryData);
+
+            var plotData = new Object;
+            plotData[countryData.country] = countryData;
+
+            attack_radar_config = plot_radar(plotData, 'attacktype');
+            target_radar_config = plot_radar(plotData, 'targettype');
+            groups_radar_config = plot_radar(plotData, 'groups', false);
+            scatter_config = plot_scatter(plotData, 'attacks_per_period');
+
+            window.onload = function() {
+                var scatter_ctx = document.getElementById("scatter-attacks").getContext("2d");
+                window.myChart = new Chart(scatter_ctx, scatter_config)
+
+                var attack_radar_ctx = document.getElementById("radar-attacktype");
+                window.myPolarArea = Chart.PolarArea(attack_radar_ctx, attack_radar_config);
+
+                var groups_radar_ctx = document.getElementById("radar-groups");
+                window.myPolarArea = Chart.PolarArea(groups_radar_ctx, groups_radar_config);
+
+                var target_radar_ctx = document.getElementById("radar-targettype");
+                window.myPolarArea = Chart.PolarArea(target_radar_ctx, target_radar_config);
+            }
+
             return previousCountry;
         })
     }
@@ -535,6 +576,12 @@
     <script src="/static/sankey/ext/raphael.js" type="text/javascript"></script>
     <script src="/static/sankey/ext/jquery.js" type="text/javascript"></script>
     <script src="/static/sankey/js/sankey.js" type="text/javascript"></script>
+
+    <script src="/static/radar/Chart.bundle.js"></script>
+    <script src="/static/radar/samples/utils.js"></script>
+    <script src="/static/js/radar.js"></script>
+    <script src="/static/js/scatterplot.js"></script>
+
 
 <!--    <script src="/static/js/require.js" type="text/javascript"></script> -->
     <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
