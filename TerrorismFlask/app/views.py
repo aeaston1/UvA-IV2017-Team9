@@ -60,6 +60,20 @@ def get_country(country):
     return jsonify(country_data)
 
 
+@app.route('/compare/<country1>/<country2>')
+def display_compare(country1, country2):
+    country_data1 = commons.GTD_DATA.get_country_data(country1)
+    country_data1.update({'country': country1})
+    country_data2 = commons.GTD_DATA.get_country_data(country2)
+    country_data2.update({'country': country2})
+
+
+    app.logger.warning("Gonna display country stuffs")
+    return render_template("compare.html",
+                           country_data1=country_data1,
+                           country_data2=country_data2)
+
+
 
 #TODO: it should be @app.route('/attack/<int:attack_id>')
 @app.route('/attack')
@@ -85,7 +99,27 @@ def display_attack(attack_id):
 
 @app.route('/get_attack/<attack_id>')
 def get_attack(attack_id):
-#    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+    attack_data = commons.GTD_DATA.get_attack_data(attack_id)
+#    attack_data = commons.GTD_DATA.get_marker_data(attack_id)
+    attack_data.update({'attack_id': attack_id})
+
+    app.logger.warning("Gonna return a SELECTED attack now")
+    return jsonify(attack_data)
+
+
+#TODO: Merge with country (just aggregated view)
+@app.route('/marker/<attack_id>')
+def display_marker(attack_id):
+    attack_data = commons.GTD_DATA.get_marker_data(attack_id)
+    attack_data.update({'country': 'Cluster of'+str(attack_id)})
+
+    app.logger.warning("Gonna display a SELECTED attack cluster now")
+    return render_template("country.html",
+                           country_data=attack_data)
+
+
+@app.route('/get_marker/<attack_id>')
+def get_marker(attack_id):
     attack_data = commons.GTD_DATA.get_marker_data(attack_id)
     attack_data.update({'attack_id': attack_id})
 

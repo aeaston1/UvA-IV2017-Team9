@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+
+    <script src="/static/radar/Chart.bundle.js"></script>
+    <script src="/static/radar/samples/utils.js"></script>
+    <script src="/static/js/radar.js"></script>
+
+    <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
+    <script src="/static/js/wordle.js" type="text/javascript"></script>
+
+
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+
+
+
+    <script type=text/javascript>
+      $(document).ready(function() {
+        var data1 = {{country_data1|tojson}};
+        draw_wordle(data1);
+        console.log(data1.country);
+ 
+        var data2 = {{country_data2|tojson}};
+
+        draw_wordle(data2);
+
+        var data = new Object()
+        data[data1.country] = data1;
+        data[data2.country] = data2;
+ 
+      plot_radar(data, 'attacktype');
+
+//      plot_radar(data, 'targettype');
+
+
+/*
+      $(function() {
+        $('a#calculate').bind('click', function() {
+          $.getJSON('{{ url_for('get_country', country=country) }}', function(data) {
+            console.log(data)
+            $("#result").text(data);
+          });
+          return false;
+        });
+      });
+*/
+
+
+    });
+
+    </script>
+
+
+    <div id="canvas-holder-target" style="width:50%">
+        <canvas id="radar-targettype"></canvas>
+    </div>
+
+    <div id="canvas-holder-attack" style="width:50%">
+        <canvas id="radar-attacktype"></canvas>
+    </div>
+
+
+    <h1> Comparison of: {{country_data1.country}} and {{country_data2.country}} </h1>
+
+    {% for entry in country_data1 %}
+      {% if not entry == 'words'%}
+        <div><p> {{entry}}: {{ country_data1[entry] }} 
+        </p></div>
+      {% endif %}
+    {% endfor %}
+
+    {% for entry in country_data2 %}
+      {% if not entry == 'words'%}
+        <div><p> {{entry}}: {{ country_data2[entry] }}
+        </p></div>
+      {% endif %}
+    {% endfor %}
+
+
+
+{% endblock %}
+
