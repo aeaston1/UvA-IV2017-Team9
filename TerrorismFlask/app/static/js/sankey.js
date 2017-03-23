@@ -3,7 +3,7 @@
 var plot_sankey = function(data) {
 
     // Ideally, the correct data should be sent (I guess), so we don't filter it here
-
+     d3.select("#sankey").select("svg").remove();
     var correlations = data['target_attack_corr'];
 
     var sums = new Object();

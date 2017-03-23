@@ -8,6 +8,7 @@
 {#    <script src="https://unpkg.com/supercluster@2.3.0/dist/supercluster.min.js"></script>#}
     <link rel="stylesheet" type="text/css" href="/static/css/map.css">
     <link rel="stylesheet" type="text/css" href="/static/css/caroussel.css">
+    <link rel="stylesheet" href="/static/sankey/examples/css/style.css" />
 
 {% endblock %}
 
@@ -66,31 +67,67 @@
             </div>
          <div class="item">
                 <div id="two" class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        Bacon ipsum dolor amet shankle tri-tip ham hock picanha leberkas bacon. Pork loin fatback venison chuck kevin doner. Burgdoggen drumstick capicola, pork belly jerky shoulder short ribs ham hock. Tail boudin hamburger landjaeger chuck. Ribeye jowl capicola, shankle andouille doner shoulder sausage boudin pork loin fatback. Shankle short loin jerky drumstick pork pork chop tongue, sausage hamburger filet mignon meatloaf ball tip strip steak.
+                    <div class="row">
+                        <div class="col-sm-offset-1 col-sm-10">
+                        <h3 id="countryName"></h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id='sankey' class="col-sm-5" style="margin-top:50px; height: 500px;">&nbsp;</div>
+                        <div id="wordle" class="col-sm-5 col-sm-offset-1"></div>
 
-        Alcatra porchetta bresaola picanha kielbasa short ribs, short loin cupim kevin pork loin leberkas flank bacon. Jerky kevin brisket andouille, jowl tenderloin chicken t-bone swine corned beef meatball pastrami pig flank. Sirloin pork chop filet mignon, pastrami meatloaf shank burgdoggen strip steak boudin pancetta drumstick spare ribs bresaola doner. Beef ribeye jerky bresaola jowl cow tenderloin chuck tri-tip. Biltong strip steak shank chicken. Kielbasa beef ball tip, ham hock pork loin leberkas chicken ham doner ribeye frankfurter pastrami picanha biltong turducken. Ground round doner shankle beef ribs sirloin tail.
+{#                         <div class="col-sm-5 col-sm-offset-1">#}
+{#                        Bacon ipsum dolor amet shankle tri-tip ham hock picanha leberkas bacon. Pork loin fatback venison chuck kevin doner. Burgdoggen drumstick capicola, pork belly jerky shoulder short ribs ham hock. Tail boudin hamburger landjaeger chuck. Ribeye jowl capicola, shankle andouille doner shoulder sausage boudin pork loin fatback. Shankle short loin jerky drumstick pork pork chop tongue, sausage hamburger filet mignon meatloaf ball tip strip steak.#}
+{##}
+{#        Alcatra porchetta bresaola picanha kielbasa short ribs, short loin cupim kevin pork loin leberkas flank bacon. Jerky kevin brisket andouille, jowl tenderloin chicken t-bone swine corned beef meatball pastrami pig flank. Sirloin pork chop filet mignon, pastrami meatloaf shank burgdoggen strip steak boudin pancetta drumstick spare ribs bresaola doner. Beef ribeye jerky bresaola jowl cow tenderloin chuck tri-tip. Biltong strip steak shank chicken. Kielbasa beef ball tip, ham hock pork loin leberkas chicken ham doner ribeye frankfurter pastrami picanha biltong turducken. Ground round doner shankle beef ribs sirloin tail.#}
+{##}
+{#        Sirloin kielbasa flank tri-tip, turducken porchetta bresaola pork chop ball tip t-bone short loin spare ribs. Strip steak frankfurter bacon, pastrami andouille ribeye beef chicken porchetta pork loin. Kevin filet mignon porchetta tail beef ribs. Boudin brisket shankle, pork chop picanha meatloaf shank.#}
+{##}
+{#        Biltong turkey pork chop shoulder cow chuck prosciutto tail cupim landjaeger pork belly short loin. Boudin strip steak pig corned beef swine ball tip ground round t-bone. Drumstick ground round shank sirloin strip steak, kielbasa prosciutto landjaeger. Short loin pork andouille ball tip.#}
+{##}
+{#        Doner turkey chuck andouille tail. Short loin meatball beef ribs sirloin, picanha beef rump pancetta drumstick. Jerky meatloaf pork loin pancetta filet mignon, hamburger tri-tip short ribs pastrami strip steak capicola. Ball tip sausage tail alcatra. Hamburger pig kevin shankle turkey venison shoulder cupim pastrami. Picanha shankle landjaeger burgdoggen pork chop fatback boudin spare ribs prosciutto pork. Fatback drumstick boudin kevin chicken rump flank venison, pig chuck strip steak alcatra tri-tip turkey.#}
+{#                    </div>#}
 
-        Sirloin kielbasa flank tri-tip, turducken porchetta bresaola pork chop ball tip t-bone short loin spare ribs. Strip steak frankfurter bacon, pastrami andouille ribeye beef chicken porchetta pork loin. Kevin filet mignon porchetta tail beef ribs. Boudin brisket shankle, pork chop picanha meatloaf shank.
-
-        Biltong turkey pork chop shoulder cow chuck prosciutto tail cupim landjaeger pork belly short loin. Boudin strip steak pig corned beef swine ball tip ground round t-bone. Drumstick ground round shank sirloin strip steak, kielbasa prosciutto landjaeger. Short loin pork andouille ball tip.
-
-        Doner turkey chuck andouille tail. Short loin meatball beef ribs sirloin, picanha beef rump pancetta drumstick. Jerky meatloaf pork loin pancetta filet mignon, hamburger tri-tip short ribs pastrami strip steak capicola. Ball tip sausage tail alcatra. Hamburger pig kevin shankle turkey venison shoulder cupim pastrami. Picanha shankle landjaeger burgdoggen pork chop fatback boudin spare ribs prosciutto pork. Fatback drumstick boudin kevin chicken rump flank venison, pig chuck strip steak alcatra tri-tip turkey.
+                    </div>
+                    <div class="row">
+                        <div id="bar1" class="col-sm-5"></div>
+                    </div>
                     </div>
 
-                </div>
+
          </div>
     </div>
  </div>
+
+    <script>
+    function loadCountryData(selectedCountry, previousCountry){
+        var countryData = {{ country_data|tojson }};
+        console.log("previous:"+ previousCountry);
+        if (previousCountry === selectedCountry) return previousCountry;
+        previousCountry = selectedCountry;
+
+        var countryLabel = document.getElementById("countryName");
+        countryLabel.innerHTML = countryData.country;
+        plot_sankey(countryData);
+        plot_counts(countryData);
+        draw_wordle(countryData);
+        return previousCountry;
+    }
+
+    </script>
+
     <script>
     var btn = document.getElementById('sectionToggle');
     var one = document.getElementById('one');
     var two = document.getElementById('two');
+    var previousCountry = "";
     btn.addEventListener('click', function (e){
         console.log("click");
 {#        one.style.display = 'none';#}
 {#        two.style.display = 'block';#}
         $('#myCarousel').carousel('next');
+        var selectedCountry = "Belgium";
+        previousCountry = loadCountryData(selectedCountry, previousCountry);
 
     })
     two.addEventListener('click', function (e){
@@ -100,14 +137,14 @@
         $('#myCarousel').carousel('prev');
     });
 
-    window.onload = function() {
-        if ($("#one").is(":visible")){
-            console.log("visible");
-        }else{
-            console.log("invisible");
-        }
-        console.log("loaded");
-    };
+{#    window.onload = function() {#}
+{#        if ($("#one").is(":visible")){#}
+{#            console.log("visible");#}
+{#        }else{#}
+{#            console.log("invisible");#}
+{#        }#}
+{#        console.log("loaded");#}
+{#    };#}
 
     </script>
 
@@ -373,10 +410,10 @@
 
                 Object.keys(facets).forEach(function(facet_type) {
                   Object.keys(facets[facet_type]).forEach(function(facet_name) {
-                    console.log("adding click stuffs to:", facet_type, facet_name);
+{#                    console.log("adding click stuffs to:", facet_type, facet_name);#}
                     var id_ = '#facet-' + facet_name.replace(/[&-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                     $(id_).change(function(){
-                      console.log(facet_name);
+{#                      console.log(facet_name);#}
                       if (this.checked) {
                         alert('You clicked me!' + facet_type + ' ' + facet_name );
                       }else {
@@ -478,6 +515,16 @@
 
 
     <script> var initMap = initParamMap(2, 3);  </script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="/static/js/counts.js"></script>
+    <script src="/static/js/sankey.js"></script>
+    <script src="/static/sankey/ext/raphael.js" type="text/javascript"></script>
+    <script src="/static/sankey/ext/jquery.js" type="text/javascript"></script>
+    <script src="/static/sankey/js/sankey.js" type="text/javascript"></script>
+
+<!--    <script src="/static/js/require.js" type="text/javascript"></script> -->
+    <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
+    <script src="/static/js/wordle.js" type="text/javascript"></script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
 
