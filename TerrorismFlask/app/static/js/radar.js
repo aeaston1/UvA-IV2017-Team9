@@ -34,8 +34,8 @@ var plot_radar = function(data, type, scale=true) {
 //                           fillColor : "rgba(220,220,220,0.5)",
                            fillColor: getRandomColor(),
                            strokeColor : "rgba(220,220,220,1)",
-                           pointColor : "rgba(220,220,220,1)"}
-        newDataset['data'] = new Array();
+                           pointColor : "rgba(220,220,220,1)", 
+                           data: []}
  
         var sum = d3.sum(Object.values(country_data = data[country][type]));
 

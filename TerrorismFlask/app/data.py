@@ -39,6 +39,11 @@ def form_date(obj):
     year, month, day = map(lambda x: x.zfill(2), (obj['iyear'], obj['imonth'], obj['iday']))
     return '-'.join((year, month, day))
  
+def get_year_interval(obj):
+    year = int(obj['iyear'])
+    return year + (5 - year % 5)
+    
+
 class GTDData(object):
     def __init__(self, data_path):
         self.load_data(data_path)
@@ -77,6 +82,7 @@ class GTDData(object):
                            'lng': float(row['longitude']) if row['longitude'] else None,
                            'lat': float(row['latitude']) if row['latitude'] else None,
                            'date': form_date(row),
+                           'period': get_year_interval(row),
                            'group': row['gname'].decode('utf-8', 'ignore'),
                            'nationality': row['natlty1_txt'],
                            'attacktype': row['attacktype1_txt'],
@@ -148,6 +154,9 @@ class GTDData(object):
         aggregated_data = {'attacks_count': len(attackids),
                            'victims_count': 0,
                            'wounded_count': 0,
+                           'attacks_per_period': defaultdict(int),
+                           'victims_per_period': defaultdict(int),
+                           'wounded_per_period': defaultdict(int),
                            'attacktype': Counter(),
                            'targettype': Counter(),
                            'groups': Counter(),
@@ -159,6 +168,9 @@ class GTDData(object):
             attack_data = self.data_per_attack[attackid]
             for field in ['victims_count', 'wounded_count']:
                 aggregated_data[field] += attack_data[field]
+            aggregated_data['attacks_per_period'][attack_data['period']] += 1
+            aggregated_data['victims_per_period'][attack_data['period']] += attack_data['victims_count']
+            aggregated_data['wounded_per_period'][attack_data['period']] += attack_data['wounded_count']
             for field in ['attacktype', 'targettype']:
                 aggregated_data[field][attack_data[field]] += 1
             aggregated_data['target_attack_corr'][attack_data['targettype']][attack_data['attacktype']] += 1
