@@ -101,17 +101,23 @@
 
     <script>
     function loadCountryData(selectedCountry, previousCountry){
-        var countryData = {{ country_data|tojson }};
-        console.log("previous:"+ previousCountry);
-        if (previousCountry === selectedCountry) return previousCountry;
-        previousCountry = selectedCountry;
+//        var countryData = {{ country_data|tojson }};
+        var countryData;
+        $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + selectedCountry, function(current_attack_data) {
+         
+            countryData = current_attack_data;
+            console.log(selectedCountry, countryData, current_attack_data)
+            console.log("previous:"+ previousCountry);
+            if (previousCountry === selectedCountry) return previousCountry;
+            previousCountry = selectedCountry;
 
-        var countryLabel = document.getElementById("countryName");
-        countryLabel.innerHTML = countryData.country;
-        plot_sankey(countryData);
-        plot_counts(countryData);
-        draw_wordle(countryData);
-        return previousCountry;
+            var countryLabel = document.getElementById("countryName");
+            countryLabel.innerHTML = countryData.country;
+            plot_sankey(countryData);
+            plot_counts(countryData);
+            draw_wordle(countryData);
+            return previousCountry;
+        })
     }
 
     </script>
