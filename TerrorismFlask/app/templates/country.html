@@ -11,6 +11,10 @@
     <script src="/static/sankey/js/sankey.js" type="text/javascript"></script>
         <link rel="stylesheet" href="/static/sankey/examples/css/style.css" />
 
+    <script src="/static/radar/Chart.bundle.js"></script>
+    <script src="/static/radar/samples/utils.js"></script>
+    <script src="/static/js/radar.js"></script>
+
 <!--    <script src="/static/js/require.js" type="text/javascript"></script> -->
     <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
     <script src="/static/js/wordle.js" type="text/javascript"></script>
@@ -22,6 +26,11 @@
         plot_counts(data)
         plot_sankey(data);
         draw_wordle(data);
+
+        var radarData = new Object;
+        radarData[data.country] = data;
+        plot_radar(radarData, 'groups', false);
+
 
       $(function() {
         $('a#calculate').bind('click', function() {
@@ -36,9 +45,16 @@
     });
     </script>
 
-    
+
+<!--    
     <div id=result>?</div> 
     <a href=# id=calculate>calculate server side</a>
+-->
+
+    <div id="canvas-holder-groups" style="width:50%">
+        <canvas id="radar-groups"></canvas>
+    </div>
+
 
     <div id='sankey' style="width:800px;height:500px">
       &nbsp;

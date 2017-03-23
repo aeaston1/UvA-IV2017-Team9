@@ -1,6 +1,6 @@
 
 
-var plot_radar = function(data, type) {
+var plot_radar = function(data, type, scale=true) {
 
     var datasets = new Array();
     var labels = new Array();
@@ -24,9 +24,12 @@ var plot_radar = function(data, type) {
 
         var country_data = data[country][type];
         labels.forEach(function(label) {
-            if (country_data.hasOwnProperty(label)) 
-//                newDataset['data'].push(country_data[label]);
-                newDataset['data'].push(country_data[label] / sum);
+            if (country_data.hasOwnProperty(label)) {
+                if (scale)
+                    newDataset['data'].push(country_data[label] / sum);
+                else
+                    newDataset['data'].push(country_data[label]);
+                }
             else
                 newDataset['data'].push(0);
 

@@ -77,7 +77,7 @@ class GTDData(object):
                            'lng': float(row['longitude']) if row['longitude'] else None,
                            'lat': float(row['latitude']) if row['latitude'] else None,
                            'date': form_date(row),
-                           'group': row['gname'],
+                           'group': row['gname'].decode('utf-8', 'ignore'),
                            'nationality': row['natlty1_txt'],
                            'attacktype': row['attacktype1_txt'],
                            'targettype': row['targtype1_txt'],
@@ -150,6 +150,7 @@ class GTDData(object):
                            'wounded_count': 0,
                            'attacktype': Counter(),
                            'targettype': Counter(),
+                           'groups': Counter(),
                            'target_attack_corr': defaultdict(lambda: defaultdict(int)),
                            'words': Counter()
                            }
@@ -161,6 +162,7 @@ class GTDData(object):
             for field in ['attacktype', 'targettype']:
                 aggregated_data[field][attack_data[field]] += 1
             aggregated_data['target_attack_corr'][attack_data['targettype']][attack_data['attacktype']] += 1
+            aggregated_data['groups'][attack_data['group']] += 1
             aggregated_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['summary'])))
 #            aggregated_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['motive'])))
 
