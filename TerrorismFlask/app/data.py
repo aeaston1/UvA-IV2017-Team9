@@ -251,9 +251,12 @@ class GTDData(object):
     def get_facets(self):
         return self.facets
 
-    def get_sorted_propvalue(self):
-        return self.sorted_propvalues
+    def get_sorted_propvalue(self, country):
+        return self.sorted_propvalues[country]
 
     def get_country_basics(self):
         return self.country_basics
+
+    def get_unestimated_propvalue(selfself, country):
+        return self.unestimated_propvalues[country] 
 
