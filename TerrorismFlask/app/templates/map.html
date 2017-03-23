@@ -56,7 +56,18 @@
                         <div class="panel-body collapse" id="mapFacets">
                             <input type="checkbox" id="polygonsAllAttack"> Attacks number
             {#                <input type="checkbox" id="flowChart"> Show Flow Chart#}
-                            <button id="sectionToggle" type="button" class="btn btn-default">BUTTON</button>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default facets">
+                        <div class="panel-heading">
+                            Selection
+                        </div>
+                        <div class="panel-body" id="selectionFacets">
+                            <div class="row" id="selectedCountries">
+{#                                <div class="col-sm-6">Selected Country</div>#}
+{#                                <div class="col-sm-4"><a id="sectionToggle" class="btn btn-default btn-xs">BUTTON</a></div>#}
+                            </div>
                         </div>
                     </div>
 
@@ -114,37 +125,54 @@
         return previousCountry;
     }
 
+    function onListClickedCountriesChanged(listClickedCountries){
+        d3.select("#selectedCountries").selectAll("div").remove();
+        var row = d3.select("#selectedCountries");
+{#         <div class="col-sm-6">Selected Country</div>#}
+{#        <div class="col-sm-4"><a id="sectionToggle" class="btn btn-default btn-xs">BUTTON</a></div>#}
+        for(c in listClickedCountries ){
+            row.append("div").attr("class", "col-sm-6").text(listClickedCountries[c]);
+            row.append("div").attr("class", "col-sm-4")
+                .append("a").attr("class", "btn btn-default btn-xs").attr("name",listClickedCountries[c]).text("Show")
+                .attr("id", "sectionToggle").on("click", function (e){
+                console.log("click");
+                $('#myCarousel').carousel('next');
+                loadCountryData(listClickedCountries[c], "");
+            });
+        }
+
+        if (listClickedCountries.length >= 2){
+            var cmp = "/compare/Belgium/France";
+            row.append("div").attr("class", "col-sm-10")
+                .append("a").attr("class", "btn btn-success btn-xs")
+                            .attr("id", "btnCompare")
+                            .attr("href", cmp)
+                            .text("Compare");
+        }
+    }
+
     </script>
 
     <script>
-    var btn = document.getElementById('sectionToggle');
+{#    var btn = document.getElementById('sectionToggle');#}
     var one = document.getElementById('one');
     var two = document.getElementById('two');
     var previousCountry = "";
-    btn.addEventListener('click', function (e){
-        console.log("click");
+{#    btn.addEventListener('click', function (e){#}
+{#        console.log("click");#}
 {#        one.style.display = 'none';#}
 {#        two.style.display = 'block';#}
-        $('#myCarousel').carousel('next');
-        var selectedCountry = "Belgium";
-        previousCountry = loadCountryData(selectedCountry, previousCountry);
-
-    })
+{#        $('#myCarousel').carousel('next');#}
+{#        var selectedCountry = "Belgium";#}
+{#        previousCountry = loadCountryData(selectedCountry, previousCountry);#}
+{##}
+{#    });#}
     two.addEventListener('click', function (e){
         console.log("click");
 {#        one.style.display = 'block';#}
 {#        two.style.display = 'none';#}
         $('#myCarousel').carousel('prev');
     });
-
-{#    window.onload = function() {#}
-{#        if ($("#one").is(":visible")){#}
-{#            console.log("visible");#}
-{#        }else{#}
-{#            console.log("invisible");#}
-{#        }#}
-{#        console.log("loaded");#}
-{#    };#}
 
     </script>
 
@@ -341,6 +369,7 @@
                         fillOpacity:'0.1',
                     });
                     delete listClickedCountries[listClickedCountries.indexOf(country)];
+                    onListClickedCountriesChanged(listClickedCountries);
                     //remove country to comparison
                 }else{
                     map.data.overrideStyle(e.feature, {
@@ -350,6 +379,8 @@
                         fillOpacity:'0.5'
                     });
                     listClickedCountries.push(country);
+                    console.log(listClickedCountries);
+                    onListClickedCountriesChanged(listClickedCountries);
                     //add country to comparison
                 }
             });
