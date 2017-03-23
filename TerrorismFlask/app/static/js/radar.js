@@ -2,14 +2,31 @@
 
 var plot_radar = function(data, type, scale=true) {
 
+    console.log(data)
+
     var datasets = new Array();
     var labels = new Array();
 
+
+    // I dont know enough javascripts so thats my great implementation of 
+    // "Keep top 5 labels per country only¨ 
     Object.keys(data).forEach(function(country) {
-        var new_labels = union(labels, Object.keys(data[country][type]));
+        var currentData = data[country][type];
+        var values = Object.values(currentData);
+        var keys = Object.keys(currentData);
+        var len = values.length;
+        var indices = new Array(len)
+        for (var i = 0; i < len; ++i) indices[i] = i;
+        indices.sort(function (a, b) { return values[a] > values[b] ? -1 : values[a] < values[b] ? 1 : 0; });
+        var keep_labels = new Array();
+        for (var ind = 0; ind < 5; ind++) {
+            keep_labels.push(keys[indices[ind]]);
+        }        
+//        var new_labels = union(labels, Object.keys(data[country][type]));
+        var new_labels = union(labels, keep_labels);
         labels = new_labels;
     });    
-
+    
 
     Object.keys(data).forEach(function(country) {
         // Adjust colors per coountry 
