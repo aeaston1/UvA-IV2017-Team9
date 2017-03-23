@@ -102,12 +102,12 @@ var plot_radar = function(data, type, scale=true) {
 
     console.log(config)
 
-
+/*
     window.onload = function() {
         var ctx = document.getElementById("radar-"+type);
         window.myPolarArea = Chart.PolarArea(ctx, config);
     };
-
+*/
 
 
     function unique(x) {
@@ -126,6 +126,7 @@ var plot_radar = function(data, type, scale=true) {
         return color;
     }
 
+    return config
 
 
 // Dataset and label examples
