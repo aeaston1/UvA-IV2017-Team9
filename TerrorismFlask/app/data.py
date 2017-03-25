@@ -20,7 +20,8 @@ own_stop = ['unknown']
 def get_words(doc):
     # Remove punctuation and spaces #justincase
     doc = ''.join(map(lambda ch: ch if ch not in punctuation else ' ', doc))
-    doc = re.sub(r'[ \t\n\r\f\v]+', ' ', doc).strip()
+    doc = re.sub(r'[ \t\n\r\f\v]+', ' ', doc)
+    doc = re.sub(r'[0-9]{1,2}', ' ', doc).strip()
 
     words = doc.lower().split()
     words = [word for word in words if word and not word in en_stopwords + own_stop]
@@ -58,6 +59,7 @@ class GTDData(object):
         start = time.time()       
 
         self.attackids_per_country = defaultdict(list)
+        self.attackids_per_region = defaultdict(list)
         self.country_basics = defaultdict(lambda: defaultdict(int))
         self.data_per_attack = {}
 
@@ -98,6 +100,7 @@ class GTDData(object):
              
 
             self.attackids_per_country[country].append(attackid)
+            self.attackids_per_region[attack_data['region']].append(attackid)
             self.data_per_attack[attackid] = attack_data
             
             self.country_basics[country]['attacks_count'] += 1
@@ -154,7 +157,7 @@ class GTDData(object):
         print 'Total:', sum([len(cluster) for cluster in self.location_clusters.values()]) 
         print 'Actual clusters:', len([cluster for cluster in self.location_clusters.values() if len(cluster) > 1])
         print 'Major:', sorted([len(cluster) for cluster in self.location_clusters.values()], reverse=True)[:10]
-
+        print 'Regions:', len(self.attackids_per_region), self.attackids_per_region.keys()
  
         print "Finished initializing in", time.time() - start, 'seconds'
 

@@ -45,8 +45,8 @@ var layout = cloud
       return {text: d, size: 10 + data['words'][d] / maxVal * 50, test: "haha"};
     }))
     .padding(5)
-//    .rotate(function() { return ~~(Math.random() * 2) * 90; })
-    .rotate(function() { return 0 * 90; })
+    .rotate(function() { return ~~(Math.random() * 2) * 90; })
+//    .rotate(function() { return 0 * 90; })
     .font("Impact")
     .fontSize(function(d) { return d.size; })
     .on("end", draw);

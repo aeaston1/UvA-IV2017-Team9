@@ -2,8 +2,6 @@
 
 var plot_radar = function(data, type, scale=true) {
 
-    console.log(data)
-
     var datasets = new Array();
     var labels = new Array();
 

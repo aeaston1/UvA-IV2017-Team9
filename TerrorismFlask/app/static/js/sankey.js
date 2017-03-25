@@ -26,8 +26,6 @@ var plot_sankey = function(data) {
        });
     });
 
-    console.log(edges);
-
     sankey.stack(0, target_nodes);
     sankey.stack(1, attack_nodes);
 
