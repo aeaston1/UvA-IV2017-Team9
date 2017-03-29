@@ -3,7 +3,7 @@
 
 
 
-var plot_scatter = function(data, x_var, chart=false, empty=true) {
+var plot_scatter = function(data, x_var='attacks_per_period', chart=false, empty=false) {
     console.log(data, x_var, chart, empty)
 
     document.getElementById('addData').addEventListener('click', function() {
@@ -11,7 +11,7 @@ var plot_scatter = function(data, x_var, chart=false, empty=true) {
         $.getJSON('/get_country/' + country, function(data) {
             console.log('Adding country', country)
             var chart = window.myChart
-            plot_scatter(data, 'asd', chart, empty=false)
+            plot_scatter(data, x_var, chart, empty=false)
             chart.update()
         })
       })
@@ -25,12 +25,13 @@ var plot_scatter = function(data, x_var, chart=false, empty=true) {
         var Data = chart.config.oldData;
         Data[data.country] = data;
         console.log('Ended up with combined data:', Data)
-        var new_config = plot_scatter(Data, 'sad', false, empty=false);
+        var new_config = plot_scatter(Data, x_var, false, empty=false);
         chart.config = new_config;
         chart.update()
         return
     } 
-    var x_var = 'attacks_per_period'
+
+//    var x_var = 'attacks_per_period'
     var r_var = 'victims_per_period'
 //    var r_var = 'wounded_per_period'
 
