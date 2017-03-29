@@ -22,12 +22,11 @@
             <div id="zero" class="row">
                 <div class="row">
                     <div class="col-sm-offset-1 col-sm-10">
-                    <h3 id="countryName"></h3>
+                    <h3 id="countryName1"></h3>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div id="canvas-holder-groups" class="col-sm-4" style="height: 500px;">
+                    <div class="col-sm-4" style="height: 500px;">
                         <canvas id="radar-compare-attacktype"></canvas>
                     </div>
 
@@ -35,7 +34,7 @@
                         <canvas id="radar-compare-targettype"></canvas>
                     </div>
 
-                    <div id="canvas-holder-groups" class="col-sm-4" style="height: 500px;">
+                    <div class="col-sm-4" style="height: 500px;">
                         <canvas id="radar-compare-groups"></canvas>
                     </div>
                 </div>
@@ -221,15 +220,7 @@
     var one = document.getElementById('one');
     var two = document.getElementById('two');
     var previousCountry = "";
-{#    btn.addEventListener('click', function (e){#}
-{#        console.log("click");#}
-{#        one.style.display = 'none';#}
-{#        two.style.display = 'block';#}
-{#        $('#myCarousel').carousel('next');#}
-{#        var selectedCountry = "Belgium";#}
-{#        previousCountry = loadCountryData(selectedCountry, previousCountry);#}
-{##}
-{#    });#}
+
     two.addEventListener('click', function (e){
         console.log("click");
 {#        one.style.display = 'block';#}
