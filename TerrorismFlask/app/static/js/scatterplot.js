@@ -44,7 +44,8 @@ var plot_scatter = function(data) {
             if (x_data.hasOwnProperty(label))
                 newDataset['data'].push({x: label, 
                                          y: x_data[label], 
-                                         r: 100 * r_data[label] / all_victims
+                                         r: 100 * r_data[label] / all_victims,
+                                         victims: r_data[label]
                                         });
         });
         datasets.push(newDataset);
@@ -57,7 +58,8 @@ var plot_scatter = function(data) {
         animation: {
             duration: 10000
         },
-        datasets: datasets
+        datasets: datasets,
+        labels: labels
     };
 
 
@@ -73,12 +75,13 @@ var plot_scatter = function(data) {
             tooltips: {
                 mode: 'point'
             }
-        }
+        },
+        current_victims: all_victims
     }
 
 
     document.getElementById('addData').addEventListener('click', function() {
-        var country = 'Bulgaria'
+        ['Bulgaria', 'Belgium'].forEach(function(country) {
 //        $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + country, function(countryData) {
 //        $.getJSON('{{url_for("get_country/")}}' + country, function(countryData) {
         $.getJSON('/get_country/' + country, function(data) {
@@ -86,10 +89,28 @@ var plot_scatter = function(data) {
             console.log(data)
            
             var chart = window.myChart
+            var datasets = chart.config.data.datasets
             console.log(chart)
 
-            ++addedCount;
-            var colorName = colorNames[addedCount % colorNames.length];;
+            
+            /*
+            Object.keys(data).forEach(function(country) {
+               var r_data = data[country][r_var];
+               var r_sum = d3.sum(Object.values(r_data))
+               all_victims += r_sum
+            })
+            */ 
+
+
+            var colorNames_in = Object.keys(window.chartColors);
+            var addedCount_in = datasets.length + 1;
+            var x_var_in = 'attacks_per_period'
+            var r_var_in = 'victims_per_period'
+            
+            var labels = new Array();
+            for (var i = 1970; i <= 2015; i+=5) labels.push(i);
+
+            var colorName = colorNames_in[addedCount_in % colorNames_in.length];;
             var dsColor = window.chartColors[colorName];
             var newDataset = {
                 label: country,
@@ -99,8 +120,8 @@ var plot_scatter = function(data) {
                 data: []
                 }
 
-            var x_data = data[x_var];
-            var r_data = data[r_var];
+            var x_data = data[x_var_in];
+            var r_data = data[r_var_in];
 
             labels.forEach(function(label) {
                 if (x_data.hasOwnProperty(label))
@@ -112,6 +133,7 @@ var plot_scatter = function(data) {
             chart.config.data.datasets.push(newDataset);
             window.myChart.update();
         })
+      })
     });
 
 /*
