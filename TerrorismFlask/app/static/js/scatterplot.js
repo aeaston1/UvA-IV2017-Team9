@@ -3,7 +3,16 @@
 
 
 
-var plot_scatter = function(data) {
+var plot_scatter = function(data, x_var, chart=false) {
+    console.log(chart)
+    if (chart) {
+        var Data = chart.config.old_data;
+        Data[data.country] = data;
+        config = plot_scatter(Data);
+        chart.config = config;
+        chart.update()
+        return
+    } 
     var x_var = 'attacks_per_period'
     var r_var = 'victims_per_period'
 //    var r_var = 'wounded_per_period'
@@ -76,7 +85,8 @@ var plot_scatter = function(data) {
                 mode: 'point'
             }
         },
-        current_victims: all_victims
+        current_victims: all_victims,
+        old_data: data
     }
 
 
@@ -85,21 +95,30 @@ var plot_scatter = function(data) {
 //        $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + country, function(countryData) {
 //        $.getJSON('{{url_for("get_country/")}}' + country, function(countryData) {
         $.getJSON('/get_country/' + country, function(data) {
+            var chart = window.myChart
+            plot_scatter(data, 'asd', chart)
+
+            /*
+            if (chart) {
+                console.log('Cool')
+            } else {
+                console.log('Uncool')
+            }             
+            console.log("Chart:", chart)
+            var oldData = chart.config.old_data;
+            console.log(oldData)
+            oldData[country] = data;
+            config = plot_scatter(oldData);
+            window.myChart.config = config;
+            
             console.log("YEEEEEEEEEEEEE");
             console.log(data)
-           
+            */
+
+            /*           
             var chart = window.myChart
             var datasets = chart.config.data.datasets
             console.log(chart)
-
-            
-            /*
-            Object.keys(data).forEach(function(country) {
-               var r_data = data[country][r_var];
-               var r_sum = d3.sum(Object.values(r_data))
-               all_victims += r_sum
-            })
-            */ 
 
 
             var colorNames_in = Object.keys(window.chartColors);
@@ -131,7 +150,8 @@ var plot_scatter = function(data) {
                                            });
             });
             chart.config.data.datasets.push(newDataset);
-            window.myChart.update();
+            */
+//            window.myChart.update();
         })
       })
     });

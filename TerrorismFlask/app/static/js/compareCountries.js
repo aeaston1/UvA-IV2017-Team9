@@ -22,13 +22,13 @@ var plotCompareCountryStuffs = function(countryData) {
             window.myChart = new Chart(scatter_ctx, scatter_config)
 
             var attack_radar_ctx = document.getElementById("radar-compare-attacktype");
-            window.myPolarArea = Chart.PolarArea(attack_radar_ctx, attack_radar_config);
+            window.myPolarArea = new Chart.PolarArea(attack_radar_ctx, attack_radar_config);
 
             var groups_radar_ctx = document.getElementById("radar-compare-groups");
-            window.myPolarArea = Chart.PolarArea(groups_radar_ctx, groups_radar_config);
+            window.myPolarArea = new Chart.PolarArea(groups_radar_ctx, groups_radar_config);
 
             var target_radar_ctx = document.getElementById("radar-compare-targettype");
-            window.myPolarArea = Chart.PolarArea(target_radar_ctx, target_radar_config);
+            window.myPolarArea = new Chart.PolarArea(target_radar_ctx, target_radar_config);
 
 }
 
