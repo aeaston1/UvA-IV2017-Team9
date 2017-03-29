@@ -1,6 +1,7 @@
 
 
 var plot_radar = function(data, type, scale=true, chart=false) {
+    console.log(data, type, scale, chart)
 
     console.log("Begining")
     if (chart) {
@@ -8,7 +9,11 @@ var plot_radar = function(data, type, scale=true, chart=false) {
         Data[data.country] = data;
         console.log('Ended up with combined data:', Data)
         var new_config = plot_radar(Data, type, scale, false);
-        chart.config = new_config;
+//        chart.config = new_config;
+//        chart.config.data=new_config.data;
+        chart.config.data.datasets = new_config.data.datasets;
+        chart.config.data.labels = new_config.data.labels;
+        console.log('Before update', chart)
         chart.update()
         return
     }
