@@ -76,6 +76,44 @@ var plot_scatter = function(data) {
         }
     }
 
+
+    document.getElementById('addData').addEventListener('click', function() {
+        var country = 'Bulgaria'
+//        $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + country, function(countryData) {
+//        $.getJSON('{{url_for("get_country/")}}' + country, function(countryData) {
+        $.getJSON('/get_country/' + country, function(data) {
+            console.log("YEEEEEEEEEEEEE");
+            console.log(data)
+           
+            var chart = window.myChart
+            console.log(chart)
+
+            ++addedCount;
+            var colorName = colorNames[addedCount % colorNames.length];;
+            var dsColor = window.chartColors[colorName];
+            var newDataset = {
+                label: country,
+                backgroundColor: color(dsColor).alpha(0.5).rgbString(),
+                borderColor: dsColor,
+                borderWidth: 1,
+                data: []
+                }
+
+            var x_data = data[x_var];
+            var r_data = data[r_var];
+
+            labels.forEach(function(label) {
+                if (x_data.hasOwnProperty(label))
+                    newDataset['data'].push({x: label,
+                                             y: x_data[label],
+                                             r: 100 * r_data[label] / all_victims
+                                           });
+            });
+            chart.config.data.datasets.push(newDataset);
+            window.myChart.update();
+        })
+    });
+
 /*
     window.onload = function() {
         var ctx = document.getElementById("scatter-attacks").getContext("2d");
