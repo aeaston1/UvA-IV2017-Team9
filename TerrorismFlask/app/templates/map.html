@@ -587,11 +587,13 @@
 
                       console.log(titleString, ref); 
 
-                      var contentString = '<div id="content">' +
-                        '<p>' + current_attack_data.date +'</p>'+
-                        '<p>' + titleString + '</p>' + 
-                        '<a href="'+ref+'">View attack</a>' +
-                        '</div>';
+                      var contentString = '<div id="content" class="marker-info">' +
+                            '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
+                            '<div id="bodyContent">' +
+                                '<p>' + titleString + '</p>' +
+                                '<a href="'+ref+'">View attack</a>' +
+                            '</div>' +
+                          '</div>';
 
                       console.log(contentString);
 
