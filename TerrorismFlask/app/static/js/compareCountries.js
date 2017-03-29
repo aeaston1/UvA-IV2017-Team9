@@ -16,10 +16,10 @@ var plotCompareCountryStuffs = function(countryData) {
             attack_radar_config = plot_radar(plotData, 'attacktype');
             target_radar_config = plot_radar(plotData, 'targettype');
             groups_radar_config = plot_radar(plotData, 'groups', false);
-            scatter_config = plot_scatter(plotData, 'attacks_per_period');
+//            scatter_config = plot_scatter(plotData, 'attacks_per_period');
 
-            var scatter_ctx = document.getElementById("scatter-compare-attacks").getContext("2d");
-            window.myChart = new Chart(scatter_ctx, scatter_config)
+//            var scatter_ctx = document.getElementById("scatter-compare-attacks").getContext("2d");
+//            window.myChart = new Chart(scatter_ctx, scatter_config)
 
             var attack_radar_ctx = document.getElementById("radar-compare-attacktype");
             window.myPolarArea = new Chart.PolarArea(attack_radar_ctx, attack_radar_config);
