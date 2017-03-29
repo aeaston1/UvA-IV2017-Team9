@@ -30,8 +30,8 @@
                         <canvas id="radar-compare-attacktype"></canvas>
                     </div>
 
-                    <div class="col-sm-4" style="height: 500px;">
-                        <canvas id="radar-comapare-targettype"></canvas>
+                    <div id="canvas-holder-groups" class="col-sm-4" style="height: 500px;">
+                        <canvas id="radar-compare-targettype"></canvas>
                     </div>
 
                     <div class="col-sm-4" style="height: 500px;">
@@ -42,6 +42,7 @@
                 <div class="row">
                     <div id="canvas" class="col-sm-4" style="height: 500px;">
                         <canvas id="scatter-compare-attacks" style="height: 500px;"></canvas>
+                        <button id="addData">Add Data</button>
                     </div>
                 </div>
 
@@ -139,6 +140,7 @@
                 <div class="row">
                     <div id="canvas" class="col-sm-4" style="height: 500px;">
                         <canvas id="scatter-attacks" style="height: 500px;"></canvas>
+                        <button id="addData">Add Data</button>
                     </div>
                 </div>
             </div>
@@ -161,6 +163,12 @@
 
     function loadComparisonData(listClickedCountries) {
         console.log('do nothing')
+        listClickedCountries.forEach(function (country) {
+            $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + country, function(countryData) {
+                console.log("compare", countryData);
+                plotCompareCountryStuffs(countryData);
+            })
+        })
     }
 
     function onListClickedCountriesChanged(listClickedCountries){
@@ -211,7 +219,7 @@
         console.log("click");
 {#        one.style.display = 'block';#}
 {#        two.style.display = 'none';#}
-        $('#myCarousel').carousel('prev');
+//        $('#myCarousel').carousel('prev');
     });
 
     zero.addEventListener('click', function (e){
@@ -617,6 +625,8 @@
 
 
     <script src="/static/js/loadCountry.js"></script>
+    <script src="/static/js/compareCountries.js"></script>
+
 
 <!--    <script src="/static/js/require.js" type="text/javascript"></script> -->
     <script src="/static/js/d3.layout.cloud.js" type="text/javascript"></script>
