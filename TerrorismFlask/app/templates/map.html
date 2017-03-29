@@ -568,20 +568,25 @@
     <script>
     var initMarkers = function(locations){
         var markers = locations.map(function(location, i) {
-            var imgid = i%5+1;
-                var markerImg = "static/imgs/map_markers/"+imgid+".png";
-                var marker = new google.maps.Marker({
-                    position: location,
-                    icon: markerImg
-                });
 
-                var eventid = eventids[i];
+            var eventid = eventids[i];
+            var attack_type_id = attackLocations[eventid]['attacktype_id'];
+{#            console.log(attack_type_id);#}
+{#            var imgid = i%5+1;#}
+
+            var markerImg = "static/imgs/map_markers/"+attack_type_id+".png";
+            var marker = new google.maps.Marker({
+                position: location,
+                icon: markerImg
+            });
+
+
 
                 marker.addListener('click', function() {
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
                     $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
 //                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-                        console.log(current_attack_data.attacktype_id);
+                        console.log(marker.getPosition());
                       var titleString;
                       var ref;
 

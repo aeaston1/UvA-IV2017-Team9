@@ -22,7 +22,6 @@ def get_words(doc):
     doc = ''.join(map(lambda ch: ch if ch not in punctuation else ' ', doc))
     doc = re.sub(r'[ \t\n\r\f\v]+', ' ', doc)
     doc = re.sub(r'[0-9]{1,2}', ' ', doc).strip()
-
     words = doc.lower().split()
     words = [word for word in words if word and not word in en_stopwords + own_stop]
 
@@ -118,7 +117,11 @@ class GTDData(object):
             if attack_data['lng'] and attack_data['lat'] and random() < 0.1:
                 self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
                 self.locations[attackid] = {'lng': attack_data['lng'],
-                                        'lat': attack_data['lat']}
+                                        'lat': attack_data['lat'],
+                                        'attacktype_id': attack_data['attacktype_id'],
+                                        'attacktype': attack_data['attacktype'],
+                                        'targettype': attack_data['targettype']
+                                        }
 #                self.facets['attacktype'][attack_data['attacktype']].append(attackid)
 #                self.facets['targettype'][attack_data['targettype']].append(attackid)
                 for facet_name in ['attacktype', 'targettype']:
