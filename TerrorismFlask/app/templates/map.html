@@ -7,7 +7,6 @@
 {#    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>#}
 {#    <script src="https://unpkg.com/supercluster@2.3.0/dist/supercluster.min.js"></script>#}
     <link rel="stylesheet" type="text/css" href="/static/css/map.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/caroussel.css">
     <link rel="stylesheet" href="/static/sankey/examples/css/style.css" />
 
 {% endblock %}
@@ -16,8 +15,8 @@
 {% block content %}
 {#    <div id='mapid' class='map' style="width:900px; height: 900px; position: relative  "> </div>#}
 {#    <script src="../static/js/map.js"></script>#}
- <div id="myCarousel" class="vertical-slider carousel vertical slide col-md-12" data-interval="false">
-     <div class="carousel-inner">
+ <div id="myCarousel" class="carousel slide col-md-12" data-interval="false" data-ride="carousel">
+     <div class="carousel-inner" role="listbox">
 
         <div class="item">
             <div id="zero" class="row">
