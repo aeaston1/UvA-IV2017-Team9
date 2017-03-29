@@ -163,10 +163,16 @@
 
     function loadComparisonData(listClickedCountries) {
         console.log('do nothing')
+      
+        scatter_config = plot_scatter(empty=true);
+        var scatter_ctx = document.getElementById("scatter-compare-attacks").getContext("2d");
+        window.myScatterCompareChart = new Chart(scatter_ctx, scatter_config)
+
         listClickedCountries.forEach(function (country) {
             $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + country, function(countryData) {
                 console.log("compare", countryData);
                 plotCompareCountryStuffs(countryData);
+                plot_scatter(data=countryData, 'attacks_per_period', chart=window.myScatterCompareChart, empty=false);
             })
         })
     }
