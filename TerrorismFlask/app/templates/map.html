@@ -568,7 +568,8 @@
     <script>
     var initMarkers = function(locations){
         var markers = locations.map(function(location, i) {
-                var markerImg = "static/imgs/map_markers/"+i%5+".png";
+            var imgid = i%5+1;
+                var markerImg = "static/imgs/map_markers/"+imgid+".png";
                 var marker = new google.maps.Marker({
                     position: location,
                     icon: markerImg
@@ -580,10 +581,10 @@
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
                     $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
 //                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-
+                        console.log(current_attack_data.attacktype_id);
                       var titleString;
                       var ref;
- 
+
                       // If cluster, display aggregated view, otherwise - single attack
                       if ( current_attack_data.markerType === 'individual' ) {
                           console.log('Found an individual');
@@ -595,7 +596,7 @@
                           ref = "/marker/"+eventids[i]
                       }
 
-                      console.log(titleString, ref); 
+                      console.log(titleString, ref);
 
                       var contentString = '<div id="content" class="marker-info">' +
                             '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +

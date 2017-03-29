@@ -88,6 +88,7 @@ class GTDData(object):
                            'period': get_year_interval(row),
                            'group': row['gname'].decode('utf-8', 'ignore'),
                            'nationality': row['natlty1_txt'],
+                           'attacktype_id':row['attacktype1'],
                            'attacktype': row['attacktype1_txt'],
                            'targettype': row['targtype1_txt'],
                            'target': row['target1'],
