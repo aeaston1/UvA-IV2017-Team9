@@ -214,9 +214,14 @@
         var row = d3.select("#selectedCountries");
 {#         <div class="col-sm-6">Selected Country</div>#}
         for(c in listClickedCountries ){
-            row.append("div").attr("class", "col-sm-6").text(listClickedCountries[c]);
+            var countryname = listClickedCountries[c];
+            if (countryname.length > 13){
+                countryname = countryname.substring(0,10)+"...";
+            }
+            row.append("div").attr("class", "col-sm-6 text-nowrap").text(countryname);
             var div = row.append("div");
-            div.attr("class", "col-sm-4");
+            div.attr("class", "col-sm-offset-1 col-sm-4");
+
             var a = div.append("a").attr("class", "btn btn-default btn-xs").attr("name",listClickedCountries[c]).text("Show")
                 .attr("id", "sectionToggle-"+c);
 
