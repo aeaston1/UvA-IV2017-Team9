@@ -195,6 +195,7 @@
             }
 
             console.log("FACET NAME="+facetName);
+            console.log(facetmarkers[facetName][0]);
             addMarkers(markers, facetmarkers[facetName]);
             nSelectedFacets++;
 
@@ -638,7 +639,7 @@
             var eventid = eventids[i];
             var attack_type_id = attackLocations[eventid]['attacktype_id'];
 
-            var markerImg = "static/imgs/map_markers/"+attack_type_id+".png";
+            var markerImg = "static/imgs/map_markers/0"+attack_type_id+".png";
             var marker = new google.maps.Marker({
                 position: location,
                 icon: markerImg
