@@ -670,7 +670,7 @@
                       var titleString;
                       var bodyContent;
  
-                      var commonCounts = '<p> Victims: ' + data.victims_count + '</p' +
+                      var commonCounts = '<p> Victims: ' + data.victims_count + '</p>' +
                                          '<p> Wounded: ' + data.wounded_count + '</p>'
 
                       // If cluster, display aggregated view, otherwise - single attack
@@ -678,7 +678,20 @@
                           console.log('Found an individual');
                           titleString = data.date
                           bodyContent = '<p>' + data.city + ', ' + data.country + '</p>' + 
-                                        commonCounts 
+                                        commonCounts +
+                                        '<p> Attack type:' + data.attacktype + '</p>' +
+                                        '<p> Target type:' + data.targettype + '</p>' +
+                                        '<p> Weapon type:' + data.weapontype + '</p>'
+
+                          if (data.group) 
+                              bodyContent += '<p> Group: ' + data.group + '</p>'
+
+                          if (data.summary) 
+                              bodyContent += '<p> Summary: ' + data.summary + '</p>'
+
+                          if (data.motive) 
+                              bodyContent += '<p> Motive: ' + data.motive + '</p>'
+
                       } else {
                           console.log('Found a cluster');
                           titleString = data.country
