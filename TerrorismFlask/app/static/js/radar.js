@@ -80,7 +80,7 @@ var plot_radar = function(data, type, scale=true, chart=false) {
     config.data.backgroundColor = backgroundColors;
     config.oldData = data;
 
-    console.log(config)
+//    console.log(config)
 
     return config
 }

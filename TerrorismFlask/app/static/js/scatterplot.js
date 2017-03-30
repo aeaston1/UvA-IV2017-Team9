@@ -3,7 +3,7 @@
 
 
 var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
-    console.log(data, x_var, chart)
+//    console.log(data, x_var, chart)
 
     /*
     document.getElementById('addData').addEventListener('click', function() {
@@ -21,7 +21,6 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
     if (chart) {
         var Data = chart.config.oldData;
         Data[data.country] = data;
-        console.log('Ended up with combined data:', Data)
         var new_config = plot_scatter(Data, x_var, false);
         chart.config = new_config;
         chart.update()
@@ -87,7 +86,6 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
 
 
 
-    console.log(datasets);
 
     var config = getEmptyScatterConfig({'type': x_var})
     config.data.datasets = datasets; 
@@ -95,7 +93,7 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
 
     return config
 
-    console.log(config)
+//    console.log(config)
 }
 
 

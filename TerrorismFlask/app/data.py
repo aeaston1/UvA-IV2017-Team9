@@ -79,6 +79,7 @@ class GTDData(object):
            
             attack_data = {'victims_count': int(float(row['nkill'])) if row['nkill'] else 0,
                            'wounded_count': int(float(row['nwound'])) if row['nwound'] else 0,
+                           'city': row['city'],
                            'country': row['country_txt'],
                            'region': row['region_txt'],
                            'lng': float(row['longitude']) if row['longitude'] else None,
@@ -244,8 +245,8 @@ class GTDData(object):
         else:
             # If not individual, grab rest and aggregate
             cluster_elems = self.location_clusters[(attack_data['lng'], attack_data['lat'])]
-            return self.aggregate_data(cluster_elems)
-
+            data = self.aggregate_data(cluster_elems)
+            return data
 
     def get_random_attack_data(self, random_n):
         attackid = self.attackids[random_n]
