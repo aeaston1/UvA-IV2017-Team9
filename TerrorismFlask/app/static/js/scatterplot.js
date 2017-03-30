@@ -68,8 +68,10 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
             if (x_data.hasOwnProperty(label))
                 newDataset['data'].push({x: label, 
                                          y: x_data[label], 
-                                         r: 100 * (r_data[label]+1) / all_victims,
-                                         victims: r_data[label]
+//                                         r: 100 * (r_data[label]+1) / all_victims,
+//                                         r: Math.sqrt(1000 * (r_data[label]+1) / (all_victims * 3.14 * 3.14) )
+                                           r: Math.sqrt(10 * (r_data[label]+1) / ( 3.14 * 3.14) ),
+                                           victims: r_data[label]
                                         });
         });
         datasets.push(newDataset);
