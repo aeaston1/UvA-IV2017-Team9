@@ -183,13 +183,16 @@
         if (e.value[0] === 't'){
             facetmarkers = targetMarkers;
         }
-
+        var facetName = e.value.substring(2);
         if (e.checked){
             if(nSelectedFacets == 0){
                 // first hide everything
                 console.log("clear markers");
                 clearMarkers();
             }
+
+            console.log("FACET NAME="+facetName);
+            addMarkers(markers, facetmarkers[facetName]);
             nSelectedFacets++;
 
         }else{
@@ -200,6 +203,7 @@
                 console.log("show all markers again");
                 showMarkers();
             }
+            removeMarkers(facetmarkers[facetName]);
         }
 
 {#        markerCluster.repaint();#}
@@ -583,43 +587,43 @@
 
       // Removes the markers from the map, but keeps them in the array.
       function clearMarkers() {
-        markers = [];
-        markerCluster.repaint();
+        markerCluster.clearMarkers();
+      }
+
+      function deleteAllMarkers(){
+          markers = [];
+          markerCluster.clearMarkers();
       }
 
       function removeMarkers(mrkrs){
-          for(var m in mrkrs){
-              var idx = markers.indexOf(m);
-              if (idx > -1) {
-                markers.splice(idx, 1);
-              }
-          }
-          markerCluster.repaint();
+{#          for(var m in mrkrs){#}
+{#              var idx = markers.indexOf(m);#}
+{#              if (idx > -1) {#}
+{#                markers.splice(idx, 1);#}
+{#              }#}
+{#          }#}
+{#          markerCluster = new MarkerClusterer(map, markers,mcOptions);#}
+          markerCluster.removeMarkers(mrkrs);
       }
 
-      function addMarkers(mrkrs){
-          for(var m in mrkrs){
-              markers.push(m);
-          }
-          markerCluster.repaint();
+      function addMarkers(markers, mrkrs){
+{#          console.log(mrkrs[0]);#}
+{#          clearMarkers();#}
+{#          markers.push.apply(markers, mrkrs);#}
+{#          markerCluster = new MarkerClusterer(map, markers,mcOptions);#}
+          markerCluster.addMarkers(mrkrs);
       }
 
-      // Shows any markers currently in the array.
       function showMarkers() {
         for (var k in targetMarkers){
-            var mrkrs = targetMarkers[k];
-            for(var i=0; i<mrkrs.length; i++){
-                markers.push(mrkrs[i]);
-            }
+            markerCluster.addMarkers(targetMarkers[k]);
         }
         for (var k in attackMarkers){
-            var mrkrs = attackMarkers[k];
-            for(var i=0; i<mrkrs.length; i++){
-                markers.push(mrkrs[i]);
-            }
+            markerCluster.addMarkers(attackMarkers[k]);
         }
         console.log("show all!");
-        markerCluster.repaint();
+{#      markerCluster.repaint();#}
+{#        markerCluster = new MarkerClusterer(map, markers,mcOptions);#}
       }
 
     </script>
@@ -637,6 +641,44 @@
                 icon: markerImg
             });
 
+            marker.addListener('click', function() {
+//                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
+                $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+//                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+                  var titleString;
+                  var ref;
+
+                  // If cluster, display aggregated view, otherwise - single attack
+                  if ( current_attack_data.markerType === 'individual' ) {
+                      console.log('Found an individual');
+                      titleString = current_attack_data.country;
+                      ref = "/attack/"+eventids[i];
+                  } else {
+                      console.log('Found a cluster');
+                      titleString = 'This is a cluster'
+                      ref = "/marker/"+eventids[i]
+                  }
+
+                  console.log(titleString, ref);
+
+                  var contentString = '<div id="content" class="marker-info">' +
+                        '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
+                        '<div id="bodyContent">' +
+                            '<p>' + titleString + '</p>' +
+                            '<a href="'+ref+'">View attack</a>' +
+                        '</div>' +
+                      '</div>';
+
+                  console.log(contentString);
+
+                  var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                  });
+
+                  infowindow.open(map, marker);
+                });
+            });
+
             var attacktype = attackLocations[eventid]['attacktype'];
             var targettype = attackLocations[eventid]['targettype'];
             if (targettype !== undefined) {
@@ -651,45 +693,6 @@
                 }
                 attackMarkers[attacktype].push(marker);
             }
-
-
-                marker.addListener('click', function() {
-//                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
-                    $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-//                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-                      var titleString;
-                      var ref;
-
-                      // If cluster, display aggregated view, otherwise - single attack
-                      if ( current_attack_data.markerType === 'individual' ) {
-                          console.log('Found an individual');
-                          titleString = current_attack_data.country;
-                          ref = "/attack/"+eventids[i];
-                      } else {
-                          console.log('Found a cluster');
-                          titleString = 'This is a cluster'
-                          ref = "/marker/"+eventids[i]
-                      }
-
-                      console.log(titleString, ref);
-
-                      var contentString = '<div id="content" class="marker-info">' +
-                            '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
-                            '<div id="bodyContent">' +
-                                '<p>' + titleString + '</p>' +
-                                '<a href="'+ref+'">View attack</a>' +
-                            '</div>' +
-                          '</div>';
-
-                      console.log(contentString);
-
-                      var infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                      });
-
-                      infowindow.open(map, marker);
-                    });
-                });
 
           return marker;
         });
