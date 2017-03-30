@@ -62,7 +62,7 @@
                             {% for attack_type in facets.attacktype %}
                                 <div class="checkbox">
                                     <label>
-                                        <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
+                                        <input id="facet-{{attack_type}}" type="checkbox" value="a_{{ attack_type }}" onclick='handleFacetClick(this);'>
                                         {{ attack_type }}
                                     </label>
                                 </div>
@@ -75,7 +75,7 @@
                             {% for attack_type in facets.targettype %}
                                 <div class="checkbox">
                                     <label>
-                                        <input id="facet-{{attack_type}}" type="checkbox" value="{{ attack_type }}" onclick='handleFacetClick(this);'>
+                                        <input id="facet-{{attack_type}}" type="checkbox" value="t_{{ attack_type }}" onclick='handleFacetClick(this);'>
                                         {{ attack_type }}
                                     </label>
                                 </div>
@@ -181,6 +181,37 @@
         })
     }
 
+    function handleFacetClick(e){
+        console.log(e.checked);
+        console.log(e.value.substring(2));
+
+        var facetmarkers = attackMarkers;
+        if (e.value[0] === 't'){
+            facetmarkers = targetMarkers;
+        }
+
+        if (e.checked){
+            if(nSelectedFacets == 0){
+                // first hide everything
+                console.log("clear markers");
+                clearMarkers();
+            }
+            nSelectedFacets++;
+
+        }else{
+            nSelectedFacets--;
+            if (nSelectedFacets == 0){
+                // no facet is selected
+                // show everything again
+                console.log("show all markers again");
+                showMarkers();
+            }
+        }
+
+{#        markerCluster.repaint();#}
+
+    }
+
     function onListClickedCountriesChanged(listClickedCountries){
         d3.select("#selectedCountries").selectAll("div").remove();
         var row = d3.select("#selectedCountries");
@@ -199,7 +230,6 @@
 
         if (listClickedCountries.length >= 2){
 //            var cmp = "/compare/Belgium/France";
-            console.log("two or more countries");
             row.append("div").attr("class", "col-sm-10")
                 .append("a").attr("class", "btn btn-success btn-xs")
                             .attr("id", "btnCompare")
@@ -211,8 +241,6 @@
                                  loadComparisonData(listClickedCountries);
                             })
 
-        }else{
-            console.log("less than two countries");
         }
     }
 
@@ -268,7 +296,8 @@
 
 
     <script type=text/javascript>
-
+    var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
+    var markerCluster = null;
     var attackLocations = {{attack_locations|tojson}};
     var eventids = Object.keys(attackLocations);
     var locations = Object.values(attackLocations);
@@ -278,9 +307,14 @@
     var listClickedCountries=[];
     var MinMax=getMinMax(countryBasics);
     var minAttack=MinMax[1];
-    var maxAttack=MinMax[0]
+    var maxAttack=MinMax[0];
     var showCountryPolygonsClicked=0;
     {#        console.log(maxAttack)#}
+
+    var targetMarkers={};
+    var attackMarkers={};
+
+    var nSelectedFacets = 0;
 
     function initParamMap(a, b) {
         return function() {
@@ -374,14 +408,12 @@
 
             markers = initMarkers(locations);
             // gridSize determins the number of clusters. larger grid size --> less clusters
-            var mcOptions = {gridSize: 200, maxZoom: 15, imagePath: 'static/imgs/mapClusterImages/m'};
-            var markerCluster = new MarkerClusterer(map, markers,mcOptions);
 
+            markerCluster = new MarkerClusterer(map, markers,mcOptions);
 
             //the whole stuff below does the polygon shit.
             //makes the country polygons. not really sure how to move it into a seperate function.
             var geojson = map.data.loadGeoJson('./static/data/geodata.json');
-
 
             map.data.setStyle({
                 strokeWeight:0.5,
@@ -389,7 +421,7 @@
                 strokeOpacity:0.01,
                 fillColor:'0x00000000',
                 fillOpacity:0.01
-            })
+            });
 
             map.data.addListener('mouseover', function(e) {
                 var country= e.feature.f.name;
@@ -401,7 +433,7 @@
                         fillColor: '#ff0000',
                         fillOpacity: 0.2
                     });
-                };
+                }
             });
 
             map.data.addListener('mouseout', function(e) {
@@ -506,20 +538,20 @@
                     }
                 });
 
-                Object.keys(facets).forEach(function(facet_type) {
-                  Object.keys(facets[facet_type]).forEach(function(facet_name) {
+{#                Object.keys(facets).forEach(function(facet_type) {#}
+{#                  Object.keys(facets[facet_type]).forEach(function(facet_name) {#}
 {#                    console.log("adding click stuffs to:", facet_type, facet_name);#}
-                    var id_ = '#facet-' + facet_name.replace(/[&-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                    $(id_).change(function(){
+{#                    var id_ = '#facet-' + facet_name.replace(/[&-\/\\^$*+?.()|[\]{}]/g, '\\$&');#}
+{#                    $(id_).change(function(){#}
 {#                      console.log(facet_name);#}
-                      if (this.checked) {
-                        alert('You clicked me!' + facet_type + ' ' + facet_name );
-                      }else {
-                        alert('You unclicked me!' + facet_type + ' ' + facet_name);
-                      }
-                    });
-                  });
-                });
+{#                      if (this.checked) {#}
+{#                        alert('You clicked me!' + facet_type + ' ' + facet_name );#}
+{#                      }else {#}
+{#                        alert('You unclicked me!' + facet_type + ' ' + facet_name);#}
+{#                      }#}
+{#                    });#}
+{#                  });#}
+{#                });#}
 
 
             };
@@ -532,37 +564,61 @@
 
 
     <script>
-    // Adds a marker to the map and push to the array.
-      function addMarker(location) {
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map
-        });
-        markers.push(marker);
-      }
-
       // Sets the map on all markers in the array.
-      function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(map);
-        }
-      }
+{#      function setMapOnAll(visible) {#}
+{#        for (var i = 0; i < markers.length; i++) {#}
+{#          markers[i].setVisible(visible);#}
+{#        }#}
+{#      }#}
+{##}
+{#      function setMapOn(visible, markers_list){#}
+{#          for (var i = 0; i < markers_list.length; i++) {#}
+{#              var m = markers_list[i];#}
+{#              markers[m.getZIndex()].setVisible(visible);#}
+{#          }#}
+{#      }#}
 
       // Removes the markers from the map, but keeps them in the array.
       function clearMarkers() {
-        setMapOnAll(null);
+        markers = [];
+        markerCluster.repaint();
+      }
+
+      function removeMarkers(mrkrs){
+          for(var m in mrkrs){
+              var idx = markers.indexOf(m);
+              if (idx > -1) {
+                markers.splice(idx, 1);
+              }
+          }
+          markerCluster.repaint();
+      }
+
+      function addMarkers(mrkrs){
+          for(var m in mrkrs){
+              markers.push(m);
+          }
+          markerCluster.repaint();
       }
 
       // Shows any markers currently in the array.
       function showMarkers() {
-        setMapOnAll(map);
+        for (var k in targetMarkers){
+            var mrkrs = targetMarkers[k];
+            for(var i=0; i<mrkrs.length; i++){
+                markers.push(mrkrs[i]);
+            }
+        }
+        for (var k in attackMarkers){
+            var mrkrs = attackMarkers[k];
+            for(var i=0; i<mrkrs.length; i++){
+                markers.push(mrkrs[i]);
+            }
+        }
+        console.log("show all!");
+        markerCluster.repaint();
       }
 
-      // Deletes all markers in the array by removing references to them.
-      function deleteMarkers() {
-        clearMarkers();
-        markers = [];
-      }
     </script>
 
     <script>
@@ -571,8 +627,6 @@
 
             var eventid = eventids[i];
             var attack_type_id = attackLocations[eventid]['attacktype_id'];
-{#            console.log(attack_type_id);#}
-{#            var imgid = i%5+1;#}
 
             var markerImg = "static/imgs/map_markers/"+attack_type_id+".png";
             var marker = new google.maps.Marker({
@@ -580,13 +634,26 @@
                 icon: markerImg
             });
 
+            var attacktype = attackLocations[eventid]['attacktype'];
+            var targettype = attackLocations[eventid]['targettype'];
+            if (targettype !== undefined) {
+                if (targetMarkers[targettype] === undefined){
+                    targetMarkers[targettype] = [];
+                }
+                targetMarkers[targettype].push(marker);
+            }
+            if (attacktype !== undefined){
+                if (attackMarkers[attacktype] === undefined){
+                    attackMarkers[attacktype]=[];
+                }
+                attackMarkers[attacktype].push(marker);
+            }
 
 
                 marker.addListener('click', function() {
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
                     $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
 //                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-                        console.log(marker.getPosition());
                       var titleString;
                       var ref;
 
