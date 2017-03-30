@@ -150,10 +150,12 @@
 
     <script>
 
-    function loadMarkerData(markerData){
-        console.log('Loading Marker');
-        $('#myCarousel').carousel('prev');
-        plotCountryStuffs(markerData);
+    function loadMarkerData(eventid){
+        $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(markerData) {
+            console.log('Loading Marker', markerData);
+            $('#myCarousel').carousel('next');
+            plotCountryStuffs(markerData);
+        })
     }
 
     function loadCountryData(selectedCountry, previousCountry){
@@ -674,7 +676,7 @@
                           console.log('Found a cluster');
                           titleString = 'This is a cluster'
 //                          ref = "/marker/"+eventids[i]
-                          viewAttacksString = '<a onclick="loadMarkerData(current_attack_data)">View attacks</a>'
+                          viewAttacksString = '<a onclick="loadMarkerData(' + eventid + ')">View attacks</a>'
                       }
 
                       console.log(titleString, ref);
