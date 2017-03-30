@@ -8,16 +8,18 @@ var plotCompareCountryStuffs = function() {
     var scatter_ctx = document.getElementById("scatter-compare-attacks").getContext("2d");
     window.myScatterCompareChart = new Chart(scatter_ctx, scatter_config)
 
-    empty_radar_config = getEmptyRadarConfig();
+    attacks_radar_config = getEmptyRadarConfig('Percentage of attacks per Attack Type');
+    groups_radar_config = getEmptyRadarConfig('Percentage of attacks per Group');
+    targets_radar_config = getEmptyRadarConfig('Percentage of attacks per Target Type');
 
     var attack_radar_ctx = document.getElementById("radar-compare-attacktype");
-    window.RadarCompareAttacks = new Chart.PolarArea(attack_radar_ctx, empty_radar_config);
+    window.RadarCompareAttacks = new Chart.PolarArea(attack_radar_ctx, attacks_radar_config);
 
     var groups_radar_ctx = document.getElementById("radar-compare-groups");
-    window.RadarCompareGroups = new Chart.PolarArea(groups_radar_ctx, empty_radar_config);
+    window.RadarCompareGroups = new Chart.PolarArea(groups_radar_ctx, groups_radar_config);
 
     var target_radar_ctx = document.getElementById("radar-compare-targettype");
-    window.RadarCompareTargets = new Chart.PolarArea(target_radar_ctx, empty_radar_config);
+    window.RadarCompareTargets = new Chart.PolarArea(target_radar_ctx, targets_radar_config);
 
 
 

@@ -119,7 +119,7 @@ var randomScalingFactor = function() {
 
 
 
-var getEmptyRadarConfig = function() {
+var getEmptyRadarConfig = function(titleString) {
     var config = {
         data: {
             datasets: [],
@@ -133,7 +133,7 @@ var getEmptyRadarConfig = function() {
             },
             title: {
                 display: true,
-                text: 'Chart.js Polar Area Chart'
+                text: titleString
             },
             scale: {
               ticks: {
