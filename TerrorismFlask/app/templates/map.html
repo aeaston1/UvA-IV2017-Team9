@@ -656,11 +656,9 @@
                   // If cluster, display aggregated view, otherwise - single attack
                   if ( current_attack_data.markerType === 'individual' ) {
                       console.log('Found an individual');
-                      titleString = current_attack_data.country;
                       ref = "/attack/"+eventids[i];
                   } else {
                       console.log('Found a cluster');
-                      titleString = 'This is a cluster'
                       ref = "/marker/"+eventids[i]
                   }
 
@@ -669,7 +667,7 @@
                   var contentString = '<div id="content" class="marker-info">' +
                         '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
                         '<div id="bodyContent">' +
-                            '<p>' + titleString + '</p>' +
+                            '<p>' + current_attack_data.country + '</p>' +
                             '<a href="'+ref+'">View attack</a>' +
                         '</div>' +
                       '</div>';
@@ -711,12 +709,10 @@
                       // If cluster, display aggregated view, otherwise - single attack
                       if ( current_attack_data.markerType === 'individual' ) {
                           console.log('Found an individual');
-                          titleString = current_attack_data.country;
 //                          ref = "/attack/"+eventids[i];
                           
                       } else {
                           console.log('Found a cluster');
-                          titleString = 'This is a cluster'
 //                          ref = "/marker/"+eventids[i]
                           viewAttacksString = '<a onclick="loadMarkerData(' + eventid + ')">View attacks</a>'
                       }
@@ -726,7 +722,7 @@
                       var contentString = '<div id="content" class="marker-info">' +
                             '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
                             '<div id="bodyContent">' +
-                                '<p>' + titleString + '</p>' +
+                                '<p>' + current_attack_data.country + '</p>' +
 //                                '<a href="'+ref+'">View attack</a>' +
                                 viewAttacksString +    
                             '</div>' +

@@ -245,7 +245,14 @@ class GTDData(object):
         else:
             # If not individual, grab rest and aggregate
             cluster_elems = self.location_clusters[(attack_data['lng'], attack_data['lat'])]
-            data = self.aggregate_data(cluster_elems)
+            data = self.aggregate_data(cluster_elems) 
+            # Cheat for plot titles...
+            country_str = 'Cluster in '
+            if attack_data['city']:
+                country_str += attack_data['city']
+            else:
+                country_str += attack_data['country']
+            data['country'] = country_str
             return data
 
     def get_random_attack_data(self, random_n):
