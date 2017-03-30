@@ -1,24 +1,19 @@
 
 
 var plot_radar = function(data, type, scale=true, chart=false) {
-    console.log(data, type, scale, chart)
+//    console.log(data, type, scale, chart)
 
-    console.log("Begining")
     if (chart) {
         var Data = chart.config.oldData;
         Data[data.country] = data;
-        console.log('Ended up with combined data:', Data)
+//        console.log('Ended up with combined data:', Data)
         var new_config = plot_radar(Data, type, scale, false);
 //        chart.config = new_config;
-//        chart.config.data=new_config.data;
-        chart.config.data.datasets = new_config.data.datasets;
-        chart.config.data.labels = new_config.data.labels;
-        console.log('Before update', chart)
+        chart.config.data=new_config.data;
         chart.update()
         return
     }
 
-    console.log('Outside')
 
     var datasets = new Array();
     var labels = new Array();
@@ -78,21 +73,17 @@ var plot_radar = function(data, type, scale=true, chart=false) {
         backgroundColors.push(getRandomColor());
     });
 
-    console.log("Before assign")
 
-    config = getEmptyRadarConfig();
+    config = getEmptyRadarConfig({'type': type});
     config.data.datasets = datasets;
     config.data.labels = labels;
-//    config.data.backgroundColor = backgroundColors;
+    config.data.backgroundColor = backgroundColors;
     config.oldData = data;
 
-    console.log("After return")
 
     return config
 }
 
-
-console.log("Something in the middle")
 
 var randomScalingFactor = function() {
     return Math.round(Math.random() * 100);
@@ -100,26 +91,46 @@ var randomScalingFactor = function() {
 
 
 
-    function unique(x) {
-        return x.filter(function(elem, index) { return x.indexOf(elem) === index; });
-    };
-    function union(x, y) {
-        return unique(x.concat(y));
-    };
+function unique(x) {
+    return x.filter(function(elem, index) { return x.indexOf(elem) === index; });
+};
 
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++ ) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+function union(x, y) {
+    return unique(x.concat(y));
+};
+
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+}
 
 
 
 
-var getEmptyRadarConfig = function(titleString) {
+var getEmptyRadarConfig = function(params={'title': 'MyRadarPlot', 'type': false}) {
+    var type = params.type;
+    var title = params.title;
+
+    var titleString;
+    if (type) {
+        if (type === 'attacktype')
+            titleString = 'Percentage of attacks per Attack Type';
+        else if (type === 'groups')
+            titleString = 'Percentage of attacks per Group'
+        else if (type === 'targettype')
+            titleString = 'Percentage of attacks per Target Type'
+        else 
+            titleString = title;
+    } else 
+        titleString = title;
+        
+    
+
     var config = {
         data: {
             datasets: [],

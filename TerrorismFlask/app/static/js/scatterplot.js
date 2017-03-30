@@ -80,7 +80,7 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
 
     console.log(datasets);
 
-    var config = getEmptyScatterConfig()
+    var config = getEmptyScatterConfig({'type': x_var})
     config.data.datasets = datasets; 
     config.oldData = data;
 
@@ -88,7 +88,22 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
 }
 
 
-var getEmptyScatterConfig = function() {
+var getEmptyScatterConfig = function(params={'title': 'MyScatterPlot', 'type': false}) {
+
+    var type = params.type;
+    var title = params.title;
+
+    var titleString;
+    if (type) {
+        if (type === 'attacks_per_period')
+            titleString = 'Number of attacks per period';
+        else
+            titleString = title;
+    } else
+        titleString = title;
+
+
+
     var labels = new Array();
     for (var i = 1970; i <= 2015; i+=5) labels.push(i);
 
@@ -108,7 +123,7 @@ var getEmptyScatterConfig = function() {
             responsive: true,
             title:{
                 display:true,
-                text:'Chart.js Bubble Chart'
+                text: titleString
             },
             tooltips: {
                 mode: 'point'

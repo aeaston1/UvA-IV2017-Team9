@@ -4,13 +4,13 @@
 var plotCompareCountryStuffs = function() {
 
 
-    scatter_config = getEmptyScatterConfig();
+    scatter_config = getEmptyScatterConfig({'type': 'attacks_per_period'});
     var scatter_ctx = document.getElementById("scatter-compare-attacks").getContext("2d");
     window.myScatterCompareChart = new Chart(scatter_ctx, scatter_config)
 
-    attacks_radar_config = getEmptyRadarConfig('Percentage of attacks per Attack Type');
-    groups_radar_config = getEmptyRadarConfig('Percentage of attacks per Group');
-    targets_radar_config = getEmptyRadarConfig('Percentage of attacks per Target Type');
+    var attacks_radar_config = getEmptyRadarConfig({'type': 'attacktype'});
+    var groups_radar_config = getEmptyRadarConfig({'type': 'groups'});
+    var targets_radar_config = getEmptyRadarConfig({'type': 'targettype'});
 
     var attack_radar_ctx = document.getElementById("radar-compare-attacktype");
     window.RadarCompareAttacks = new Chart.PolarArea(attack_radar_ctx, attacks_radar_config);
