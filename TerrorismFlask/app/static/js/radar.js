@@ -80,6 +80,7 @@ var plot_radar = function(data, type, scale=true, chart=false) {
     config.data.backgroundColor = backgroundColors;
     config.oldData = data;
 
+    console.log(config)
 
     return config
 }
@@ -157,7 +158,38 @@ var getEmptyRadarConfig = function(params={'title': 'MyRadarPlot', 'type': false
                 animateScale: true
             },
             tooltips: {
-                mode: 'label'
+                callbacks: {
+//                    title: function(tooltipItems, data) {
+//                        return 'Title'
+//                    },
+                    label: function(tooltipItems, data) {
+                        var label = new Array();
+                        label.push(data.labels[tooltipItems.index])
+                        data.datasets.forEach ( function (dataset) {
+//                            label.push( dataset.label + ': '+ tooltipItems.yLabel );
+                            label.push(dataset.label + ': ' + dataset.data[tooltipItems.index])
+                        })
+                        return label;
+//                        return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel;
+                    }
+                }
+
+/*
+//                mode: 'label',
+                callbacks: {
+//                    title: function(tooltipItems, data) {
+//                        return 'Title'
+//                    },
+                    label: function(tooltipItems, data) {
+                        return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel;
+                    }
+                }
+*/
+/*
+                multiTooltipTemplate: "My Text <%= datasetLabel %> - <%= value %>",   
+               // tooltipTemplate is activated only when there's just one dataset
+               tooltipTemplate: "Label <%= label %>"
+*/
             }
         },
         oldData: {}
