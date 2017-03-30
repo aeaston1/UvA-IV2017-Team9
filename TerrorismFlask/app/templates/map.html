@@ -150,10 +150,12 @@
 
     <script>
 
-    function loadMarkerData(markerData){
-        console.log('Loading Marker');
-        $('#myCarousel').carousel('prev');
-        plotCountryStuffs(markerData);
+    function loadMarkerData(eventid){
+        $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(markerData) {
+            console.log('Loading Marker', markerData);
+            $('#myCarousel').carousel('next');
+            plotCountryStuffs(markerData);
+        })
     }
 
     function loadCountryData(selectedCountry, previousCountry){
@@ -655,11 +657,9 @@
                   // If cluster, display aggregated view, otherwise - single attack
                   if ( current_attack_data.markerType === 'individual' ) {
                       console.log('Found an individual');
-                      titleString = current_attack_data.country;
                       ref = "/attack/"+eventids[i];
                   } else {
                       console.log('Found a cluster');
-                      titleString = 'This is a cluster'
                       ref = "/marker/"+eventids[i]
                   }
 
@@ -668,7 +668,7 @@
                   var contentString = '<div id="content" class="marker-info">' +
                         '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
                         '<div id="bodyContent">' +
-                            '<p>' + titleString + '</p>' +
+                            '<p>' + current_attack_data.country + '</p>' +
                             '<a href="'+ref+'">View attack</a>' +
                         '</div>' +
                       '</div>';
@@ -710,14 +710,12 @@
                       // If cluster, display aggregated view, otherwise - single attack
                       if ( current_attack_data.markerType === 'individual' ) {
                           console.log('Found an individual');
-                          titleString = current_attack_data.country;
 //                          ref = "/attack/"+eventids[i];
                           
                       } else {
                           console.log('Found a cluster');
-                          titleString = 'This is a cluster'
 //                          ref = "/marker/"+eventids[i]
-                          viewAttacksString = '<a onclick="loadMarkerData(current_attack_data)">View attacks</a>'
+                          viewAttacksString = '<a onclick="loadMarkerData(' + eventid + ')">View attacks</a>'
                       }
 
                       console.log(titleString, ref);
@@ -725,7 +723,7 @@
                       var contentString = '<div id="content" class="marker-info">' +
                             '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
                             '<div id="bodyContent">' +
-                                '<p>' + titleString + '</p>' +
+                                '<p>' + current_attack_data.country + '</p>' +
 //                                '<a href="'+ref+'">View attack</a>' +
                                 viewAttacksString +    
                             '</div>' +
