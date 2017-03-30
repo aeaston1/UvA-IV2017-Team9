@@ -149,6 +149,13 @@
 </div>
 
     <script>
+
+    function loadMarkerData(markerData){
+        console.log('Loading Marker');
+        $('#myCarousel').carousel('prev');
+        plotCountryStuffs(markerData);
+    }
+
     function loadCountryData(selectedCountry, previousCountry){
         var countryData;
 {#        console.log("Selected:", selectedCountry);#}
@@ -651,20 +658,23 @@
 
                 marker.addListener('click', function() {
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
-                    $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-//                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+//                    $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
                       var titleString;
                       var ref;
+                      var viewAttacksString = ''
 
                       // If cluster, display aggregated view, otherwise - single attack
                       if ( current_attack_data.markerType === 'individual' ) {
                           console.log('Found an individual');
                           titleString = current_attack_data.country;
-                          ref = "/attack/"+eventids[i];
+//                          ref = "/attack/"+eventids[i];
+                          
                       } else {
                           console.log('Found a cluster');
                           titleString = 'This is a cluster'
-                          ref = "/marker/"+eventids[i]
+//                          ref = "/marker/"+eventids[i]
+                          viewAttacksString = '<a onclick="loadMarkerData(current_attack_data)">View attacks</a>'
                       }
 
                       console.log(titleString, ref);
@@ -673,7 +683,8 @@
                             '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
                             '<div id="bodyContent">' +
                                 '<p>' + titleString + '</p>' +
-                                '<a href="'+ref+'">View attack</a>' +
+//                                '<a href="'+ref+'">View attack</a>' +
+                                viewAttacksString +    
                             '</div>' +
                           '</div>';
 
