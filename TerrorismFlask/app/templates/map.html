@@ -149,7 +149,11 @@
 </div>
 
     <script>
-
+    function intersect (array1, array2){
+        return array1.filter(function(n) {
+            return array2.indexOf(n) !== -1;
+        });
+    }
     function loadMarkerData(eventid){
         $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(markerData) {
             console.log('Loading Marker', markerData);
@@ -184,17 +188,31 @@
         console.log(e.checked);
         console.log(e.value.substring(2));
 
+        var facetName = e.value.substring(2);
         var facetmarkers = attackMarkers;
+
         if (e.value[0] === 't'){
             facetmarkers = targetMarkers;
         }
-        var facetName = e.value.substring(2);
+
         if (e.checked){
             if(nSelectedFacets == 0){
                 // first hide everything
                 console.log("clear markers");
                 clearMarkers();
             }
+
+
+{#             if (e.value[0] === 't'){#}
+{#                selectedTargetMakers.push.apply(selectedTargetMakers, facetmarkers[facetName]);#}
+{#             }else{#}
+{#                 selectedAttackMarkers.push.apply(selectedAttackMarkers, facetmarkers[facetName]);#}
+{#             }#}
+{#            #}
+{#             var markersIntersect = [];#}
+{#             for(m1 in selectedAttackMarkers){#}
+{#                 markersIntersect = intersect()#}
+{#             }#}
 
             console.log("FACET NAME="+facetName);
             console.log(facetmarkers[facetName][0]);
@@ -326,7 +344,8 @@
 
     var targetMarkers={};
     var attackMarkers={};
-
+    var selectedAttackMarkers={};
+    var selectedTargetMakers={};
     var nSelectedFacets = 0;
 
     function initParamMap(a, b) {
