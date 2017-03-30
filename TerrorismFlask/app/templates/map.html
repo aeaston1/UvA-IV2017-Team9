@@ -154,13 +154,9 @@
     <script>
     function loadCountryData(selectedCountry, previousCountry){
         var countryData;
+{#        console.log("Selected:", selectedCountry);#}
         $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + selectedCountry, function(countryData) {
-            console.log("Selected:", selectedCountry, "Previous:"+ previousCountry);
-            if (previousCountry === selectedCountry) return previousCountry;
-            previousCountry = selectedCountry;
             plotCountryStuffs(countryData);
-
-            return previousCountry;
         })
     }
 
@@ -170,7 +166,8 @@
         plotCompareCountryStuffs();
 
         listClickedCountries.forEach(function (country) {
-            $.getJSON('{{ url_for("get_country", country=selectedCountry) }}'  + country, function(countryData) {
+            console.log("compare:", country);
+            $.getJSON('{{ url_for("get_country", country=country) }}'  + country, function(countryData) {
                 console.log("compare", countryData);
                 plot_scatter(countryData, 'attacks_per_period', window.myScatterCompareChart);
                 plot_radar(countryData, 'attacktype', true, window.RadarCompareAttacks);
@@ -216,16 +213,20 @@
         d3.select("#selectedCountries").selectAll("div").remove();
         var row = d3.select("#selectedCountries");
 {#         <div class="col-sm-6">Selected Country</div>#}
-{#        <div class="col-sm-4"><a id="sectionToggle" class="btn btn-default btn-xs">BUTTON</a></div>#}
         for(c in listClickedCountries ){
             row.append("div").attr("class", "col-sm-6").text(listClickedCountries[c]);
-            row.append("div").attr("class", "col-sm-4")
-                .append("a").attr("class", "btn btn-default btn-xs").attr("name",listClickedCountries[c]).text("Show")
-                .attr("id", "sectionToggle").on("click", function (e){
-                    console.log("click");
+            var div = row.append("div");
+            div.attr("class", "col-sm-4");
+            var a = div.append("a").attr("class", "btn btn-default btn-xs").attr("name",listClickedCountries[c]).text("Show")
+                .attr("id", "sectionToggle-"+c);
+
+                a.on("click", function (d,i){
+{#                    console.log("A "+);#}
+                    console.log("click "+d3.select(this).attr('name'));
+                    loadCountryData(d3.select(this).attr('name'), "");
                     $('#myCarousel').carousel('next');
-                    loadCountryData(listClickedCountries[c], "");
-                });
+
+            });
         }
 
         if (listClickedCountries.length >= 2){
