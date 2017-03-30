@@ -3,6 +3,11 @@
 
 var plotCompareCountryStuffs = function() {
 
+    [window.myScatterCompareChart, window.RadarCompareAttacks, window.RadarCompareGroups, window.RadarCompareTargets].forEach(function(chart) {
+        console.log('Destroying old chart:')
+        if (chart)
+            chart.destroy();
+    })
 
     scatter_config = getEmptyScatterConfig({'type': 'attacks_per_period'});
     var scatter_ctx = document.getElementById("scatter-compare-attacks").getContext("2d");
