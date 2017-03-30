@@ -666,30 +666,33 @@
                 marker.addListener('click', function() {
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {
 //                    $.getJSON('{{ url_for("get_attack", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
-                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(current_attack_data) {
+                    $.getJSON('{{ url_for("get_marker", attack_id=eventid) }}'  + eventid, function(data) {
                       var titleString;
-                      var ref;
-                      var viewAttacksString = ''
+                      var bodyContent;
+ 
+                      var commonCounts = '<p> Victims: ' + data.victims_count + '</p' +
+                                         '<p> Wounded: ' + data.wounded_count + '</p>'
 
                       // If cluster, display aggregated view, otherwise - single attack
-                      if ( current_attack_data.markerType === 'individual' ) {
+                      if ( data.markerType === 'individual' ) {
                           console.log('Found an individual');
-//                          ref = "/attack/"+eventids[i];
-                          
+                          titleString = data.date
+                          bodyContent = '<p>' + data.city + ', ' + data.country + '</p>' + 
+                                        commonCounts 
                       } else {
                           console.log('Found a cluster');
-//                          ref = "/marker/"+eventids[i]
-                          viewAttacksString = '<a onclick="loadMarkerData(' + eventid + ')">View attacks</a>'
+                          titleString = data.country
+                          bodyContent = '<p> Number of attacks: ' + data.attacks_count + '</p>' +
+                                        commonCounts +
+                                        '<a onclick="loadMarkerData(' + eventid + ')">View attacks</a>' 
+                                       
                       }
-
-                      console.log(titleString, ref);
+ 
 
                       var contentString = '<div id="content" class="marker-info">' +
-                            '<h4 id="firstHeading" class="firstHeading">'+current_attack_data.date+'</h4>' +
+                            '<h4 id="firstHeading" class="firstHeading">'+ titleString +'</h4>' +
                             '<div id="bodyContent">' +
-                                '<p>' + current_attack_data.country + '</p>' +
-//                                '<a href="'+ref+'">View attack</a>' +
-                                viewAttacksString +    
+                             bodyContent +
                             '</div>' +
                           '</div>';
 
