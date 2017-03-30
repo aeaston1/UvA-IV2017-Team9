@@ -70,9 +70,16 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
                                          y: x_data[label], 
 //                                         r: 100 * (r_data[label]+1) / all_victims,
 //                                         r: Math.sqrt(1000 * (r_data[label]+1) / (all_victims * 3.14 * 3.14) )
-                                           r: Math.sqrt(10 * (r_data[label]+1) / ( 3.14 * 3.14) ),
+                                           r: Math.sqrt(4 * (r_data[label]+1) / ( 3.14 * 3.14) ),
                                            victims: r_data[label]
                                         });
+            else
+                newDataset['data'].push({x: label,
+                                         y: 0,
+                                         r: Math.sqrt(4 / ( 3.14 * 3.14) ),
+                                         victims: 0
+                                        });
+
         });
         datasets.push(newDataset);
 
@@ -87,6 +94,8 @@ var plot_scatter = function(data, x_var='attacks_per_period', chart=false) {
     config.oldData = data;
 
     return config
+
+    console.log(config)
 }
 
 
@@ -128,7 +137,22 @@ var getEmptyScatterConfig = function(params={'title': 'MyScatterPlot', 'type': f
                 text: titleString
             },
             tooltips: {
-                mode: 'point'
+//                mode: 'point',
+                 callbacks: {
+                    label: function(tooltipItems, data) {
+                        var label = new Array();
+//                        var period_end = parseInt(data.labels[tooltipItems.index]);
+                        var period_end = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index].x
+                        var period_start = period_end - 5;
+                        label.push('Period: ' + period_start + '-' + period_end);
+                        data.datasets.forEach ( function (dataset) {
+                            var attacks = dataset.data[tooltipItems.index].y;
+                            var victims = dataset.data[tooltipItems.index].victims;
+                            label.push(dataset.label + ': ' + attacks + ' attacks; ' + victims + ' victims')
+                        })
+                        return label;
+                    }
+                }
             }
         },
         oldData: {}
