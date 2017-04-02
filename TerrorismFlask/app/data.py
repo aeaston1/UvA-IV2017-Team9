@@ -103,11 +103,16 @@ class GTDData(object):
             self.attackids_per_country[country].append(attackid)
             self.attackids_per_region[attack_data['region']].append(attackid)
             self.data_per_attack[attackid] = attack_data
-            
+            """            
             self.country_basics[country]['attacks_count'] += 1
 
             for field in ['victims_count', 'wounded_count']:
                 self.country_basics[country][field] += attack_data[field]
+            """
+            self.country_basics['attacks_count'][country] += 1
+
+            for field in ['victims_count', 'wounded_count', 'propvalue']:
+                self.country_basics[field][country] += attack_data[field]
 
 #            self.location_clusters[(attack_data['lng'], attack_data['lat'])].append(attackid)
 
@@ -219,7 +224,7 @@ class GTDData(object):
         except Exception as e:
             self.country_counts = []
             for country in self.countries:
-                country_basics = self.country_basics[country] 
+                country_basics = {type_: self.country_basics[type_][country] for type_ in ['attacks_count', 'wounded_count', 'victims_count']}
                 country_basics.update({'country': country})
                 self.country_counts.append(country_basics)
 

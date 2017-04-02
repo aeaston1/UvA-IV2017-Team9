@@ -84,8 +84,21 @@
                         <div class="panel-heading" data-toggle="collapse" data-target="#mapFacets" aria-expanded="false" aria-controls="mapFacets" >
                             Map Options
                         </div>
-                        <div class="panel-body collapse" id="mapFacets">
-                            <input type="checkbox" id="polygonsAllAttack"> Attacks number
+                        <div class="panel-body collapse selectme" id="mapFacets"> Color by:
+                            {% for field in country_basics %}
+                              {% if 'prop' in field %}
+                                {% set name = 'Property damage' %}
+                              {% else %}
+                                {% set name = 'Number of ' + field.split('_')[0] %}
+                              {% endif %}
+                                <div class="checkbox">
+                                     <label>
+                                        <input type="checkbox" id="polygonsAllAttack-{{ field }}" class=singleCheckbox> {{ name }} </input>
+
+                                     </label>
+                                </div>
+                            {% endfor %}
+
             {#                <input type="checkbox" id="flowChart"> Show Flow Chart#}
 
                         </div>
@@ -303,6 +316,7 @@
 
 
     <script type="text/javascript">
+/*
     function getMinMax(object) {
         var max = 0;
         var maxItem = null;
@@ -322,6 +336,23 @@
         }
         return [maxItem, minItem];
     }
+*/
+
+    function getMinMax(object) {
+        var max = 0;
+        var maxItem = null;
+        var min = 100000;
+        var minItem = null;
+        
+        var MinMaxItems = new Object();
+
+        Object.keys(object).forEach(function(key) {
+            var values = Object.values(object[key]);
+            MinMaxItems[key] = [d3.min(values), d3.max(values)]
+        })
+        return MinMaxItems;
+    }
+
 
     </script>
 
@@ -517,7 +548,7 @@
             });
 
 
-            function showCountryPolygons() {
+            function showCountryPolygons(field) {
                 map.data.revertStyle();
                 map.data.setStyle(function(e){
                     return {
@@ -525,16 +556,19 @@
                         strokeColor: '#000000',
                         strokeOpacity: 0.1,
                         fillColor: '#23ff09',
-                        fillOpacity: getOpacity(e.f.name)
+                        fillOpacity: getOpacity(e.f.name, field)
                     }
                 });
             };
 
-            function getOpacity(countryName) {
+            function getOpacity(countryName, field) {
 {#                console.log(countryName)#}
                 try {
-                    var attackCounts = countryBasics[countryName]['attacks_count']
+                    var attackCounts = countryBasics[field][countryName]
                 {#console.log(attackCounts);#}
+//                    var countryOpacity = (0.99 - 0.01) * Math.cbrt((attackCounts - minAttack) / (maxAttack - minAttack))+ 0.01;
+                    var minAttack = MinMax[field][0];
+                    var maxAttack = MinMax[field][1];
                     var countryOpacity = (0.99 - 0.01) * Math.cbrt((attackCounts - minAttack) / (maxAttack - minAttack))+ 0.01;
                     {#                    console.log(countryOpacity);#}
                     return countryOpacity;
@@ -558,10 +592,11 @@
 
             //listens to toggling that one button or not.
             window.onload = function() {
-                $("#polygonsAllAttack").change(function(){
+                Object.keys(countryBasics).forEach(function(field) {
+                $("#polygonsAllAttack-"+field).change(function(){
                     if (this.checked) {
                         {#                console.log("toggle 1");#}
-                        showCountryPolygons();
+                        showCountryPolygons(field);
                         showCountryPolygonsClicked=1;
                     }else {
                         {#                console.log("toggle 2");#}
@@ -569,6 +604,17 @@
                         showCountryPolygonsClicked=0;
                     }
                 });
+                })
+                /*
+                $('.singleCheckbox').click(function() {
+                    $(this).siblings('input:checkbox').prop('checked', false);
+                });
+                */
+                $('.selectme input:checkbox').click(function() {
+                    $('.selectme input:checkbox').not(this).prop('checked', false);
+                });                   
+
+
 
 {#                Object.keys(facets).forEach(function(facet_type) {#}
 {#                  Object.keys(facets[facet_type]).forEach(function(facet_name) {#}
