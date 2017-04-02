@@ -9,8 +9,22 @@ import json
 
 @app.route('/')
 @app.route('/index')
+@app.route('/map')
+def index():
+    attack_locations = commons.GTD_DATA.get_location()
+    facets = commons.GTD_DATA.get_facets()
+    country_basics=commons.GTD_DATA.get_country_basics()
+    country_data = commons.GTD_DATA.get_country_data('Belgium')
+    country_data.update({'country': 'Belgium'})
+    app.logger.warning("Gonna map counts now")
+    return render_template("map.html",
+                           attack_locations=attack_locations,
+                           facets=facets,
+                           country_basics=country_basics,
+                           country_data=country_data)
 
 
+"""
 def index():
     user = {'nickname': 'Miguel'}  # fake user
     posts = [  # fake array of posts
@@ -29,7 +43,7 @@ def index():
                            title='Home',
                            user=user,
                            posts=posts)
-
+"""
 
 #TODO: I'm still not convinced that this is the way to handle data...
 @app.route('/counts')

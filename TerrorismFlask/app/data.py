@@ -192,7 +192,7 @@ class GTDData(object):
             for field in ['attacktype', 'targettype']:
                 aggregated_data[field][attack_data[field]] += 1
             aggregated_data['target_attack_corr'][attack_data['targettype']][attack_data['attacktype']] += 1
-            aggregated_data['groups'][attack_data['group']] += 1
+            aggregated_data['groups'][attack_data['group']] += 1 if not attack_data['group'] == 'Unknown' else 0
             aggregated_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['summary'])))
 #            aggregated_data['words'].update(map(lambda x: x.decode('utf-8', 'ignore'), get_words(attack_data['motive'])))
 

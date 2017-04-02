@@ -23,7 +23,7 @@ var plotCountryStuffs = function(countryData) {
 
             attack_radar_config = plot_radar(plotData, 'attacktype');
             target_radar_config = plot_radar(plotData, 'targettype');
-            groups_radar_config = plot_radar(plotData, 'groups', false);
+            groups_radar_config = plot_radar(plotData, 'groups');
             scatter_config = plot_scatter(plotData, 'attacks_per_period');
 
             var scatter_ctx = document.getElementById("scatter-attacks").getContext("2d");

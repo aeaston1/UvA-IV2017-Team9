@@ -23,6 +23,8 @@ var plotCompareCountryStuffs = function() {
     var groups_radar_ctx = document.getElementById("radar-compare-groups");
     window.RadarCompareGroups = new Chart.PolarArea(groups_radar_ctx, groups_radar_config);
 
+    console.log('Chart:', window.RadarCompareAttacks)
+
     var target_radar_ctx = document.getElementById("radar-compare-targettype");
     window.RadarCompareTargets = new Chart.PolarArea(target_radar_ctx, targets_radar_config);
 
