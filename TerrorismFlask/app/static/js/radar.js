@@ -18,6 +18,11 @@ var plot_radar = function(data, type, scale=true, chart=false) {
     var datasets = new Array();
     var labels = new Array();
 
+    var maxPerCountry;
+    if (type === 'groups')
+        maxPerCountry = 3
+    else
+        maxPerCountry = 5
 
     // I dont know enough javascripts so thats my great implementation of 
     // "Keep top 5 labels per country only¨ 
@@ -30,8 +35,10 @@ var plot_radar = function(data, type, scale=true, chart=false) {
         for (var i = 0; i < len; ++i) indices[i] = i;
         indices.sort(function (a, b) { return values[a] > values[b] ? -1 : values[a] < values[b] ? 1 : 0; });
         var keep_labels = new Array();
-        for (var ind = 0; ind < 5; ind++) {
-            keep_labels.push(keys[indices[ind]]);
+        for (var ind = 0; ind < maxPerCountry; ind++) {
+            label = keys[indices[ind]];
+            if (label !== 'Unknown') 
+                keep_labels.push(keys[indices[ind]]);
         }        
 //        var new_labels = union(labels, Object.keys(data[country][type]));
         var new_labels = union(labels, keep_labels);
@@ -39,22 +46,35 @@ var plot_radar = function(data, type, scale=true, chart=false) {
     });    
     
 
+
+    var addedCount = 0;
+    var color = Chart.helpers.color;
+    var colorNames = Object.keys(window.chartColors);
+
     Object.keys(data).forEach(function(country) {
         // Adjust colors per coountry 
         var newDataset = {label: country,
-//                           fillColor : "rgba(220,220,220,0.5)",
-                           fillColor: getRandomColor(),
-                           strokeColor : "rgba(220,220,220,1)",
-                           pointColor : "rgba(220,220,220,1)", 
+                           backgroundColor: [],
                            data: []}
  
         var sum = d3.sum(Object.values(country_data = data[country][type]));
 
+        var addedCount = 0;
+        var color = Chart.helpers.color;
+        var colorNames = Object.keys(window.chartColors);
+
+
         var country_data = data[country][type];
         labels.forEach(function(label) {
+            ++addedCount;
+            var colorName = colorNames[addedCount % colorNames.length];;
+            var dsColor = window.chartColors[colorName];
+            
+            newDataset.backgroundColor.push(color(dsColor).alpha(0.5).rgbString())
+
             if (country_data.hasOwnProperty(label)) {
                 if (scale)
-                    newDataset['data'].push(country_data[label] / sum);
+                    newDataset['data'].push((country_data[label] / sum).toFixed(2));
                 else
                     newDataset['data'].push(country_data[label]);
                 }
@@ -80,7 +100,7 @@ var plot_radar = function(data, type, scale=true, chart=false) {
     config.data.backgroundColor = backgroundColors;
     config.oldData = data;
 
-//    console.log(config)
+    console.log(config)
 
     return config
 }
@@ -142,20 +162,31 @@ var getEmptyRadarConfig = function(params={'title': 'MyRadarPlot', 'type': false
             responsive: true,
             legend: {
                 position: 'right',
+//                options: {
+//                    onHover: function(e, legendItem) {
+//                        console.log(e, legendItem);
+//                    }
+//                }
             },
             title: {
                 display: true,
                 text: titleString
             },
-            scale: {
-              ticks: {
-                beginAtZero: true
-              },
-              reverse: false
-            },
+
+        scaleShowLabels : false,
+
+        scale: {ticks:{display: false}},
+ 
+/*
+        scales: {
+         scale: {display: false}, 
+         lineArc: false,
+         pointLabels: {fontColor: '#eee'}
+        },
+*/
             animation: {
                 animateRotate: false,
-                animateScale: true
+//                animateScale: true
             },
             tooltips: {
                 callbacks: {
