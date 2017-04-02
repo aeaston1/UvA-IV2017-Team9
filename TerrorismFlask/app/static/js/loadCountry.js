@@ -4,7 +4,7 @@
 var plotCountryStuffs = function(countryData) {
 
 
-    [window.myScatterChart, window.RadarAttacks, window.RadarGroups, window.RadarTargets].forEach(function(chart) {
+    [window.myScatterChart, window.myRadarAttacks, window.myRadarGroups, window.myRadarTargets].forEach(function(chart) {
         if (chart) {
             console.log("Destroying old chart", chart)
             chart.destroy();
