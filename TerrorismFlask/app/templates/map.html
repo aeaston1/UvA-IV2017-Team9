@@ -53,32 +53,24 @@
             <div id="one" class="row">
                 <div id="map" class="col-sm-10"></div>
                 <div class="col-sm-2">
+
+                  {% for facet_type in facets %}
                     <div class="panel panel-default facets">
-                        <div class="panel-heading" data-toggle="collapse" data-target="#attackFacets" aria-expanded="false" aria-controls="attackFacets">Attack Type</div>
-                        <div class="panel-body collapse" id="attackFacets">
-                            {% for attack_type in facets.attacktype %}
+                        <div class="panel-heading" data-toggle="collapse" data-target="#Facets-{{facet_type}}" aria-expanded="false" aria-controls="Facets-{{facet_type}}"> 
+                          {{ facet_type.replace('type', ' type') | title }}
+                        </div>
+                        <div class="panel-body collapse" id="Facets-{{ facet_type }}">
+                            {% for facet_name in facets[facet_type] %}
                                 <div class="checkbox">
                                     <label>
-                                        <input id="facet-{{attack_type}}" type="checkbox" value="a_{{ attack_type }}" onclick='handleFacetClick(this);'>
-                                        {{ attack_type }}
-                                    </label>
+                                        <input id="facet-{{ facet_name }}" type="checkbox" value-facettype="{{ facet_type }}" value-facetname="{{ facet_name }}" onclick='handleFacetClick(this);'>
+                                        {{ facet_name }}
                                 </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="panel panel-default facets">
-                        <div class="panel-heading" data-toggle="collapse" data-target="#targetFacets" aria-expanded="false" aria-controls="targetFacets" >Target Type</div>
-                        <div class="panel-body collapse" id="targetFacets">
-                            {% for attack_type in facets.targettype %}
-                                <div class="checkbox">
-                                    <label>
-                                        <input id="facet-{{attack_type}}" type="checkbox" value="t_{{ attack_type }}" onclick='handleFacetClick(this);'>
-                                        {{ attack_type }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    {% endfor %}
+
 
                     <div class="panel panel-default facets">
                         <div class="panel-heading" data-toggle="collapse" data-target="#mapFacets" aria-expanded="false" aria-controls="mapFacets" >
@@ -199,14 +191,13 @@
 
     function handleFacetClick(e){
         console.log(e.checked);
-        console.log(e.value.substring(2));
 
-        var facetName = e.value.substring(2);
-        var facetmarkers = attackMarkers;
+        var facetName = e.getAttribute("value-facetname");
+        var facetType = e.getAttribute("value-facettype");
 
-        if (e.value[0] === 't'){
-            facetmarkers = targetMarkers;
-        }
+        console.log("Clicked Facet:", facetType, facetName);
+
+//        console.log(listClickedFacets)
 
         if (e.checked){
             if(nSelectedFacets == 0){
@@ -214,6 +205,11 @@
                 console.log("clear markers");
                 clearMarkers();
             }
+
+            listClickedFacets[facetType].push(facetName)
+//            console.log(facetMarkers[facetType][facetName][0]);
+            addMarkers(markers, facetMarkers[facetType][facetName]);
+            nSelectedFacets++;
 
 
 {#             if (e.value[0] === 't'){#}
@@ -227,12 +223,7 @@
 {#                 markersIntersect = intersect()#}
 {#             }#}
 
-            console.log("FACET NAME="+facetName);
-            console.log(facetmarkers[facetName][0]);
-            addMarkers(markers, facetmarkers[facetName]);
-            nSelectedFacets++;
-
-        }else{
+        } else {
             nSelectedFacets--;
             if (nSelectedFacets == 0){
                 // no facet is selected
@@ -240,9 +231,14 @@
                 console.log("show all markers again");
                 showMarkers();
             }
-            removeMarkers(facetmarkers[facetName]);
+ 
+            listClickedFacets[facetType].splice(listClickedFacets[facetType].indexOf(facetName),1);
+            removeMarkers(facetMarkers[facetType][facetName]);
+            
+            
         }
 
+        console.log(listClickedFacets)
 {#        markerCluster.repaint();#}
 
     }
@@ -373,6 +369,14 @@
     var showCountryPolygonsClicked=0;
     var clickedField
     {#        console.log(maxAttack)#}
+
+
+    var listClickedFacets={};
+    var facetMarkers={}
+    Object.keys(facets).forEach(function(facetType){
+        listClickedFacets[facetType] = [];
+        facetMarkers[facetType] = {};
+    })
 
     var targetMarkers={};
     var attackMarkers={};
@@ -509,7 +513,6 @@
                 console.log(showCountryPolygonsClicked)
                 var country= e.feature.f.name;
                 if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===0 ){
-                    console.log('not countrys not polygons')
                     map.data.overrideStyle(e.feature, {
                         strokeWeight: 1,
                         strokeColor: '#000000',
@@ -518,7 +521,6 @@
                         fillOpacity: 0.001
                     });
                 } else if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===1){
-                    console.log('not countries polygons')
                     map.data.overrideStyle(e.feature, {
                         strokeWeight:2,
                         strokeColor:'#000000',
@@ -697,12 +699,22 @@
       }
 
       function showMarkers() {
+/*
         for (var k in targetMarkers){
             markerCluster.addMarkers(targetMarkers[k]);
         }
         for (var k in attackMarkers){
             markerCluster.addMarkers(attackMarkers[k]);
         }
+*/
+/*
+        Object.keys(facets).forEach(function(facetType) {
+            Object.values(facetMarkers[facetType]).forEach(function(markers){
+                markerCluster.addMarkers(markers);
+            })
+        })
+*/
+        markerCluster.addMarkers(markers);
         console.log("show all!");
 {#      markerCluster.repaint();#}
 {#        markerCluster = new MarkerClusterer(map, markers,mcOptions);#}
@@ -723,21 +735,16 @@
                 icon: markerImg
             });
 
-            var attacktype = attackLocations[eventid]['attacktype'];
-            var targettype = attackLocations[eventid]['targettype'];
-            if (targettype !== undefined) {
-                if (targetMarkers[targettype] === undefined){
-                    targetMarkers[targettype] = [];
-                }
-                targetMarkers[targettype].push(marker);
-            }
-            if (attacktype !== undefined){
-                if (attackMarkers[attacktype] === undefined){
-                    attackMarkers[attacktype]=[];
-                }
-                attackMarkers[attacktype].push(marker);
-            }
 
+            Object.keys(facets).forEach(function(facetType) {
+                var facetName = attackLocations[eventid][facetType];
+                if (facetName !== undefined){
+                    if (facetMarkers[facetType][facetName] === undefined){
+                        facetMarkers[facetType][facetName] = [];
+                    }
+                    facetMarkers[facetType][facetName].push(marker);
+                }
+            })
 
                 marker.addListener('click', function() {
 //                    $.getJSON('{{ url_for('get_attack', attack_id=eventid) }}', function(current_attack_data) {

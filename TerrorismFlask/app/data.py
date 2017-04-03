@@ -63,7 +63,7 @@ class GTDData(object):
         self.data_per_attack = {}
 
 #        self.facets = defaultdict(lambda: defaultdict(list))
-        self.facets = defaultdict(lambda: defaultdict(dict))
+        self.facets = defaultdict(lambda: defaultdict(int))
 
         self.locations = {}
 
@@ -126,13 +126,15 @@ class GTDData(object):
                                         'lat': attack_data['lat'],
                                         'attacktype_id': attack_data['attacktype_id'],
                                         'attacktype': attack_data['attacktype'],
-                                        'targettype': attack_data['targettype']
+                                        'targettype': attack_data['targettype'],
+                                        'group': attack_data['group']
                                         }
 #                self.facets['attacktype'][attack_data['attacktype']].append(attackid)
 #                self.facets['targettype'][attack_data['targettype']].append(attackid)
-                for facet_name in ['attacktype', 'targettype']:
-                    self.facets[facet_name][attack_data[facet_name]][attackid] = {'lng': attack_data['lng'],
-                                                                                  'lat': attack_data['lat']}
+                for facet_name in ['attacktype', 'targettype', 'group']:
+#                    self.facets[facet_name][attack_data[facet_name]][attackid] = {'lng': attack_data['lng'],
+#                                                                                  'lat': attack_data['lat']}
+                     self.facets[facet_name][attack_data[facet_name]] += 1
 
         self.countries = sorted(self.attackids_per_country.keys())
         self.attackids = sorted(self.data_per_attack.keys())
@@ -269,6 +271,13 @@ class GTDData(object):
         return self.locations
 
     def get_facets(self):
+        if 'group' in self.facets:
+            for facet_name, n_locations in self.facets['group'].items():
+                if n_locations < 100:
+                    del self.facets['group'][facet_name]
+
+        pprint(self.facets)                
+
         return self.facets
 
     def get_sorted_propvalue(self, country):
