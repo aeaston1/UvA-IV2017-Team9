@@ -371,6 +371,7 @@
     var minAttack=MinMax[1];
     var maxAttack=MinMax[0];
     var showCountryPolygonsClicked=0;
+    var clickedField
     {#        console.log(maxAttack)#}
 
     var targetMarkers={};
@@ -478,6 +479,11 @@
             //makes the country polygons. not really sure how to move it into a seperate function.
             var geojson = map.data.loadGeoJson('./static/data/geodata.json');
 
+//            var colorPolygons = '#23ff09'; 
+//            var colorPolygons = '#580606';
+            var colorPolygons = '#840909'
+
+
             map.data.setStyle({
                 strokeWeight:0.5,
                 strokeColor:'#000000',
@@ -500,8 +506,10 @@
             });
 
             map.data.addListener('mouseout', function(e) {
+                console.log(showCountryPolygonsClicked)
                 var country= e.feature.f.name;
                 if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===0 ){
+                    console.log('not countrys not polygons')
                     map.data.overrideStyle(e.feature, {
                         strokeWeight: 1,
                         strokeColor: '#000000',
@@ -509,13 +517,14 @@
                         fillColor: '0x00000000',
                         fillOpacity: 0.001
                     });
-                }else if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===1){
+                } else if (!(listClickedCountries.indexOf(country)>=0) && showCountryPolygonsClicked===1){
+                    console.log('not countries polygons')
                     map.data.overrideStyle(e.feature, {
                         strokeWeight:2,
                         strokeColor:'#000000',
                         strokeOpacity:0.1,
-                        fillColor:'#23ff09',
-                        fillOpacity:getOpacity(e.feature.f.name)
+                        fillColor: colorPolygons,
+                        fillOpacity:getOpacity(e.feature.f.name, clickedPolygonField)
                     });
                 };
             });
@@ -555,7 +564,7 @@
                         strokeWeight: 0.5,
                         strokeColor: '#000000',
                         strokeOpacity: 0.1,
-                        fillColor: '#23ff09',
+                        fillColor: colorPolygons,
                         fillOpacity: getOpacity(e.f.name, field)
                     }
                 });
@@ -596,10 +605,12 @@
                 $("#polygonsAllAttack-"+field).change(function(){
                     if (this.checked) {
                         {#                console.log("toggle 1");#}
+                        clickedPolygonField=field;
                         showCountryPolygons(field);
                         showCountryPolygonsClicked=1;
                     }else {
                         {#                console.log("toggle 2");#}
+                        clickedPolygonField='';
                         unshowCountryPolygons();
                         showCountryPolygonsClicked=0;
                     }
